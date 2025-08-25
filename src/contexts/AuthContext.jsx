@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import API_CONFIG from '../config/api.js'
 
 const AuthContext = createContext()
 
@@ -19,10 +20,8 @@ export const AuthProvider = ({ children }) => {
     const initializeAuth = async () => {
       if (token) {
         try {
-                const response = await fetch('http://localhost:5000/api/auth/verify', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+                const response = await fetch(API_CONFIG.buildUrl(API_CONFIG.AUTH.VERIFY), {
+        headers: API_CONFIG.getAuthHeaders(token)
       })
           
           if (response.ok) {
@@ -49,11 +48,9 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('🔐 Starting login for:', email)
       
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(API_CONFIG.buildUrl(API_CONFIG.AUTH.LOGIN), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: API_CONFIG.getDefaultHeaders(),
         body: JSON.stringify({ email, password })
       })
 
@@ -90,11 +87,9 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('🚀 Starting registration for:', email)
       
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const response = await fetch(API_CONFIG.buildUrl(API_CONFIG.AUTH.REGISTER), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: API_CONFIG.getDefaultHeaders(),
         body: JSON.stringify({ email, password, name })
       })
 

@@ -2,6 +2,15 @@
 
 A secure, professional estate planning application that allows users to create comprehensive estate plans, wills, trusts, and power of attorney documents with enterprise-grade security.
 
+## 🌐 **Live Application**
+
+**Frontend**: [https://estate-planning-agent.vercel.app](https://estate-planning-agent.vercel.app)  
+**Backend API**: [https://estate-planning-agent.vercel.app/api](https://estate-planning-agent.vercel.app/api)
+
+**Demo Credentials**:
+- **Email**: `demo@example.com`
+- **Password**: `DemoPass123!`
+
 ## ✨ Features
 
 ### 🔐 Security First
@@ -31,8 +40,9 @@ A secure, professional estate planning application that allows users to create c
 - Node.js 18+ 
 - npm or yarn
 - Modern web browser
+- Vercel account (for backend deployment)
 
-### Installation
+### Frontend Development
 
 1. **Clone the repository**
    ```bash
@@ -47,8 +57,8 @@ A secure, professional estate planning application that allows users to create c
 
 3. **Set up environment variables**
    ```bash
-   cp env.example .env
-   # Edit .env with your configuration
+   cp env.local.example .env.local
+   # Edit .env.local with your configuration
    ```
 
 4. **Start development server**
@@ -58,6 +68,24 @@ A secure, professional estate planning application that allows users to create c
 
 5. **Open your browser**
    Navigate to `http://localhost:5173`
+
+### Backend Deployment (Required for Full Functionality)
+
+**Option 1: Automated Deployment (Recommended)**
+```bash
+./deploy-backend.sh
+```
+
+**Option 2: Manual Deployment**
+```bash
+npm install -g vercel
+vercel login
+vercel --prod
+```
+
+**Important**: After deployment, set `JWT_SECRET` in your Vercel dashboard.
+
+📖 **Full deployment guide**: [BACKEND_DEPLOYMENT.md](./BACKEND_DEPLOYMENT.md)
 
 ## 🏗️ Project Structure
 
@@ -85,10 +113,13 @@ estate-planning-agent/
 │       ├── generateDocx.js          # Document generation
 │       └── templates.js             # Document templates
 ├── api/                              # Backend API endpoints
-│   └── auth/
-│       ├── login.js                  # Login endpoint
-│       ├── register.js               # Registration endpoint
-│       └── verify.js                 # Token verification
+│   ├── auth/
+│   │   ├── login.js                  # Login endpoint
+│   │   ├── register.js               # Registration endpoint
+│   │   └── verify.js                 # Token verification
+│   ├── lib/
+│   │   └── users.js                  # Shared user storage
+│   └── health.js                     # Health check endpoint
 └── public/                           # Static assets
 ```
 
