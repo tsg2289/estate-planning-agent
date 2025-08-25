@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './LandingPage.css'
+import EmailSignup from './EmailSignup'
 
 const LandingPage = () => {
   const [isHovered, setIsHovered] = useState(false)
+  const [assessmentAnswers, setAssessmentAnswers] = useState({
+    hasWill: null,
+    hasTrust: null,
+    hasPOA: null,
+    hasAHD: null
+  })
   const navigate = useNavigate()
 
   const handleGetStarted = () => {
@@ -13,6 +20,18 @@ const LandingPage = () => {
   const handleLearnMore = () => {
     // Scroll to features section
     document.getElementById('features').scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleAssessmentAnswer = (question, answer) => {
+    setAssessmentAnswers(prev => ({
+      ...prev,
+      [question]: answer
+    }))
+  }
+
+  const handleAssessmentComplete = () => {
+    // Navigate to login with assessment results
+    navigate('/login', { state: { assessmentAnswers } })
   }
 
   return (
@@ -36,6 +55,13 @@ const LandingPage = () => {
               onClick={handleGetStarted}
             >
               Get Started
+            </button>
+            <button 
+              className="nav-button admin"
+              onClick={() => navigate('/admin')}
+              title="Admin Access"
+            >
+              🔐 Admin
             </button>
           </div>
         </div>
@@ -93,6 +119,151 @@ const LandingPage = () => {
                 <div className="badge-subtitle">Military Grade Security</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Assessment Section */}
+      <section className="assessment-section">
+        <div className="assessment-container">
+          <div className="section-header">
+            <h2>What Do You Need?</h2>
+            <p>Answer a few quick questions to get personalized recommendations for your estate planning</p>
+          </div>
+          
+          <div className="assessment-questions">
+            <div className="question-card">
+              <div className="question-header">
+                <span className="question-icon">📜</span>
+                <h3>Do you have a Last Will and Testament?</h3>
+              </div>
+              <p className="question-description">
+                A will specifies how your assets should be distributed and who should care for minor children.
+              </p>
+              <div className="question-options">
+                <button 
+                  className={`option-button ${assessmentAnswers.hasWill === true ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasWill', true)}
+                >
+                  Yes, I have one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasWill === false ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasWill', false)}
+                >
+                  No, I need one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasWill === 'unsure' ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasWill', 'unsure')}
+                >
+                  I'm not sure
+                </button>
+              </div>
+            </div>
+
+            <div className="question-card">
+              <div className="question-header">
+                <span className="question-icon">🏛️</span>
+                <h3>Do you have a Living Trust?</h3>
+              </div>
+              <p className="question-description">
+                A trust can help avoid probate and provide more control over asset distribution.
+              </p>
+              <div className="question-options">
+                <button 
+                  className={`option-button ${assessmentAnswers.hasTrust === true ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasTrust', true)}
+                >
+                  Yes, I have one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasTrust === false ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasTrust', false)}
+                >
+                  No, I need one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasTrust === 'unsure' ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasTrust', 'unsure')}
+                >
+                  I'm not sure
+                </button>
+              </div>
+            </div>
+
+            <div className="question-card">
+              <div className="question-header">
+                <span className="question-icon">⚖️</span>
+                <h3>Do you have a Power of Attorney?</h3>
+              </div>
+              <p className="question-description">
+                A POA allows someone to make financial and legal decisions on your behalf if you become incapacitated.
+              </p>
+              <div className="question-options">
+                <button 
+                  className={`option-button ${assessmentAnswers.hasPOA === true ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasPOA', true)}
+                >
+                  Yes, I have one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasPOA === false ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasPOA', false)}
+                >
+                  No, I need one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasPOA === 'unsure' ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasPOA', 'unsure')}
+                >
+                  I'm not sure
+                </button>
+              </div>
+            </div>
+
+            <div className="question-card">
+              <div className="question-header">
+                <span className="question-icon">🏥</span>
+                <h3>Do you have an Advanced Healthcare Directive?</h3>
+              </div>
+              <p className="question-description">
+                An AHD (living will) specifies your medical treatment preferences if you can't communicate.
+              </p>
+              <div className="question-options">
+                <button 
+                  className={`option-button ${assessmentAnswers.hasAHD === true ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasAHD', true)}
+                >
+                  Yes, I have one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasAHD === false ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasAHD', false)}
+                >
+                  No, I need one
+                </button>
+                <button 
+                  className={`option-button ${assessmentAnswers.hasAHD === 'unsure' ? 'selected' : ''}`}
+                  onClick={() => handleAssessmentAnswer('hasAHD', 'unsure')}
+                >
+                  I'm not sure
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="assessment-actions">
+            <button 
+              className="assessment-button primary"
+              onClick={handleAssessmentComplete}
+              disabled={Object.values(assessmentAnswers).some(answer => answer === null)}
+            >
+              Get My Personalized Plan
+            </button>
+            <p className="assessment-note">
+              Your answers help us create the most relevant estate planning documents for your situation.
+            </p>
           </div>
         </div>
       </section>
@@ -218,6 +389,32 @@ const LandingPage = () => {
           <div className="cta-guarantee">
             <span className="guarantee-icon">✅</span>
             <span>30-day money-back guarantee • No hidden fees</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Email Signup Section */}
+      <section className="email-signup-section">
+        <div className="email-signup-container">
+          <EmailSignup 
+            title="Stay Updated on Estate Planning"
+            subtitle="Get expert tips, legal updates, and exclusive content delivered to your inbox. Join our community of estate planning professionals and families."
+            source="landing_page"
+            tags="estate-planning, newsletter, tips"
+            onSuccess={(data) => console.log('Email signup successful:', data)}
+            onError={(error) => console.error('Email signup error:', error)}
+          />
+        </div>
+      </section>
+
+      {/* Disclaimer */}
+      <section className="disclaimer-section">
+        <div className="disclaimer-container">
+          <div className="disclaimer-content">
+            <h3>Disclaimer</h3>
+            <p>
+              This application is provided for informational and educational purposes only. It does not constitute legal advice, nor does it create an attorney–client relationship. Estate planning laws vary by state, and each individual's circumstances are unique. Any documents generated through this application should be carefully reviewed by a licensed attorney in your jurisdiction before being signed or relied upon.
+            </p>
           </div>
         </div>
       </section>

@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { validatePassword, getPasswordStrengthInfo } from '../../config/security'
 import './Auth.css'
 
 const Register = ({ onSwitchToLogin }) => {
+  const location = useLocation()
+  const assessmentAnswers = location.state?.assessmentAnswers || null
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -98,6 +101,41 @@ const Register = ({ onSwitchToLogin }) => {
           <h2>Create Account</h2>
           <p>Start building your estate plan today</p>
         </div>
+
+        {assessmentAnswers && (
+          <div className="assessment-summary">
+            <h3>Your Estate Planning Needs</h3>
+            <div className="assessment-grid">
+              <div className="assessment-item">
+                <span className="assessment-icon">📜</span>
+                <div className="assessment-details">
+                  <strong>Will:</strong> {assessmentAnswers.hasWill === true ? 'You have one' : assessmentAnswers.hasWill === false ? 'You need one' : 'You\'re unsure'}
+                </div>
+              </div>
+              <div className="assessment-item">
+                <span className="assessment-icon">🏛️</span>
+                <div className="assessment-details">
+                  <strong>Trust:</strong> {assessmentAnswers.hasTrust === true ? 'You have one' : assessmentAnswers.hasTrust === false ? 'You need one' : 'You\'re unsure'}
+                </div>
+              </div>
+              <div className="assessment-item">
+                <span className="assessment-icon">⚖️</span>
+                <div className="assessment-details">
+                  <strong>Power of Attorney:</strong> {assessmentAnswers.hasPOA === true ? 'You have one' : assessmentAnswers.hasPOA === false ? 'You need one' : 'You\'re unsure'}
+                </div>
+              </div>
+              <div className="assessment-item">
+                <span className="assessment-icon">🏥</span>
+                <div className="assessment-details">
+                  <strong>Healthcare Directive:</strong> {assessmentAnswers.hasAHD === true ? 'You have one' : assessmentAnswers.hasAHD === false ? 'You need one' : 'You\'re unsure'}
+                </div>
+              </div>
+            </div>
+            <p className="assessment-note">
+              We'll help you create the documents you need based on your assessment.
+            </p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="auth-form">
           {error && (
@@ -200,6 +238,18 @@ const Register = ({ onSwitchToLogin }) => {
               Sign in here
             </button>
           </p>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="disclaimer-section">
+          <div className="disclaimer-container">
+            <div className="disclaimer-content">
+              <h3>Disclaimer</h3>
+              <p>
+                This application is provided for informational and educational purposes only. It does not constitute legal advice, nor does it create an attorney–client relationship. Estate planning laws vary by state, and each individual's circumstances are unique. Any documents generated through this application should be consistently reviewed by a licensed attorney in your jurisdiction before being signed or relied upon.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

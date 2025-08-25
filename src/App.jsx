@@ -4,6 +4,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute'
 import AuthPage from './components/auth/AuthPage'
 import EstatePlanningApp from './components/EstatePlanningApp'
 import LandingPage from './components/LandingPage'
+import AdminPage from './components/admin/AdminPage'
 import './styles.css'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route path="/admin" element={<AdminPage />} />
           </Routes>
         </div>
       </Router>

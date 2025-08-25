@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-// In-memory storage for demo purposes (replace with database in production)
-import { addUser, findUserByEmail } from '../lib/users.js';
+// Database-based storage for production
+import { addUser, findUserByEmail } from '../lib/users-db.js';
 
 // JWT Secret (use environment variable in production)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -77,7 +77,8 @@ export default async function handler(req, res) {
       id: Date.now().toString(),
       email,
       name,
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      assessmentAnswers: req.body.assessmentAnswers || null
     };
 
     // Store user (in production, save to database)

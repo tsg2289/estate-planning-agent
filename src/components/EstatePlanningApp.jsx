@@ -149,6 +149,18 @@ function EstatePlanningApp() {
           />
         </div>
       </main>
+
+      {/* Disclaimer */}
+      <section className="disclaimer-section">
+        <div className="disclaimer-container">
+          <div className="disclaimer-content">
+            <h3>Disclaimer</h3>
+            <p>
+              This application is provided for informational and educational purposes only. It does not constitute legal advice, nor does it create an attorney–client relationship. Estate planning laws vary by state, and each individual's circumstances are unique. Any documents generated through this application should be carefully reviewed by a licensed attorney in your jurisdiction before being signed or relied upon.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
