@@ -6,9 +6,9 @@ const ReviewPane = ({ formData, completedForms }) => {
     if (!data) return null
     
     switch (formType) {
-      case 'will':
-        return {
-          title: 'Pour-Over Will',
+          case 'will':
+      return {
+        title: `${formData.testatorName ? formData.testatorName + "'S " : ''}POUR-OVER WILL`,
           summary: `Testator: ${data.testatorName || 'Not specified'}`,
           details: [
             `Executor: ${data.executorName || 'Not specified'}`,

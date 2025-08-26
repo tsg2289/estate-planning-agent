@@ -105,7 +105,13 @@ const createDocumentSections = async (template, formData) => {
   // Add title
   children.push(
     new Paragraph({
-      text: template.title,
+      children: [
+        new TextRun({
+          text: template.title,
+          bold: true,
+          size: 32,
+        }),
+      ],
       heading: HeadingLevel.HEADING_1,
       alignment: AlignmentType.CENTER,
       spacing: {
@@ -116,27 +122,90 @@ const createDocumentSections = async (template, formData) => {
   )
   
   // Add sections with proper formatting
-  template.sections.forEach(section => {
+  for (let i = 0; i < template.sections.length; i++) {
+    const section = template.sections[i]
+    
     if (section.content && section.content.trim()) {
       // Handle different section types
       if (section.name && section.name.includes('article')) {
-        // Article headers - make them bold and centered
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: section.content.trim(),
-                bold: true,
-                size: 28,
-              }),
-            ],
-            alignment: AlignmentType.CENTER,
-            spacing: {
-              before: 300,
-              after: 200,
-            },
-          })
-        )
+        // Article headers - combine with next section content
+        const nextSection = template.sections[i + 1]
+        if (nextSection && nextSection.content) {
+          // Split the next section content to get the heading
+          const lines = nextSection.content.trim().split('\n')
+          const heading = lines[0]
+          const remainingContent = lines.slice(1).join('\n')
+          
+          // Create combined article header with heading on same line
+          children.push(
+            new Paragraph({
+              children: [
+                                 new TextRun({
+                   text: section.content.trim(), // ARTICLE I, II, III, etc.
+                   bold: true,
+                   size: 28,
+                   underline: {},
+                 }),
+                new TextRun({
+                  text: ' - ',
+                  size: 28,
+                }),
+                new TextRun({
+                  text: heading, // The heading text
+                  bold: true,
+                  size: 28,
+                }),
+              ],
+              spacing: {
+                before: 300,
+                after: 200,
+              },
+            })
+          )
+          
+          // Add remaining content if any
+          if (remainingContent.trim()) {
+            const remainingLines = remainingContent.trim().split('\n')
+            remainingLines.forEach((line, index) => {
+              if (line.trim()) {
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: line.trim(),
+                        size: 24,
+                      }),
+                    ],
+                    spacing: {
+                      before: index === 0 ? 100 : 0,
+                      after: index === remainingLines.length - 1 ? 200 : 0,
+                    },
+                  })
+                )
+              }
+            })
+          }
+          
+          // Skip the next section since we've already processed it
+          i++
+        } else {
+          // Fallback if no next section
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: section.content.trim(),
+                  bold: true,
+                  size: 28,
+                }),
+              ],
+              spacing: {
+                before: 300,
+                after: 200,
+              },
+            })
+          )
+        }
       } else if (section.name && section.name.includes('signature')) {
         // Signature section - make it bold and centered
         children.push(
@@ -172,8 +241,8 @@ const createDocumentSections = async (template, formData) => {
             },
           })
         )
-      } else {
-        // Regular content - handle line breaks properly
+      } else if (!template.sections[i - 1]?.name?.includes('article')) {
+        // Regular content - only process if not already handled by article section
         const lines = section.content.trim().split('\n')
         lines.forEach((line, index) => {
           if (line.trim()) {
@@ -195,7 +264,7 @@ const createDocumentSections = async (template, formData) => {
         })
       }
     }
-  })
+  }
   
   return [
     {

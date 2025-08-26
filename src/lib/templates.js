@@ -2,12 +2,8 @@
 // These templates provide the structure and formatting for generating legal documents
 
 export const willTemplate = {
-  title: 'POUR-OVER WILL',
+  title: '{{testatorName}}\'S POUR-OVER WILL',
   sections: [
-    {
-      name: 'testator_name',
-      content: 'OF {{testatorName}}'
-    },
     {
       name: 'declaration',
       content: 'I, {{testatorName}}, a resident of the County of {{testatorCounty}}, State of California, declare this to be my Last Will and Testament.'
@@ -316,6 +312,13 @@ export const getTemplate = (type) => {
 // Helper function to populate template with data
 export const populateTemplate = (template, data) => {
   let populatedTemplate = { ...template }
+  
+  // Populate the title if it exists
+  if (populatedTemplate.title) {
+    populatedTemplate.title = populatedTemplate.title.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+      return data[key] || match
+    })
+  }
   
   populatedTemplate.sections = template.sections.map(section => ({
     ...section,

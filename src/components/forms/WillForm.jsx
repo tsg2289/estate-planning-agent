@@ -123,8 +123,8 @@ const WillForm = ({ onSubmit }) => {
         onClearClick={handleClearProgress}
       />
       
-      <form onSubmit={handleSubmit} className="will-form">
-        <h2>Pour-Over Will</h2>
+              <form onSubmit={handleSubmit} className="will-form">
+          <h2>{formData.testatorName ? `${formData.testatorName.toUpperCase()}'S POUR-OVER WILL` : 'Pour-Over Will'}</h2>
         
         {/* Testator Information */}
         <div className="form-section">
