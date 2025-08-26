@@ -6,10 +6,10 @@ const isDevelopment = import.meta.env.MODE === 'development';
 const forceLocalhost = isDevelopment && !import.meta.env.VITE_FORCE_PRODUCTION;
 
 const API_CONFIG = {
-  // Base API URL - force localhost for development
+  // Base API URL - use Railway for production, localhost for development
   BASE_URL: forceLocalhost 
     ? 'http://localhost:3001/api' 
-    : (import.meta.env.VITE_API_URL || 'http://localhost:3001/api'),
+    : 'https://fortunate-acceptance-production.up.railway.app/api',
   
   // Authentication endpoints
   AUTH: {
