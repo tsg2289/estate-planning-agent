@@ -4,7 +4,8 @@
   "description": "API for Estate Planning Agent",
   "type": "module",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "node server.js",
+    "vercel-dev": "vercel dev",
     "server": "node server.js",
     "db:init": "node scripts/init-db.js",
     "db:migrate": "node scripts/migrate-db.js"
@@ -15,6 +16,7 @@
     "csv-writer": "^1.6.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.5",
     "sqlite3": "^5.1.6"
   }
 }

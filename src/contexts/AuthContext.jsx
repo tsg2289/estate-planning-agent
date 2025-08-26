@@ -65,6 +65,17 @@ export const AuthProvider = ({ children }) => {
       const responseData = await response.json()
       console.log('✅ Login response:', responseData)
       
+      // Check if 2FA is required
+      if (responseData.requires2FA) {
+        console.log('🔐 2FA required, returning temp token')
+        return { 
+          success: true, 
+          requires2FA: true, 
+          tempToken: responseData.tempToken,
+          user: responseData.user
+        }
+      }
+      
       const { user: userData, token: newToken } = responseData
       
       if (userData && newToken) {
@@ -105,6 +116,17 @@ export const AuthProvider = ({ children }) => {
       const responseData = await response.json()
       console.log('✅ Registration response:', responseData)
       
+      // Check if 2FA is required
+      if (responseData.requires2FA) {
+        console.log('🔐 2FA required for registration, returning temp token')
+        return { 
+          success: true, 
+          requires2FA: true, 
+          tempToken: responseData.tempToken,
+          user: responseData.user
+        }
+      }
+      
       const { user: userData, token: newToken } = responseData
       
       if (userData && newToken) {
@@ -132,13 +154,53 @@ export const AuthProvider = ({ children }) => {
     setUser(null)
   }
 
+  const verify2FA = async (email, verificationCode, tempToken) => {
+    try {
+      console.log('🔐 Starting 2FA verification for:', email)
+      
+      const response = await fetch(API_CONFIG.buildUrl(API_CONFIG.AUTH.VERIFY_2FA), {
+        method: 'POST',
+        headers: API_CONFIG.getDefaultHeaders(),
+        body: JSON.stringify({ email, verificationCode, tempToken })
+      })
+
+      console.log('📡 2FA verification response status:', response.status)
+
+      if (!response.ok) {
+        const error = await response.json()
+        console.error('❌ 2FA verification failed:', error)
+        throw new Error(error.message || '2FA verification failed')
+      }
+
+      const responseData = await response.json()
+      console.log('✅ 2FA verification response:', responseData)
+      
+      const { user: userData, token: newToken } = responseData
+      
+      if (userData && newToken) {
+        localStorage.setItem('token', newToken)
+        setToken(newToken)
+        setUser(userData)
+        console.log('🎉 2FA verification successful!')
+        return { success: true }
+      } else {
+        console.error('❌ Missing user data or token in 2FA response')
+        return { success: false, error: 'Invalid response from server' }
+      }
+    } catch (error) {
+      console.error('❌ 2FA verification error:', error)
+      return { success: false, error: error.message }
+    }
+  }
+
   const value = {
     user,
     token,
     loading,
     login,
     register,
-    logout
+    logout,
+    verify2FA
   }
 
   return (

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import TwoFactorAuth from './TwoFactorAuth'
 import './Auth.css'
 
 const Login = ({ onSwitchToRegister }) => {
@@ -11,6 +12,8 @@ const Login = ({ onSwitchToRegister }) => {
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [show2FA, setShow2FA] = useState(false)
+  const [tempToken, setTempToken] = useState('')
   const { login } = useAuth()
   const navigate = useNavigate()
 
@@ -41,10 +44,17 @@ const Login = ({ onSwitchToRegister }) => {
       const result = await login(email, password)
       
       if (result.success) {
-        // Login successful - redirect to dashboard
-        setError('')
-        console.log('🎉 Login successful! Redirecting to dashboard...')
-        navigate('/dashboard')
+        if (result.requires2FA) {
+          // 2FA required - show 2FA component
+          setTempToken(result.tempToken)
+          setShow2FA(true)
+          setError('')
+        } else {
+          // Login successful - redirect to dashboard
+          setError('')
+          console.log('🎉 Login successful! Redirecting to dashboard...')
+          navigate('/dashboard')
+        }
       } else {
         setError(result.error || 'Login failed. Please try again.')
       }
@@ -53,6 +63,22 @@ const Login = ({ onSwitchToRegister }) => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Show 2FA component if needed
+  if (show2FA) {
+    return (
+      <TwoFactorAuth
+        email={email}
+        tempToken={tempToken}
+        onBack={() => {
+          setShow2FA(false)
+          setTempToken('')
+          setError('')
+        }}
+        isRegistration={false}
+      />
+    )
   }
 
   return (

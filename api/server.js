@@ -40,6 +40,9 @@ const startServer = async () => {
     const verifyModule = await import('./auth/verify.js');
     app.get('/api/auth/verify', verifyModule.default);
     
+    const verify2FAModule = await import('./auth/verify-2fa.js');
+    app.post('/api/auth/verify-2fa', verify2FAModule.default);
+    
     const emailListModule = await import('./email-list.js');
     app.use('/api/email-list', emailListModule.default);
     
@@ -51,6 +54,7 @@ const startServer = async () => {
         timestamp: new Date().toISOString(),
         features: [
           'User Authentication',
+          'Two-Factor Authentication (2FA)',
           'Email List Management',
           'Database Storage',
           'Export Functionality'

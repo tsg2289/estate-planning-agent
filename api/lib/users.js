@@ -11,7 +11,7 @@ const initializeDemoUser = () => {
       id: 'demo-1',
       email: 'demo@example.com',
       name: 'Demo User',
-      password: '$2a$12$8yB10AdwgmX5Bgfb3xEpdemwh3R22hZeEec2GWlg7H9ZgaaM1UQ2C', // 'DemoPass123!'
+      password: '$2a$12$8yB10AdwgmX5Bgfb3xEpdemwh3R22hZeEec2GWlg7H9ZgaaM1UQ2C', // ' DemoPass123!'
       createdAt: new Date().toISOString()
     };
     users.push(demoUser);

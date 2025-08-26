@@ -316,6 +316,139 @@ const LandingPage = () => {
         </div>
       </section>
 
+      {/* FAQ Section */}
+      <section className="faq-section">
+        <div className="faq-container">
+          <div className="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Get answers to common questions about estate planning and our services</p>
+          </div>
+          
+          <div className="faq-grid">
+            <div className="faq-item">
+              <div className="faq-question">
+                <span className="faq-icon">❓</span>
+                <h3>What documents do I need for estate planning?</h3>
+              </div>
+              <p className="faq-answer">
+                Most people need a Last Will and Testament, Power of Attorney, and Advanced Healthcare Directive. Depending on your situation, a Living Trust might also be beneficial. Our assessment tool will help determine what's right for you.
+              </p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">
+                <span className="faq-icon">❓</span>
+                <h3>How long does it take to complete my estate plan?</h3>
+              </div>
+              <p className="faq-answer">
+                You can complete your estate plan in as little as 15 minutes. The process is guided and straightforward, asking clear questions about your wishes and circumstances.
+              </p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">
+                <span className="faq-icon">❓</span>
+                <h3>Are the documents legally valid?</h3>
+              </div>
+              <p className="faq-answer">
+                Yes, all documents are created using state-specific legal templates and reviewed by legal professionals. However, we recommend having a local attorney review your final documents before signing.
+              </p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">
+                <span className="faq-icon">❓</span>
+                <h3>Can I update my estate plan later?</h3>
+              </div>
+              <p className="faq-answer">
+                Absolutely! Life changes, and so can your estate plan. You can update your documents anytime through your account, and we'll generate new versions for you to sign.
+              </p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">
+                <span className="faq-icon">❓</span>
+                <h3>What happens to my data if I cancel my account?</h3>
+              </div>
+              <p className="faq-answer">
+                Your data is securely stored and you can download your documents anytime. If you cancel, your documents remain accessible for 30 days, after which they're permanently deleted from our servers.
+              </p>
+            </div>
+
+            <div className="faq-item">
+              <div className="faq-question">
+                <span className="faq-icon">❓</span>
+                <h3>Do you offer customer support?</h3>
+              </div>
+              <p className="faq-answer">
+                Yes! We provide comprehensive customer support via email and chat. Our team is available to help with any questions about the estate planning process or technical issues.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="testimonials-section">
+        <div className="testimonials-container">
+          <div className="section-header">
+            <h2>What Our Users Say</h2>
+            <p>Join thousands of families who trust EstatePlan Pro with their estate planning needs</p>
+          </div>
+          
+          <div className="testimonials-grid">
+            <div className="testimonial-card">
+              <div className="testimonial-content">
+                <p>"EstatePlan Pro made creating our family's estate plan incredibly simple. The guided process was clear and comprehensive, and we felt confident in the legal quality of our documents."</p>
+              </div>
+              <div className="testimonial-author">
+                <div className="author-avatar">👨‍👩‍👧‍👦</div>
+                <div className="author-info">
+                  <h4>Sarah & Michael Chen</h4>
+                  <span>Family of 4, California</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="testimonial-card">
+              <div className="testimonial-content">
+                <p>"As a small business owner, I needed comprehensive estate planning that covered both personal and business assets. EstatePlan Pro delivered exactly what I needed with enterprise-level security."</p>
+              </div>
+              <div className="testimonial-author">
+                <div className="author-avatar">💼</div>
+                <div className="author-info">
+                  <h4>David Rodriguez</h4>
+                  <span>Business Owner, Texas</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="testimonial-card">
+              <div className="testimonial-content">
+                <p>"I was overwhelmed by the thought of estate planning, but the step-by-step process made it feel manageable. The security features gave me peace of mind knowing my sensitive information was protected."</p>
+              </div>
+              <div className="testimonial-author">
+                <div className="author-avatar">👵</div>
+                <div className="author-info">
+                  <h4>Margaret Thompson</h4>
+                  <span>Retired, Florida</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="testimonials-cta">
+            <p>Ready to join our satisfied customers?</p>
+            <button 
+              className="testimonials-button"
+              onClick={handleGetStarted}
+            >
+              Start Your Estate Plan Today
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Security Section */}
       <section className="security-section">
         <div className="security-container">

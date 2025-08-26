@@ -1,7 +1,5 @@
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { findUserByEmail, updateLastLogin } from '../lib/users-db.js';
-import { generateVerificationCode, sendVerificationCode } from '../lib/email-service.js';
+import { findUserByEmail } from '../lib/users-db.js';
 
 // JWT Secret (use environment variable in production)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -30,13 +28,32 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, password } = req.body;
+    const { email, verificationCode, tempToken } = req.body;
 
     // Validation
-    if (!email || !password) {
+    if (!email || !verificationCode || !tempToken) {
       return res.status(400).json({ 
         success: false,
-        message: 'Email and password are required' 
+        message: 'Email, verification code, and temporary token are required' 
+      });
+    }
+
+    // Verify the temporary token
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(tempToken, JWT_SECRET);
+    } catch (error) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Invalid or expired temporary token' 
+      });
+    }
+
+    // Check if the email matches the token
+    if (decodedToken.email !== email) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Email mismatch' 
       });
     }
 
@@ -45,7 +62,7 @@ export default async function handler(req, res) {
     if (!user) {
       return res.status(401).json({ 
         success: false,
-        message: 'Invalid credentials' 
+        message: 'User not found' 
       });
     }
 
@@ -57,20 +74,25 @@ export default async function handler(req, res) {
       });
     }
 
-    // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
+    // Verify the 2FA code (stored in tempToken payload)
+    if (decodedToken.verificationCode !== verificationCode) {
       return res.status(401).json({ 
         success: false,
-        message: 'Invalid credentials' 
+        message: 'Invalid verification code' 
       });
     }
 
-    // Update last login time
-    await updateLastLogin(user.id);
+    // Check if code has expired (10 minutes)
+    const codeExpiry = decodedToken.codeExpiry;
+    if (Date.now() > codeExpiry) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Verification code has expired' 
+      });
+    }
 
-    // Generate JWT token (2FA disabled for now)
-    const token = jwt.sign(
+    // Generate final JWT token
+    const finalToken = jwt.sign(
       { userId: user.id, email: user.email },
       JWT_SECRET,
       { expiresIn: '7d' }
@@ -81,12 +103,12 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       success: true,
-      message: 'Login successful',
+      message: 'Two-factor authentication successful',
       user: userWithoutPassword,
-      token
+      token: finalToken
     });
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('2FA verification error:', error);
     return res.status(500).json({ 
       success: false,
       message: 'Internal server error' 

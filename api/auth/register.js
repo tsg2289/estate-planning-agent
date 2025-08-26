@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 
 // Database-based storage for production
 import { addUser, findUserByEmail } from '../lib/users-db.js';
+import { generateVerificationCode, sendVerificationCode } from '../lib/email-service.js';
 
 // JWT Secret (use environment variable in production)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -95,7 +96,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // Generate JWT token
+    // Generate JWT token (2FA disabled for now)
     const token = jwt.sign(
       { userId: user.id, email: user.email },
       JWT_SECRET,

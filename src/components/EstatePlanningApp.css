@@ -267,3 +267,365 @@
     font-size: 14px;
   }
 }
+
+/* Overall Progress Bar */
+.overall-progress {
+  background: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  padding: 16px 20px;
+  margin-top: 0;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.progress-text {
+  font-weight: 600;
+  color: #495057;
+  font-size: 16px;
+}
+
+.progress-count {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #28a745, #20c997);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Progress Summary */
+.progress-summary {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.progress-summary h3 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 18px;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+.progress-item {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  transition: all 0.2s ease;
+}
+
+.progress-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.progress-item.completed {
+  border-color: #28a745;
+  background: #f8fff9;
+}
+
+.progress-item.in-progress {
+  border-color: #ffc107;
+  background: #fffdf8;
+}
+
+.progress-item.not-started {
+  border-color: #e9ecef;
+  background: white;
+}
+
+.progress-item-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.progress-item-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.progress-item-name {
+  font-weight: 600;
+  color: #495057;
+  font-size: 14px;
+}
+
+.progress-item-status {
+  font-size: 12px;
+  color: #6c757d;
+  margin-bottom: 4px;
+}
+
+.progress-item-date {
+  font-size: 11px;
+  color: #adb5bd;
+  font-style: italic;
+}
+
+/* Form Loading State */
+.form-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.form-loading p {
+  color: #6c757d;
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Form Container Updates */
+.form-container {
+  position: relative;
+}
+
+.will-form-container,
+.trust-form-container,
+.poa-form-container,
+.ahcd-form-container {
+  max-width: 100%;
+}
+
+/* Responsive Design for Progress Elements */
+@media (max-width: 768px) {
+  .progress-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .progress-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .overall-progress {
+    padding: 12px 16px;
+  }
+  
+  .progress-summary {
+    padding: 16px;
+    margin-top: 16px;
+  }
+}
+
+/* Enhanced Form Styling */
+.form-section {
+  margin-bottom: 24px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h3 {
+  margin: 0 0 16px 0;
+  color: #495057;
+  font-size: 18px;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 8px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #495057;
+  font-size: 14px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 20px;
+}
+
+.form-button:hover:not(:disabled) {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.form-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Add/Remove Button Styling */
+.add-button,
+.remove-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 8px 0;
+}
+
+.add-button {
+  background: #28a745;
+  color: white;
+}
+
+.add-button:hover {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.remove-button {
+  background: #dc3545;
+  color: white;
+}
+
+.remove-button:hover {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+/* Power Checkbox Grid */
+.powers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.power-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.power-checkbox:hover {
+  background: #f8f9fa;
+  border-color: #007bff;
+}
+
+.power-checkbox input[type="checkbox"] {
+  margin: 0;
+}
+
+.power-label {
+  font-size: 14px;
+  color: #495057;
+}
+
+/* Help Text */
+.form-help-text {
+  color: #6c757d;
+  font-size: 13px;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+/* Witness and Asset Items */
+.witness-item,
+.beneficiary-item,
+.asset-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.witness-item h4,
+.beneficiary-item h4,
+.asset-item h4 {
+  margin: 0 0 12px 0;
+  color: #495057;
+  font-size: 16px;
+}

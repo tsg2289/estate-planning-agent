@@ -16,6 +16,7 @@ const API_CONFIG = {
     REGISTER: '/auth/register',
     LOGIN: '/auth/login',
     VERIFY: '/auth/verify',
+    VERIFY_2FA: '/auth/verify-2fa',
   },
   
   // Health check endpoint

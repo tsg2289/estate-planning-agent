@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import PlanChecklist from './PlanChecklist.jsx'
 import ReviewPane from './ReviewPane.jsx'
@@ -6,6 +6,7 @@ import WillForm from './forms/WillForm.jsx'
 import TrustForm from './forms/TrustForm.jsx'
 import POAForm from './forms/POAForm.jsx'
 import AHCDForm from './forms/AHCDForm.jsx'
+import progressStorage from '../lib/progressStorage'
 import './EstatePlanningApp.css'
 
 function EstatePlanningApp() {
@@ -13,7 +14,32 @@ function EstatePlanningApp() {
   const [formData, setFormData] = useState({})
   const [completedForms, setCompletedForms] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [progressStatus, setProgressStatus] = useState({})
   const { user, logout } = useAuth()
+
+  // Load progress status on mount
+  useEffect(() => {
+    const loadProgressStatus = () => {
+      const status = progressStorage.getCompletionStatus()
+      setProgressStatus(status)
+      
+      // Update completed forms based on progress
+      const completed = Object.keys(status).filter(formType => status[formType].isCompleted)
+      setCompletedForms(completed)
+      
+      // Load saved form data
+      const allProgress = progressStorage.loadAllProgress()
+      const loadedFormData = {}
+      Object.keys(allProgress).forEach(formType => {
+        if (allProgress[formType]?.data) {
+          loadedFormData[formType] = allProgress[formType].data
+        }
+      })
+      setFormData(loadedFormData)
+    }
+
+    loadProgressStatus()
+  }, [])
 
   const handleFormSubmit = async (formType, data) => {
     setIsSubmitting(true)
@@ -22,9 +48,16 @@ function EstatePlanningApp() {
       // Simulate a brief delay to show loading state
       await new Promise(resolve => setTimeout(resolve, 500))
       
+      // Mark form as completed in progress storage
+      await progressStorage.markCompleted(formType)
+      
       setFormData(prev => ({ ...prev, [formType]: data }))
       setCompletedForms(prev => [...prev, formType])
       setActiveForm(null)
+      
+      // Update progress status
+      const newStatus = progressStorage.getCompletionStatus()
+      setProgressStatus(newStatus)
       
       // Show success message
       showNotification(`Your ${getFormDisplayName(formType)} has been completed successfully!`, 'success')
@@ -86,6 +119,12 @@ function EstatePlanningApp() {
     logout()
   }
 
+  const getOverallProgress = () => {
+    const totalForms = 4
+    const completedCount = completedForms.length
+    return Math.round((completedCount / totalForms) * 100)
+  }
+
   return (
     <div className="estate-planning-app">
       <header className="app-header">
@@ -101,6 +140,20 @@ function EstatePlanningApp() {
                 Logout
               </button>
             </div>
+          </div>
+        </div>
+        
+        {/* Overall Progress Bar */}
+        <div className="overall-progress">
+          <div className="progress-info">
+            <span className="progress-text">Overall Progress: {getOverallProgress()}%</span>
+            <span className="progress-count">{completedForms.length} of 4 forms completed</span>
+          </div>
+          <div className="progress-bar">
+            <div 
+              className="progress-fill"
+              style={{ width: `${getOverallProgress()}%` }}
+            />
           </div>
         </div>
       </header>
@@ -120,6 +173,7 @@ function EstatePlanningApp() {
           <PlanChecklist 
             onFormSelect={handleFormSelect}
             completedForms={completedForms}
+            progressStatus={progressStatus}
           />
           
           <div className="forms-section">
@@ -139,6 +193,31 @@ function EstatePlanningApp() {
                 <h2>Welcome to Estate Planning</h2>
                 <p>Select a document type from the checklist to get started.</p>
                 <p>Complete each form to build your comprehensive estate plan.</p>
+                
+                {/* Progress Summary */}
+                <div className="progress-summary">
+                  <h3>Your Progress</h3>
+                  <div className="progress-grid">
+                    {Object.entries(progressStatus).map(([formType, status]) => (
+                      <div key={formType} className={`progress-item ${status.isCompleted ? 'completed' : status.hasProgress ? 'in-progress' : 'not-started'}`}>
+                        <div className="progress-item-header">
+                          <span className="progress-item-icon">
+                            {status.isCompleted ? '✅' : status.hasProgress ? '📝' : '⭕'}
+                          </span>
+                          <span className="progress-item-name">{getFormDisplayName(formType)}</span>
+                        </div>
+                        <div className="progress-item-status">
+                          {status.isCompleted ? 'Completed' : status.hasProgress ? `${status.progressPercentage}% filled` : 'Not started'}
+                        </div>
+                        {status.lastSaved && (
+                          <div className="progress-item-date">
+                            Last saved: {new Date(status.lastSaved).toLocaleDateString()}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
           </div>
@@ -146,6 +225,7 @@ function EstatePlanningApp() {
           <ReviewPane 
             formData={formData}
             completedForms={completedForms}
+            progressStatus={progressStatus}
           />
         </div>
       </main>
