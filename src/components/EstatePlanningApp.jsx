@@ -7,6 +7,7 @@ import TrustForm from './forms/TrustForm.jsx'
 import POAForm from './forms/POAForm.jsx'
 import AHCDForm from './forms/AHCDForm.jsx'
 import progressStorage from '../lib/progressStorage'
+import HomeLink from './HomeLink.jsx'
 import './EstatePlanningApp.css'
 
 function EstatePlanningApp() {
@@ -127,6 +128,7 @@ function EstatePlanningApp() {
 
   return (
     <div className="estate-planning-app">
+      <HomeLink />
       <header className="app-header">
         <div className="header-content">
           <div className="header-left">

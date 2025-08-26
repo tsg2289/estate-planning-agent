@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import AdminAuth from './AdminAuth';
 import AdminDashboard from './AdminDashboard';
+import HomeLink from '../HomeLink.jsx';
 import './AdminPage.css';
 
 const AdminPage = () => {
@@ -85,6 +86,7 @@ const AdminPage = () => {
   if (!isAuthenticated) {
     return (
       <div className="admin-page">
+        <HomeLink />
         <div style={{ padding: '20px', textAlign: 'center' }}>
           <h1>🔐 Admin Access</h1>
           <p>Simple test version</p>
@@ -106,6 +108,7 @@ const AdminPage = () => {
 
   return (
     <div className="admin-page">
+      <HomeLink />
       <div style={{ padding: '20px' }}>
         <h1>🏠 Admin Dashboard</h1>
         <p>You are logged in as admin</p>

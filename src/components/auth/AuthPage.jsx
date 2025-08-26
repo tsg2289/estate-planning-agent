@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Login from './Login'
 import Register from './Register'
+import HomeLink from '../HomeLink.jsx'
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -10,6 +11,7 @@ const AuthPage = () => {
 
   return (
     <div className="auth-page">
+      <HomeLink />
       {isLogin ? (
         <Login onSwitchToRegister={switchToRegister} />
       ) : (
