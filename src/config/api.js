@@ -1,9 +1,15 @@
 // API Configuration for Estate Planning Agent
 // This file centralizes all API endpoint configurations
 
+// Force localhost for development, override any environment variables
+const isDevelopment = import.meta.env.MODE === 'development';
+const forceLocalhost = isDevelopment && !import.meta.env.VITE_FORCE_PRODUCTION;
+
 const API_CONFIG = {
-  // Base API URL - uses environment variable or falls back to localhost
-  BASE_URL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  // Base API URL - force localhost for development
+  BASE_URL: forceLocalhost 
+    ? 'http://localhost:3001/api' 
+    : (import.meta.env.VITE_API_URL || 'http://localhost:3001/api'),
   
   // Authentication endpoints
   AUTH: {
@@ -29,5 +35,16 @@ const API_CONFIG = {
     'Content-Type': 'application/json'
   })
 }
+
+// Log the API configuration for debugging
+console.log('🔧 API Configuration:', {
+  BASE_URL: API_CONFIG.BASE_URL,
+  ENV: import.meta.env.MODE,
+  VITE_API_URL: import.meta.env.VITE_API_URL,
+  VITE_FORCE_PRODUCTION: import.meta.env.VITE_FORCE_PRODUCTION,
+  isDevelopment,
+  forceLocalhost,
+  finalUrl: API_CONFIG.buildUrl('/auth/register')
+});
 
 export default API_CONFIG

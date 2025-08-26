@@ -1,199 +1,92 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { getDatabase, waitForInitialization } from './lib/database.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// In-memory storage for demo purposes (replace with database in production)
-const users = [];
+// Serve static files from data directory
+app.use('/data', express.static(path.join(__dirname, '../data')));
 
-// JWT Secret (use environment variable in production)
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-
-// Routes
-app.post('/api/auth/register', async (req, res) => {
+// Initialize database and start server
+const startServer = async () => {
   try {
-    const { email, password, name } = req.body;
-
-    // Validation
-    if (!email || !password || !name) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'All fields are required' 
-      });
-    }
-
-    if (password.length < 8) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Password must be at least 8 characters long' 
-      });
-    }
-
-    // Check password complexity
-    const hasLowercase = /[a-z]/.test(password);
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecial = /[^A-Za-z0-9]/.test(password);
-
-    if (!hasLowercase || !hasUppercase || !hasNumber || !hasSpecial) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character' 
-      });
-    }
-
-    // Check if user already exists
-    if (users.find(u => u.email === email)) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'User already exists' 
-      });
-    }
-
-    // Hash password
-    const hashedPassword = await bcrypt.hash(password, 12);
-
-    // Create user
-    const user = {
-      id: Date.now().toString(),
-      email,
-      name,
-      createdAt: new Date().toISOString()
-    };
-
-    // Store user (in production, save to database)
-    users.push({
-      ...user,
-      password: hashedPassword
-    });
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    res.status(201).json({
-      success: true,
-      message: 'User created successfully',
-      user,
-      token
-    });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ 
-      success: false,
-      message: 'Internal server error' 
-    });
-  }
-});
-
-app.post('/api/auth/login', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-
-    // Validation
-    if (!email || !password) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Email and password are required' 
-      });
-    }
-
-    // Find user
-    const user = users.find(u => u.email === email);
-    if (!user) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'Invalid credentials' 
-      });
-    }
-
-    // Verify password
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'Invalid credentials' 
-      });
-    }
-
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user.id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    // Remove password from response
-    const { password: _, ...userWithoutPassword } = user;
-
-    res.status(200).json({
-      success: true,
-      message: 'Login successful',
-      user: userWithoutPassword,
-      token
-    });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ 
-      success: false,
-      message: 'Internal server error' 
-    });
-  }
-});
-
-app.get('/api/auth/verify', (req, res) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'No token provided' 
-      });
-    }
-
-    const token = authHeader.substring(7);
-    const decoded = jwt.verify(token, JWT_SECRET);
+    console.log('🔄 Initializing database...');
     
-    const user = users.find(u => u.id === decoded.userId);
-    if (!user) {
-      return res.status(401).json({ 
-        success: false,
-        message: 'User not found' 
+    // Trigger database initialization by calling getDatabase first
+    getDatabase();
+    
+    // Wait for database to be ready
+    await waitForInitialization();
+    
+    console.log('✅ Database ready, setting up routes...');
+    
+    // Import the new database-based auth and email list handlers
+    const registerModule = await import('./auth/register.js');
+    app.post('/api/auth/register', registerModule.default);
+    
+    const loginModule = await import('./auth/login.js');
+    app.post('/api/auth/login', loginModule.default);
+    
+    const verifyModule = await import('./auth/verify.js');
+    app.get('/api/auth/verify', verifyModule.default);
+    
+    const emailListModule = await import('./email-list.js');
+    app.use('/api/email-list', emailListModule.default);
+    
+    // Health check endpoint
+    app.get('/api/health', (req, res) => {
+      res.json({ 
+        success: true,
+        message: 'Estate Planning API is running with database backend',
+        timestamp: new Date().toISOString(),
+        features: [
+          'User Authentication',
+          'Email List Management',
+          'Database Storage',
+          'Export Functionality'
+        ]
       });
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
-    res.json(userWithoutPassword);
-  } catch (error) {
-    console.error('Token verification error:', error);
-    res.status(401).json({ 
-      success: false,
-      message: 'Invalid token' 
     });
+    
+    // Root endpoint
+    app.get('/', (req, res) => {
+      res.json({
+        success: true,
+        message: 'Estate Planning API',
+        version: '2.0.0',
+        endpoints: {
+          auth: '/api/auth/*',
+          emailList: '/api/email-list/*',
+          health: '/api/health'
+        }
+      });
+    });
+    
+    // Start listening for requests
+    app.listen(PORT, () => {
+      console.log(`🚀 Estate Planning API running on port ${PORT}`);
+      console.log(`📡 Health check: http://localhost:${PORT}/api/health`);
+      console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth/*`);
+      console.log(`📧 Email list endpoints: http://localhost:${PORT}/api/email-list/*`);
+      console.log(`💾 Database: SQLite with email list management`);
+      console.log(`✅ Server ready to accept requests!`);
+    });
+    
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
   }
-});
+};
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    success: true,
-    message: 'API is running',
-    timestamp: new Date().toISOString()
-  });
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 Estate Planning API running on port ${PORT}`);
-  console.log(`📡 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth/*`);
-});
+// Start the server
+startServer();

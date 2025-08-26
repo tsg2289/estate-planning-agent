@@ -1,7 +1,5 @@
 import jwt from 'jsonwebtoken';
-
-// In-memory storage for demo purposes (replace with database in production)
-import { findUserById } from '../lib/users.js';
+import { findUserById } from '../lib/users-db.js';
 
 // JWT Secret (use environment variable in production)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -41,7 +39,8 @@ export default async function handler(req, res) {
     const token = authHeader.substring(7);
     const decoded = jwt.verify(token, JWT_SECRET);
     
-    const user = findUserById(decoded.userId);
+    // Find user in database
+    const user = await findUserById(decoded.userId);
     if (!user) {
       return res.status(401).json({ 
         success: false,
@@ -49,8 +48,18 @@ export default async function handler(req, res) {
       });
     }
 
+    // Check if user is active
+    if (!user.is_active) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Account is deactivated' 
+      });
+    }
+
+    // Remove password from response
     const { password: _, ...userWithoutPassword } = user;
-    return res.json({
+    
+    return res.status(200).json({
       success: true,
       user: userWithoutPassword
     });

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './EmailListManager.css';
+import API_CONFIG from '../config/api.js';
 
 const EmailListManager = () => {
   const [emails, setEmails] = useState([]);
@@ -21,8 +22,8 @@ const EmailListManager = () => {
     notes: ''
   });
 
-  // API base URL
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  // API base URL - use centralized configuration
+  const API_BASE = API_CONFIG.BASE_URL.replace('/api', '');
 
   useEffect(() => {
     fetchEmailList();

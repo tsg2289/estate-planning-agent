@@ -61,8 +61,9 @@ export default async function handler(req, res) {
       });
     }
 
-    // Check if user already exists
-    if (findUserByEmail(email)) {
+    // Check if user already exists - FIXED: Added await
+    const existingUser = await findUserByEmail(email);
+    if (existingUser) {
       return res.status(400).json({ 
         success: false,
         message: 'User already exists' 
@@ -81,11 +82,18 @@ export default async function handler(req, res) {
       assessmentAnswers: req.body.assessmentAnswers || null
     };
 
-    // Store user (in production, save to database)
-    addUser({
+    // Store user (in production, save to database) - FIXED: Added await
+    const createdUser = await addUser({
       ...user,
       password: hashedPassword
     });
+
+    if (!createdUser) {
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to create user'
+      });
+    }
 
     // Generate JWT token
     const token = jwt.sign(
@@ -97,7 +105,7 @@ export default async function handler(req, res) {
     return res.status(201).json({
       success: true,
       message: 'User created successfully',
-      user,
+      user: createdUser,
       token
     });
   } catch (error) {

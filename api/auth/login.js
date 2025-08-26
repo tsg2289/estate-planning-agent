@@ -1,8 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
-// In-memory storage for demo purposes (replace with database in production)
-import { findUserByEmail } from '../lib/users.js';
+import { findUserByEmail, updateLastLogin } from '../lib/users-db.js';
 
 // JWT Secret (use environment variable in production)
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
@@ -41,12 +39,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // Find user
-    const user = findUserByEmail(email);
+    // Find user in database
+    const user = await findUserByEmail(email);
     if (!user) {
       return res.status(401).json({ 
         success: false,
         message: 'Invalid credentials' 
+      });
+    }
+
+    // Check if user is active
+    if (!user.is_active) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Account is deactivated' 
       });
     }
 
@@ -58,6 +64,9 @@ export default async function handler(req, res) {
         message: 'Invalid credentials' 
       });
     }
+
+    // Update last login time
+    await updateLastLogin(user.id);
 
     // Generate JWT token
     const token = jwt.sign(

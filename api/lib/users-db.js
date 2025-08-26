@@ -10,11 +10,8 @@ export const addUser = async (user) => {
   const db = getDatabase();
   
   try {
-    // Check if user already exists
-    const existingUser = await findUserByEmail(user.email);
-    if (existingUser) {
-      return null; // User already exists
-    }
+    // Note: User existence check is already done in the registration endpoint
+    // to avoid race conditions, we'll proceed with insertion
     
     // Insert into users table
     const insertUserSql = `
@@ -59,6 +56,10 @@ export const addUser = async (user) => {
     };
   } catch (error) {
     console.error('Error adding user:', error);
+    // Check if it's a unique constraint violation
+    if (error.message && error.message.includes('UNIQUE constraint failed')) {
+      return null; // User already exists
+    }
     throw error;
   }
 };

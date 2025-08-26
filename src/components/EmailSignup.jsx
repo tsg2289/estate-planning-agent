@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './EmailSignup.css';
+import API_CONFIG from '../config/api.js';
 
 const EmailSignup = ({ 
   title = "Stay Updated", 
@@ -17,8 +18,8 @@ const EmailSignup = ({
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState('');
 
-  // API base URL
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+  // API base URL - use centralized configuration
+  const API_BASE = API_CONFIG.BASE_URL.replace('/api', '');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
