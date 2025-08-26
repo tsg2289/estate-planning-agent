@@ -2,6 +2,8 @@ import { useState } from 'react';
 import './AdminAuth.css';
 
 const AdminAuth = ({ onAuthenticated }) => {
+  console.log('🔧 AdminAuth: Component rendered');
+  
   const [credentials, setCredentials] = useState({
     username: '',
     password: ''
@@ -17,17 +19,20 @@ const AdminAuth = ({ onAuthenticated }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('🔧 AdminAuth: Form submitted');
     setIsLoading(true);
     setError('');
 
     // Simple authentication (in production, use proper backend auth)
     if (credentials.username === ADMIN_CREDENTIALS.username && 
         credentials.password === ADMIN_CREDENTIALS.password) {
+      console.log('🔧 AdminAuth: Authentication successful');
       // Store admin session
       localStorage.setItem('adminAuthenticated', 'true');
       localStorage.setItem('adminLoginTime', Date.now().toString());
       onAuthenticated(true);
     } else {
+      console.log('🔧 AdminAuth: Authentication failed');
       setError('Invalid credentials. Please try again.');
     }
 
@@ -40,6 +45,8 @@ const AdminAuth = ({ onAuthenticated }) => {
       [e.target.name]: e.target.value
     });
   };
+
+  console.log('🔧 AdminAuth: Rendering form');
 
   return (
     <div className="admin-auth">
