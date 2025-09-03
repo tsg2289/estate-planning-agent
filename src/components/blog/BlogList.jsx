@@ -36,6 +36,9 @@ const BlogList = ({ posts }) => {
     <div className="blog-list">
       <div className="blog-header">
         <div className="blog-hero">
+          <button onClick={() => navigate('/')} className="home-button">
+            ← Home
+          </button>
           <h1>Estate Planning Blog</h1>
           <p>Expert insights, legal updates, and practical advice for protecting your family's future</p>
         </div>
