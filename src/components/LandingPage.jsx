@@ -46,6 +46,12 @@ const LandingPage = () => {
           <div className="nav-actions">
             <button 
               className="nav-button secondary"
+              onClick={() => navigate('/blog')}
+            >
+              Blog
+            </button>
+            <button 
+              className="nav-button secondary"
               onClick={() => navigate('/login')}
             >
               Sign In
@@ -522,6 +528,87 @@ const LandingPage = () => {
           <div className="cta-guarantee">
             <span className="guarantee-icon">✅</span>
             <span>30-day money-back guarantee • No hidden fees</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section */}
+      <section className="blog-preview-section">
+        <div className="blog-preview-container">
+          <div className="section-header">
+            <h2>Latest Estate Planning Insights</h2>
+            <p>Stay informed with expert advice, legal updates, and practical tips for protecting your family's future</p>
+          </div>
+          
+          <div className="blog-preview-grid">
+            <div className="blog-preview-card">
+              <div className="preview-image">
+                <img src="/api/placeholder/400/250" alt="Estate Planning Basics" />
+              </div>
+              <div className="preview-content">
+                <div className="preview-meta">
+                  <span className="category">Estate Planning</span>
+                  <span className="date">Jan 15, 2024</span>
+                </div>
+                <h3>Estate Planning Basics: A Complete Guide for 2024</h3>
+                <p>Learn the fundamentals of estate planning, including wills, trusts, and power of attorney documents.</p>
+                <button 
+                  className="read-more-button"
+                  onClick={() => navigate('/blog/estate-planning-basics-2024')}
+                >
+                  Read More →
+                </button>
+              </div>
+            </div>
+
+            <div className="blog-preview-card">
+              <div className="preview-image">
+                <img src="/api/placeholder/400/250" alt="Digital Assets" />
+              </div>
+              <div className="preview-content">
+                <div className="preview-meta">
+                  <span className="category">Digital Assets</span>
+                  <span className="date">Jan 10, 2024</span>
+                </div>
+                <h3>Protecting Your Digital Assets in Estate Planning</h3>
+                <p>Learn how to include online accounts, cryptocurrencies, and digital files in your estate plan.</p>
+                <button 
+                  className="read-more-button"
+                  onClick={() => navigate('/blog/digital-assets-estate-planning')}
+                >
+                  Read More →
+                </button>
+              </div>
+            </div>
+
+            <div className="blog-preview-card">
+              <div className="preview-image">
+                <img src="/api/placeholder/400/250" alt="Tax Planning" />
+              </div>
+              <div className="preview-content">
+                <div className="preview-meta">
+                  <span className="category">Tax Planning</span>
+                  <span className="date">Jan 5, 2024</span>
+                </div>
+                <h3>Understanding Tax Implications in Estate Planning</h3>
+                <p>Navigate estate taxes, gift taxes, and income taxes to minimize your family's tax burden.</p>
+                <button 
+                  className="read-more-button"
+                  onClick={() => navigate('/blog/tax-implications-estate-planning')}
+                >
+                  Read More →
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="blog-cta">
+            <button 
+              className="view-all-posts-button"
+              onClick={() => navigate('/blog')}
+            >
+              View All Posts
+            </button>
           </div>
         </div>
       </section>

@@ -46,6 +46,9 @@ const startServer = async () => {
     const emailListModule = await import('./email-list.js');
     app.use('/api/email-list', emailListModule.default);
     
+    const blogModule = await import('./blog.js');
+    app.use('/api/blog', blogModule.default);
+    
     // Health check endpoint
     app.get('/api/health', (req, res) => {
       res.json({ 
@@ -56,6 +59,7 @@ const startServer = async () => {
           'User Authentication',
           'Two-Factor Authentication (2FA)',
           'Email List Management',
+          'Blog System',
           'Database Storage',
           'Export Functionality'
         ]
@@ -71,6 +75,7 @@ const startServer = async () => {
         endpoints: {
           auth: '/api/auth/*',
           emailList: '/api/email-list/*',
+          blog: '/api/blog/*',
           health: '/api/health'
         }
       });

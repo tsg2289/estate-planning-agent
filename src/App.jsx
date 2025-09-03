@@ -5,6 +5,7 @@ import AuthPage from './components/auth/AuthPage'
 import EstatePlanningApp from './components/EstatePlanningApp'
 import LandingPage from './components/LandingPage'
 import AdminPage from './components/admin/AdminPage'
+import BlogPage from './components/blog/BlogPage'
 import './styles.css'
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
               } 
             />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPage />} />
           </Routes>
         </div>
       </Router>
