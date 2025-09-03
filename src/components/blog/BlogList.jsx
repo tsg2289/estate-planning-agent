@@ -67,58 +67,21 @@ const BlogList = ({ posts }) => {
       </div>
 
       <div className="blog-content">
-        <div className="featured-posts">
-          {filteredPosts.filter(post => post.featured).map(post => (
-            <div key={post.id} className="featured-post" onClick={() => handlePostClick(post.slug)}>
-              <div className="featured-image">
-                <img src={post.image} alt={post.title} />
-                <div className="featured-badge">Featured</div>
-              </div>
-              <div className="featured-content">
+        <div className="posts-grid">
+          {filteredPosts.map(post => (
+            <article key={post.id} className="post-card" onClick={() => handlePostClick(post.slug)}>
+              <div className="post-content">
                 <div className="post-meta">
                   <span className="category">{post.category}</span>
                   <span className="date">{formatDate(post.publishDate)}</span>
                   <span className="read-time">{post.readTime}</span>
                 </div>
-                <h2 className="post-title">{post.title}</h2>
-                <p className="post-excerpt">{post.excerpt}</p>
-                <div className="post-author">
-                  <span className="author-name">{post.author}</span>
-                  <span className="author-title">{post.authorTitle}</span>
-                </div>
-                <div className="post-tags">
-                  {post.tags.map(tag => (
-                    <span key={tag} className="tag">#{tag}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="posts-grid">
-          {filteredPosts.filter(post => !post.featured).map(post => (
-            <article key={post.id} className="post-card" onClick={() => handlePostClick(post.slug)}>
-              <div className="post-image">
-                <img src={post.image} alt={post.title} />
-              </div>
-              <div className="post-content">
-                <div className="post-meta">
-                  <span className="category">{post.category}</span>
-                  <span className="date">{formatDate(post.publishDate)}</span>
-                </div>
                 <h3 className="post-title">{post.title}</h3>
                 <p className="post-excerpt">{post.excerpt}</p>
-                <div className="post-footer">
-                  <div className="post-author">
-                    <span className="author-name">{post.author}</span>
-                    <span className="read-time">{post.readTime}</span>
-                  </div>
-                  <div className="post-tags">
-                    {post.tags.slice(0, 2).map(tag => (
-                      <span key={tag} className="tag">#{tag}</span>
-                    ))}
-                  </div>
+                <div className="post-tags">
+                  {post.tags.slice(0, 3).map(tag => (
+                    <span key={tag} className="tag">#{tag}</span>
+                  ))}
                 </div>
               </div>
             </article>
