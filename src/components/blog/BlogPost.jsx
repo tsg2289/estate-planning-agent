@@ -283,20 +283,8 @@ const BlogPost = ({ post: propPost }) => {
           <span className="read-time">{post.readTime}</span>
         </div>
         
-        <h1 className="post-title">{post.title}</h1>
-        
         <div className="post-excerpt">
           <p>{post.excerpt}</p>
-        </div>
-        
-        <div className="post-author-info">
-          <div className="author-avatar">
-            {post.author.split(' ').map(name => name[0]).join('')}
-          </div>
-          <div className="author-details">
-            <h4 className="author-name">{post.author}</h4>
-            <p className="author-title">{post.authorTitle}</p>
-          </div>
         </div>
         
         <div className="post-tags">
@@ -311,43 +299,27 @@ const BlogPost = ({ post: propPost }) => {
       </div>
 
       <div className="post-content">
+        <h1 className="post-title-large">{post.title}</h1>
         <div 
           className="post-body"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>
 
-      <div className="post-footer">
-        <div className="post-actions">
-          <button className="action-button">
-            <span>💬</span>
-            Share
-          </button>
-          <button className="action-button">
-            <span>🔖</span>
-            Save
-          </button>
-          <button className="action-button">
-            <span>📤</span>
-            Print
-          </button>
-        </div>
-        
-        <div className="related-posts">
-          <h3>Related Articles</h3>
-          <div className="related-grid">
-            <div className="related-post">
-              <h4>Understanding Trusts: A Beginner's Guide</h4>
-              <p>Learn the basics of different types of trusts and when to use them.</p>
-            </div>
-            <div className="related-post">
-              <h4>Power of Attorney: What You Need to Know</h4>
-              <p>Everything you need to know about creating and managing power of attorney documents.</p>
-            </div>
-            <div className="related-post">
-              <h4>Healthcare Directives: Planning for Medical Decisions</h4>
-              <p>How to ensure your medical wishes are respected when you can't speak for yourself.</p>
-            </div>
+      <div className="related-posts">
+        <h3>Related Articles</h3>
+        <div className="related-grid">
+          <div className="related-post">
+            <h4>Understanding Trusts: A Beginner's Guide</h4>
+            <p>Learn the basics of different types of trusts and when to use them.</p>
+          </div>
+          <div className="related-post">
+            <h4>Power of Attorney: What You Need to Know</h4>
+            <p>Everything you need to know about creating and managing power of attorney documents.</p>
+          </div>
+          <div className="related-post">
+            <h4>Healthcare Directives: Planning for Medical Decisions</h4>
+            <p>How to ensure your medical wishes are respected when you can't speak for yourself.</p>
           </div>
         </div>
       </div>
