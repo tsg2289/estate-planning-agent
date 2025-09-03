@@ -7,33 +7,71 @@ const router = express.Router()
 const samplePosts = [
   {
     id: 1,
-    slug: 'estate-planning-basics-2024',
-    title: 'Estate Planning Basics: A Complete Guide for 2024',
-    excerpt: 'Learn the fundamentals of estate planning, including wills, trusts, and power of attorney documents. This comprehensive guide covers everything you need to know to protect your family\'s future.',
+    slug: 'what-is-power-of-attorney-why-you-need-one',
+    title: 'What Is a Power of Attorney? Why You Need One Now',
+    excerpt: 'Learn what a power of attorney is, the different types, and why you need one now. Protect your future with this essential estate planning tool.',
     content: `
-      <h2>Understanding Estate Planning</h2>
-      <p>Estate planning is the process of arranging for the management and disposal of your assets after your death or in the event of your incapacity. It's not just for the wealthy—everyone can benefit from proper estate planning.</p>
+      <p>When people think of estate planning, they often focus on wills and trusts. But one of the most important—and often overlooked—documents is the power of attorney. If you've ever wondered what is a power of attorney and why it matters, this guide will explain everything you need to know.</p>
       
-      <h3>Key Components of Estate Planning</h3>
+      <h2>What Is a Power of Attorney?</h2>
+      <p>A power of attorney (POA) is a legal document that gives someone you trust (called your "agent" or "attorney-in-fact") the authority to act on your behalf. Depending on the type of power of attorney, this can include handling your finances, managing your property, signing legal documents, or making healthcare decisions if you are unable to do so yourself.</p>
+      
+      <h2>Why Is a Power of Attorney Important?</h2>
+      <p>Without a valid power of attorney, your family may be forced into a lengthy and expensive court process called conservatorship or guardianship. Having a POA in place ensures:</p>
       <ul>
-        <li><strong>Last Will and Testament:</strong> Specifies how your assets should be distributed and who should care for minor children.</li>
-        <li><strong>Living Trust:</strong> Helps avoid probate and provides more control over asset distribution.</li>
-        <li><strong>Power of Attorney:</strong> Allows someone to make financial and legal decisions on your behalf.</li>
-        <li><strong>Advanced Healthcare Directive:</strong> Specifies your medical treatment preferences.</li>
+        <li><strong>Continuity:</strong> Bills, investments, and taxes are still handled.</li>
+        <li><strong>Healthcare choices:</strong> A healthcare power of attorney ensures doctors follow your wishes.</li>
+        <li><strong>Peace of mind:</strong> You decide who makes decisions—not the courts.</li>
       </ul>
       
-      <h3>Why Estate Planning Matters</h3>
-      <p>Without proper estate planning, your assets may not be distributed according to your wishes. State laws will determine how your property is divided, which may not align with your intentions. Additionally, the probate process can be lengthy and expensive for your loved ones.</p>
+      <h2>Types of Power of Attorney</h2>
       
-      <h3>Getting Started</h3>
-      <p>The first step in estate planning is taking inventory of your assets and understanding your goals. Consider what you want to happen to your property, who should care for your children, and who should make decisions if you become incapacitated.</p>
+      <h3>General Power of Attorney</h3>
+      <p>Grants broad authority over financial and legal decisions.</p>
+      
+      <h3>Durable Power of Attorney</h3>
+      <p>Remains valid even if you become incapacitated. This is one of the most important estate planning documents.</p>
+      
+      <h3>Limited or Special Power of Attorney</h3>
+      <p>Authorizes an agent only for specific actions, like signing paperwork while you travel.</p>
+      
+      <h3>Medical Power of Attorney</h3>
+      <p>Also called a healthcare power of attorney, this allows someone to make medical decisions if you cannot.</p>
+      
+      <h2>When Should You Get a Power of Attorney?</h2>
+      <p>The answer is simple: now. Accidents or illness can happen at any age. By creating a power of attorney today, you prevent stress, expense, and delays for your loved ones.</p>
+      
+      <h2>How to Set Up a Power of Attorney</h2>
+      <ol>
+        <li><strong>Choose your agent carefully</strong> – Pick someone trustworthy.</li>
+        <li><strong>Decide what powers to grant</strong> – Broad or limited.</li>
+        <li><strong>Use the correct form</strong> – Each state has its own requirements.</li>
+        <li><strong>Sign and notarize</strong> – Most states require notarization or witnesses.</li>
+        <li><strong>Share copies</strong> – Provide them to your agent, financial institutions, and healthcare providers.</li>
+      </ol>
+      
+      <h2>Frequently Asked Questions About Power of Attorney</h2>
+      
+      <h3>Can I revoke a power of attorney?</h3>
+      <p>Yes, you can revoke or change it at any time while mentally competent.</p>
+      
+      <h3>Is a power of attorney valid after death?</h3>
+      <p>No. After death, your will or trust governs your estate.</p>
+      
+      <h3>Do I need both financial and medical powers of attorney?</h3>
+      <p>Yes. A financial POA manages money, while a healthcare POA handles medical choices.</p>
+      
+      <h2>Final Thoughts</h2>
+      <p>If you've ever asked, "What is a power of attorney and why do I need one?" the answer is simple: it's a crucial estate planning document. Protect your future and your family by creating one today.</p>
+      
+      <p><strong>Next Step:</strong> Contact an estate planning attorney to create a power of attorney tailored to your needs.</p>
     `,
     author: 'Sarah Johnson',
     authorTitle: 'Estate Planning Attorney',
-    publishDate: '2024-01-15',
-    readTime: '8 min read',
+    publishDate: '2024-01-20',
+    readTime: '6 min read',
     category: 'Estate Planning',
-    tags: ['wills', 'trusts', 'estate-planning', 'legal-documents'],
+    tags: ['power-of-attorney', 'estate-planning', 'legal-documents', 'poa'],
     featured: true,
     image: '/api/placeholder/800/400',
     views: 1250,

@@ -543,18 +543,18 @@ const LandingPage = () => {
           <div className="blog-preview-grid">
             <div className="blog-preview-card">
               <div className="preview-image">
-                <img src="/api/placeholder/400/250" alt="Estate Planning Basics" />
+                <img src="/api/placeholder/400/250" alt="Power of Attorney Guide" />
               </div>
               <div className="preview-content">
                 <div className="preview-meta">
                   <span className="category">Estate Planning</span>
-                  <span className="date">Jan 15, 2024</span>
+                  <span className="date">Jan 20, 2024</span>
                 </div>
-                <h3>Estate Planning Basics: A Complete Guide for 2024</h3>
-                <p>Learn the fundamentals of estate planning, including wills, trusts, and power of attorney documents.</p>
+                <h3>What Is a Power of Attorney? Why You Need One Now</h3>
+                <p>Learn what a power of attorney is, the different types, and why you need one now. Protect your future with this essential estate planning tool.</p>
                 <button 
                   className="read-more-button"
-                  onClick={() => navigate('/blog/estate-planning-basics-2024')}
+                  onClick={() => navigate('/blog/what-is-power-of-attorney-why-you-need-one')}
                 >
                   Read More →
                 </button>
