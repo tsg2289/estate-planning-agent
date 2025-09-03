@@ -102,20 +102,7 @@ const LandingPage = () => {
                 Learn More
               </button>
             </div>
-            <div className="hero-features">
-              <div className="feature-item">
-                <span className="feature-icon">🔒</span>
-                <span>Bank-Level Security</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">⚡</span>
-                <span>15-Minute Setup</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-icon">📱</span>
-                <span>Mobile Friendly</span>
-              </div>
-            </div>
+
           </div>
 
         </div>

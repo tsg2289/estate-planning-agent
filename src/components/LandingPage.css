@@ -187,24 +187,7 @@
   transform: translateX(5px);
 }
 
-.hero-features {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
 
-.feature-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: #4a5568;
-  font-weight: 500;
-}
-
-.feature-icon {
-  font-size: 1.2rem;
-}
 
 /* Hero Visual */
 .hero-visual {
@@ -966,9 +949,7 @@
     align-items: center;
   }
   
-  .hero-features {
-    justify-content: center;
-  }
+
   
   .security-container {
     grid-template-columns: 1fr;
