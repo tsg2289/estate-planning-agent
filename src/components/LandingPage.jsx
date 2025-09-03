@@ -102,9 +102,33 @@ const LandingPage = () => {
                 Learn More
               </button>
             </div>
-
           </div>
-
+          
+          <div className="hero-sidebar">
+            <div className="sidebar-card">
+              <h3>Quick Start Guide</h3>
+              <div className="guide-steps">
+                <div className="step">
+                  <span className="step-number">1</span>
+                  <span className="step-text">Answer a few questions</span>
+                </div>
+                <div className="step">
+                  <span className="step-number">2</span>
+                  <span className="step-text">Get personalized recommendations</span>
+                </div>
+                <div className="step">
+                  <span className="step-number">3</span>
+                  <span className="step-text">Create your documents</span>
+                </div>
+              </div>
+              <button 
+                className="sidebar-button"
+                onClick={handleGetStarted}
+              >
+                Get Started Now
+              </button>
+            </div>
+          </div>
         </div>
       </section>
 
