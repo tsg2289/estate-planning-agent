@@ -397,66 +397,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="testimonials-section">
-        <div className="testimonials-container">
-          <div className="section-header">
-            <h2>What Our Users Say</h2>
-            <p>Join thousands of families who trust EstatePlan Pro with their estate planning needs</p>
-          </div>
-          
-          <div className="testimonials-grid">
-            <div className="testimonial-card">
-              <div className="testimonial-content">
-                <p>"EstatePlan Pro made creating our family's estate plan incredibly simple. The guided process was clear and comprehensive, and we felt confident in the legal quality of our documents."</p>
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar">👨‍👩‍👧‍👦</div>
-                <div className="author-info">
-                  <h4>Sarah & Michael Chen</h4>
-                  <span>Family of 4, California</span>
-                </div>
-              </div>
-            </div>
 
-            <div className="testimonial-card">
-              <div className="testimonial-content">
-                <p>"As a small business owner, I needed comprehensive estate planning that covered both personal and business assets. EstatePlan Pro delivered exactly what I needed with enterprise-level security."</p>
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar">💼</div>
-                <div className="author-info">
-                  <h4>David Rodriguez</h4>
-                  <span>Business Owner, Texas</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="testimonial-card">
-              <div className="testimonial-content">
-                <p>"I was overwhelmed by the thought of estate planning, but the step-by-step process made it feel manageable. The security features gave me peace of mind knowing my sensitive information was protected."</p>
-              </div>
-              <div className="testimonial-author">
-                <div className="author-avatar">👵</div>
-                <div className="author-info">
-                  <h4>Margaret Thompson</h4>
-                  <span>Retired, Florida</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="testimonials-cta">
-            <p>Ready to join our satisfied customers?</p>
-            <button 
-              className="testimonials-button"
-              onClick={handleGetStarted}
-            >
-              Start Your Estate Plan Today
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* Security Section */}
       <section className="security-section">
