@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import './BlogPost.css'
+import { blogPosts } from '../../data/blogPosts'
 
 const BlogPost = ({ post: propPost }) => {
   const navigate = useNavigate()
@@ -10,24 +11,12 @@ const BlogPost = ({ post: propPost }) => {
 
   useEffect(() => {
     if (!propPost && slug) {
-      const fetchPost = async () => {
-        try {
-          const response = await fetch(`/api/blog/${slug}`)
-          const data = await response.json()
-          
-          if (data.success) {
-            setPost(data.post)
-          } else {
-            console.error('Failed to fetch post:', data.message)
-          }
-        } catch (error) {
-          console.error('Error fetching post:', error)
-        } finally {
-          setLoading(false)
-        }
+      // Find post from hardcoded data since API is not deployed on Vercel
+      const foundPost = blogPosts.find(p => p.slug === slug)
+      if (foundPost) {
+        setPost(foundPost)
       }
-
-      fetchPost()
+      setLoading(false)
     }
   }, [slug, propPost])
 

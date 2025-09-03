@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import './BlogPage.css'
 import BlogList from './BlogList'
 import BlogPost from './BlogPost'
+import { blogPosts } from '../../data/blogPosts'
 
 const BlogPage = () => {
   const { slug } = useParams()
@@ -11,28 +12,11 @@ const BlogPage = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch('/api/blog')
-        const data = await response.json()
-        
-        if (data.success) {
-          setPosts(data.posts)
-        } else {
-          console.error('Failed to fetch posts:', data.message)
-          // Fallback to empty array
-          setPosts([])
-        }
-      } catch (error) {
-        console.error('Error fetching posts:', error)
-        // Fallback to empty array
-        setPosts([])
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchPosts()
+    // Use hardcoded blog posts since API is not deployed on Vercel
+    setTimeout(() => {
+      setPosts(blogPosts)
+      setLoading(false)
+    }, 500)
   }, [])
 
   const getPostBySlug = (slug) => {
