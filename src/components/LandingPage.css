@@ -372,31 +372,7 @@
   margin: 0;
 }
 
-.security-badge {
-  background: white;
-  border-radius: 20px;
-  padding: 2rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  border: 2px solid #e2e8f0;
-}
 
-.badge-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.badge-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
-}
-
-.badge-subtitle {
-  font-size: 0.9rem;
-  color: #718096;
-}
 
 /* Features Section */
 .features-section {

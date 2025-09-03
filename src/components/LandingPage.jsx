@@ -117,15 +117,7 @@ const LandingPage = () => {
               </div>
             </div>
           </div>
-          <div className="hero-visual">
-            <div className="security-badge">
-              <div className="badge-icon">🔐</div>
-              <div className="badge-text">
-                <div className="badge-title">256-bit Encryption</div>
-                <div className="badge-subtitle">Military Grade Security</div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </section>
 
