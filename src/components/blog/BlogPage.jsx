@@ -73,7 +73,6 @@ const blogPosts = [
     readTime: '6 min read',
     category: 'Estate Planning',
     tags: ['power-of-attorney', 'estate-planning', 'legal-documents', 'poa'],
-    featured: true,
     views: 1250,
     likes: 89
   },
@@ -107,7 +106,6 @@ const blogPosts = [
     readTime: '6 min read',
     category: 'Digital Assets',
     tags: ['digital-assets', 'cryptocurrency', 'online-accounts', 'estate-planning'],
-    featured: false,
     views: 890,
     likes: 67
   },
@@ -138,7 +136,6 @@ const blogPosts = [
     readTime: '10 min read',
     category: 'Tax Planning',
     tags: ['estate-tax', 'gift-tax', 'tax-planning', 'trusts'],
-    featured: false,
     views: 1100,
     likes: 78
   },
@@ -171,7 +168,6 @@ const blogPosts = [
     readTime: '7 min read',
     category: 'Business Planning',
     tags: ['business-succession', 'family-business', 'leadership', 'tax-planning'],
-    featured: false,
     views: 750,
     likes: 54
   },
@@ -204,7 +200,6 @@ const blogPosts = [
     readTime: '9 min read',
     category: 'Estate Planning',
     tags: ['trusts', 'estate-planning', 'legal-documents', 'asset-protection'],
-    featured: false,
     views: 950,
     likes: 72
   }
