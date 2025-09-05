@@ -8,7 +8,6 @@ import EstatePlanningApp from './components/EstatePlanningApp'
 import LandingPage from './components/LandingPage'
 import BlogPage from './components/blog/BlogPage'
 import EmailSignup from './components/EmailSignup'
-import AdminPage from './components/admin/AdminPage'
 import './App.css'
 
 // Main App component with Supabase authentication
@@ -42,7 +41,7 @@ function App() {
               path="/admin/*" 
               element={
                 <SupabaseProtectedRoute requireAdmin={true}>
-                  <AdminPage />
+                  <AdminDashboard />
                 </SupabaseProtectedRoute>
               } 
             />
@@ -58,46 +57,37 @@ function App() {
 
 // Login page component
 function LoginPage() {
-  const { isAuthenticated, loading } = useSupabaseAuth()
-  
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading...</p>
-        </div>
-      </div>
-    )
-  }
+  const { isAuthenticated } = useSupabaseAuth()
   
   if (isAuthenticated()) {
     return <Navigate to="/app" replace />
   }
   
-  return <SupabaseLogin />
+  return <SupabaseLogin onSuccess={() => window.location.href = '/app'} />
 }
 
 // Register page component
 function RegisterPage() {
-  const { isAuthenticated, loading } = useSupabaseAuth()
-  
-  if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading...</p>
-        </div>
-      </div>
-    )
-  }
+  const { isAuthenticated } = useSupabaseAuth()
   
   if (isAuthenticated()) {
     return <Navigate to="/app" replace />
   }
   
-  return <SupabaseRegister />
+  return <SupabaseRegister onSuccess={() => window.location.href = '/app'} />
+}
+
+// Admin dashboard component (placeholder)
+function AdminDashboard() {
+  const { user, profile } = useSupabaseAuth()
+  
+  return (
+    <div className="admin-dashboard">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome, {profile?.full_name || user?.email}!</p>
+      <p>This is a protected admin area.</p>
+    </div>
+  )
 }
 
 export default App

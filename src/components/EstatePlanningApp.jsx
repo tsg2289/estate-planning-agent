@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { useSupabaseAuth } from '../contexts/SupabaseAuthContext'
 import PlanChecklist from './PlanChecklist.jsx'
 import ReviewPane from './ReviewPane.jsx'
 import WillForm from './forms/WillForm.jsx'
@@ -16,7 +16,11 @@ function EstatePlanningApp() {
   const [completedForms, setCompletedForms] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [progressStatus, setProgressStatus] = useState({})
-  const { user, logout } = useAuth()
+  const { user, signOut } = useSupabaseAuth()
+
+  const logout = async () => {
+    await signOut()
+  }
 
   // Load progress status on mount
   useEffect(() => {
@@ -136,12 +140,14 @@ function EstatePlanningApp() {
             <p>Complete your estate planning documents step by step</p>
           </div>
           <div className="header-right">
-            <div className="user-info">
-              <span className="user-name">Welcome, {user?.name || 'User'}</span>
-              <button className="logout-button" onClick={handleLogout}>
-                Logout
-              </button>
-            </div>
+            {user && (
+              <div className="user-info">
+                <span>Welcome, {user.email}</span>
+                <button onClick={handleLogout} className="logout-btn">
+                  Sign Out
+                </button>
+              </div>
+            )}
           </div>
         </div>
         

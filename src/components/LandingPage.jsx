@@ -57,6 +57,12 @@ const LandingPage = () => {
               Sign In
             </button>
             <button 
+              className="nav-button secondary"
+              onClick={() => navigate('/register')}
+            >
+              Sign Up
+            </button>
+            <button 
               className="nav-button primary"
               onClick={handleGetStarted}
             >
