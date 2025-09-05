@@ -1,0 +1,20 @@
+# Environment Variables for Vercel
+# Copy these to your Vercel dashboard → Settings → Environment Variables
+
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project-ref.supabase.co
+VITE_SUPABASE_ANON_KEY=your_anon_public_key_here
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
+
+# Optional: Email Configuration (if you want custom SMTP)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
+FROM_EMAIL=noreply@yourdomain.com
+
+# Frontend URL
+FRONTEND_URL=https://estate-planning-agent-69nni3i6c-thomas-st-germains-projects.vercel.app
+
+# Environment
+NODE_ENV=production
