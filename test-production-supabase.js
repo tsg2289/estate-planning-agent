@@ -1,9 +1,9 @@
 // Test Supabase Connection for Production
 import { createClient } from '@supabase/supabase-js'
 
-// Test with your production URL (replace with your actual values)
-const supabaseUrl = 'https://your-project-ref.supabase.co'
-const supabaseAnonKey = 'your_anon_key_here'
+// Test with your production URL
+const supabaseUrl = 'https://gpxabmtowcvtjcqhnbwj.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdweGFibXRvd2N2dGpjcWhuYndqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTcwMjYzMzIsImV4cCI6MjA3MjYwMjMzMn0.2yYOvsrZJNV2FULZ4WHvnQRNxIJ0CzDeQxuMElQWK-o'
 
 console.log('🧪 Testing Production Supabase Connection')
 console.log('=========================================')

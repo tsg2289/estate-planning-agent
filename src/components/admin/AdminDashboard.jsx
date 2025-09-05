@@ -1,33 +1,31 @@
 import { useState, useEffect } from 'react';
 import EmailListManager from '../EmailListManager';
+import UserSignupsManager from './UserSignupsManager';
 import './AdminDashboard.css';
 
-const AdminDashboard = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState('email-list');
+const AdminDashboard = ({ onLogout, adminEmail }) => {
+  const [activeTab, setActiveTab] = useState('users');
   const [adminInfo, setAdminInfo] = useState({
-    username: 'admin',
+    username: adminEmail || 'admin',
     lastLogin: null
   });
 
   useEffect(() => {
-    // Get admin info from localStorage
-    const loginTime = localStorage.getItem('adminLoginTime');
-    if (loginTime) {
-      setAdminInfo(prev => ({
-        ...prev,
-        lastLogin: new Date(parseInt(loginTime)).toLocaleString()
-      }));
-    }
-  }, []);
+    // Set admin info
+    setAdminInfo({
+      username: adminEmail || 'admin',
+      lastLogin: new Date().toLocaleString()
+    });
+  }, [adminEmail]);
 
   const handleLogout = () => {
-    localStorage.removeItem('adminAuthenticated');
-    localStorage.removeItem('adminLoginTime');
     onLogout();
   };
 
   const renderTabContent = () => {
     switch (activeTab) {
+      case 'users':
+        return <UserSignupsManager />;
       case 'email-list':
         return <EmailListManager />;
       case 'analytics':
@@ -51,7 +49,7 @@ const AdminDashboard = ({ onLogout }) => {
           </div>
         );
       default:
-        return <EmailListManager />;
+        return <UserSignupsManager />;
     }
   };
 
@@ -84,6 +82,12 @@ const AdminDashboard = ({ onLogout }) => {
       {/* Admin Navigation */}
       <nav className="admin-nav">
         <div className="admin-nav-container">
+          <button
+            className={`admin-nav-tab ${activeTab === 'users' ? 'active' : ''}`}
+            onClick={() => setActiveTab('users')}
+          >
+            👥 User Signups
+          </button>
           <button
             className={`admin-nav-tab ${activeTab === 'email-list' ? 'active' : ''}`}
             onClick={() => setActiveTab('email-list')}
