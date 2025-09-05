@@ -89,6 +89,7 @@ const SupabaseRegister = () => {
     setLoading(true)
 
     try {
+      console.log('🚀 Starting signup process for:', formData.email)
       const { data, error } = await signUp(
         formData.email, 
         formData.password, 
@@ -97,13 +98,25 @@ const SupabaseRegister = () => {
         }
       )
       
+      console.log('📡 Signup response:', { data, error })
+      
       if (error) {
+        console.error('❌ Signup error:', error.message)
         setError(error.message)
       } else if (data?.user) {
+        console.log('✅ User created successfully:', {
+          email: data.user.email,
+          emailConfirmed: data.user.email_confirmed_at,
+          hasSession: !!data.session
+        })
         setSuccess(true)
         // Don't call onSuccess immediately - user needs to confirm email
+      } else {
+        console.log('⚠️ Unexpected response: no user data')
+        setError('Unexpected response from server. Please try again.')
       }
     } catch (err) {
+      console.error('💥 Signup exception:', err)
       setError(err.message || 'An error occurred during registration')
     } finally {
       setLoading(false)
@@ -123,7 +136,15 @@ const SupabaseRegister = () => {
               Please check your email and click the link to activate your account.
             </p>
             <p>
-              You can then return here to sign in.
+              <strong>Note:</strong> If you don't receive the email within a few minutes:
+            </p>
+            <ul style={{ textAlign: 'left', margin: '8px 0' }}>
+              <li>Check your spam/junk folder</li>
+              <li>Make sure you entered the correct email address</li>
+              <li>Try signing up again if needed</li>
+            </ul>
+            <p>
+              You can then return here to sign in once your email is confirmed.
             </p>
           </div>
           <div className="auth-links">
