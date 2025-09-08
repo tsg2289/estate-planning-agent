@@ -10,9 +10,36 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Security middleware
+app.use((req, res, next) => {
+  // Security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  
+  // Content Security Policy for API endpoints
+  res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'");
+  
+  // HTTPS enforcement in production
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  }
+  
+  next();
+});
+
+// CORS middleware
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+
+// Body parsing middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Serve static files from data directory
 app.use('/data', express.static(path.join(__dirname, '../data')));
@@ -30,24 +57,27 @@ const startServer = async () => {
     
     console.log('✅ Database ready, setting up routes...');
     
+    // Import rate limiting middleware
+    const { authRateLimit, passwordResetRateLimit } = await import('./middleware/rateLimiter.js');
+    
     // Import the new database-based auth and email list handlers
     const registerModule = await import('./auth/register.js');
-    app.post('/api/auth/register', registerModule.default);
+    app.post('/api/auth/register', authRateLimit, registerModule.default);
     
     const loginModule = await import('./auth/login.js');
-    app.post('/api/auth/login', loginModule.default);
+    app.post('/api/auth/login', authRateLimit, loginModule.default);
     
     const verifyModule = await import('./auth/verify.js');
     app.get('/api/auth/verify', verifyModule.default);
     
     const verify2FAModule = await import('./auth/verify-2fa.js');
-    app.post('/api/auth/verify-2fa', verify2FAModule.default);
+    app.post('/api/auth/verify-2fa', authRateLimit, verify2FAModule.default);
     
     const forgotPasswordModule = await import('./auth/forgot-password.js');
-    app.post('/api/auth/forgot-password', forgotPasswordModule.default);
+    app.post('/api/auth/forgot-password', passwordResetRateLimit, forgotPasswordModule.default);
     
     const resetPasswordModule = await import('./auth/reset-password.js');
-    app.post('/api/auth/reset-password', resetPasswordModule.default);
+    app.post('/api/auth/reset-password', authRateLimit, resetPasswordModule.default);
     
     const emailListModule = await import('./email-list.js');
     app.use('/api/email-list', emailListModule.default);

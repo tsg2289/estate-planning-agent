@@ -1,125 +1,148 @@
-// Security Configuration
+// Security configuration for the Estate Planning Agent application
+
 export const SECURITY_CONFIG = {
-  // Password requirements
-  PASSWORD_MIN_LENGTH: 8,
-  PASSWORD_REQUIRE_UPPERCASE: true,
-  PASSWORD_REQUIRE_LOWERCASE: true,
-  PASSWORD_REQUIRE_NUMBERS: true,
-  PASSWORD_REQUIRE_SPECIAL: true,
-  
-  // Session settings
-  SESSION_TIMEOUT: 30 * 60 * 1000, // 30 minutes in milliseconds
-  TOKEN_EXPIRY: '7d', // JWT token expiry
-  
-  // Rate limiting (for future implementation)
-  MAX_LOGIN_ATTEMPTS: 5,
-  LOCKOUT_DURATION: 15 * 60 * 1000, // 15 minutes
-  
+  // Content Security Policy directives
+  CSP: {
+    'default-src': ["'self'"],
+    'script-src': [
+      "'self'",
+      "'unsafe-inline'", // Required for React development
+      "'unsafe-eval'", // Required for React development
+      "https://unpkg.com",
+      "https://cdn.jsdelivr.net",
+      "https://cdnjs.cloudflare.com"
+    ],
+    'style-src': [
+      "'self'",
+      "'unsafe-inline'", // Required for styled components
+      "https://fonts.googleapis.com",
+      "https://unpkg.com",
+      "https://cdn.jsdelivr.net"
+    ],
+    'font-src': [
+      "'self'",
+      "https://fonts.gstatic.com"
+    ],
+    'img-src': [
+      "'self'",
+      "data:",
+      "https:",
+      "blob:"
+    ],
+    'media-src': [
+      "'self'",
+      "data:",
+      "https:",
+      "blob:"
+    ],
+    'object-src': ["'none'"],
+    'frame-src': ["'none'"],
+    'base-uri': ["'self'"],
+    'form-action': ["'self'"],
+    'frame-ancestors': ["'none'"],
+    'upgrade-insecure-requests': []
+  },
+
   // Security headers
-  SECURITY_HEADERS: {
+  HEADERS: {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'DENY',
     'X-XSS-Protection': '1; mode=block',
     'Referrer-Policy': 'strict-origin-when-cross-origin',
-    'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
-  }
-}
-
-// Password validation function
-export const validatePassword = (password) => {
-  const errors = []
-  
-  if (password.length < SECURITY_CONFIG.PASSWORD_MIN_LENGTH) {
-    errors.push(`Password must be at least ${SECURITY_CONFIG.PASSWORD_MIN_LENGTH} characters long`)
-  }
-  
-  if (SECURITY_CONFIG.PASSWORD_REQUIRE_UPPERCASE && !/[A-Z]/.test(password)) {
-    errors.push('Password must contain at least one uppercase letter')
-  }
-  
-  if (SECURITY_CONFIG.PASSWORD_REQUIRE_LOWERCASE && !/[a-z]/.test(password)) {
-    errors.push('Password must contain at least one lowercase letter')
-  }
-  
-  if (SECURITY_CONFIG.PASSWORD_REQUIRE_NUMBERS && !/[0-9]/.test(password)) {
-    errors.push('Password must contain at least one number')
-  }
-  
-  if (SECURITY_CONFIG.PASSWORD_REQUIRE_SPECIAL && !/[^A-Za-z0-9]/.test(password)) {
-    errors.push('Password must contain at least one special character')
-  }
-  
-  return {
-    isValid: errors.length === 0,
-    errors,
-    strength: calculatePasswordStrength(password)
-  }
-}
-
-// Calculate password strength (0-5)
-export const calculatePasswordStrength = (password) => {
-  let strength = 0
-  
-  if (password.length >= SECURITY_CONFIG.PASSWORD_MIN_LENGTH) strength++
-  if (/[a-z]/.test(password)) strength++
-  if (/[A-Z]/.test(password)) strength++
-  if (/[0-9]/.test(password)) strength++
-  if (/[^A-Za-z0-9]/.test(password)) strength++
-  
-  return strength
-}
-
-// Get password strength text and color
-export const getPasswordStrengthInfo = (strength) => {
-  if (strength <= 1) return { text: 'Very Weak', color: '#e53e3e', class: 'very-weak' }
-  if (strength <= 2) return { text: 'Weak', color: '#dd6b20', class: 'weak' }
-  if (strength <= 3) return { text: 'Fair', color: '#d69e2e', class: 'fair' }
-  if (strength <= 4) return { text: 'Good', color: '#38a169', class: 'good' }
-  return { text: 'Strong', color: '#2f855a', class: 'strong' }
-}
-
-// Session management
-export const SESSION_MANAGEMENT = {
-  // Check if session is expired
-  isSessionExpired: (lastActivity) => {
-    if (!lastActivity) return true
-    const now = Date.now()
-    const timeSinceLastActivity = now - lastActivity
-    return timeSinceLastActivity > SECURITY_CONFIG.SESSION_TIMEOUT
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload'
   },
-  
-  // Update last activity timestamp
-  updateLastActivity: () => {
-    localStorage.setItem('lastActivity', Date.now().toString())
-  },
-  
-  // Get last activity timestamp
-  getLastActivity: () => {
-    const lastActivity = localStorage.getItem('lastActivity')
-    return lastActivity ? parseInt(lastActivity) : null
-  }
-}
 
-// Security utilities
-export const SECURITY_UTILS = {
-  // Sanitize user input (basic XSS prevention)
-  sanitizeInput: (input) => {
-    if (typeof input !== 'string') return input
-    return input
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#x27;')
-      .replace(/\//g, '&#x2F;')
+  // Permissions Policy (Feature Policy)
+  PERMISSIONS_POLICY: {
+    camera: [],
+    microphone: [],
+    geolocation: [],
+    payment: [],
+    usb: [],
+    bluetooth: [],
+    accelerometer: [],
+    gyroscope: [],
+    magnetometer: [],
+    'ambient-light-sensor': [],
+    'encrypted-media': [],
+    'sync-xhr': [],
+    midi: []
   },
-  
-  // Generate secure random string
-  generateSecureToken: (length = 32) => {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    let result = ''
-    for (let i = 0; i < length; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length))
+
+  // Rate limiting configuration
+  RATE_LIMITS: {
+    login: {
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 10, // limit each IP to 10 requests per windowMs
+      message: 'Too many login attempts, please try again later.'
+    },
+    passwordReset: {
+      windowMs: 60 * 60 * 1000, // 1 hour
+      max: 3, // limit each IP to 3 password reset requests per hour
+      message: 'Too many password reset requests, please try again later.'
+    },
+    api: {
+      windowMs: 15 * 60 * 1000, // 15 minutes
+      max: 100, // limit each IP to 100 requests per windowMs
+      message: 'Too many requests, please try again later.'
     }
-    return result
+  },
+
+  // Account lockout configuration
+  ACCOUNT_LOCKOUT: {
+    maxAttempts: 5,
+    lockoutDuration: 30 * 60 * 1000, // 30 minutes in milliseconds
+    resetTokenExpiry: 60 * 60 * 1000 // 1 hour in milliseconds
+  },
+
+  // Password policy
+  PASSWORD_POLICY: {
+    minLength: 6,
+    requireUppercase: false,
+    requireLowercase: false,
+    requireNumbers: false,
+    requireSymbols: false,
+    maxLength: 128
+  },
+
+  // Session configuration
+  SESSION: {
+    tokenExpiry: 24 * 60 * 60 * 1000, // 24 hours
+    refreshThreshold: 2 * 60 * 60 * 1000, // 2 hours before expiry
+    secure: true, // HTTPS only in production
+    httpOnly: true,
+    sameSite: 'strict'
   }
-}
+};
+
+// Helper function to generate CSP string
+export const generateCSPString = () => {
+  const cspDirectives = [];
+  
+  for (const [directive, sources] of Object.entries(SECURITY_CONFIG.CSP)) {
+    if (sources.length === 0) {
+      cspDirectives.push(directive);
+    } else {
+      cspDirectives.push(`${directive} ${sources.join(' ')}`);
+    }
+  }
+  
+  return cspDirectives.join('; ');
+};
+
+// Helper function to generate Permissions Policy string
+export const generatePermissionsPolicyString = () => {
+  const policies = [];
+  
+  for (const [feature, allowlist] of Object.entries(SECURITY_CONFIG.PERMISSIONS_POLICY)) {
+    if (allowlist.length === 0) {
+      policies.push(`${feature}=()`);
+    } else {
+      policies.push(`${feature}=(${allowlist.join(' ')})`);
+    }
+  }
+  
+  return policies.join(', ');
+};
+
+export default SECURITY_CONFIG;
