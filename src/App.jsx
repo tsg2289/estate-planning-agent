@@ -4,6 +4,8 @@ import { SupabaseAuthProvider, useSupabaseAuth } from './contexts/SupabaseAuthCo
 import SupabaseLogin from './components/auth/SupabaseLogin'
 import SupabaseRegister from './components/auth/SupabaseRegister'
 import SupabaseProtectedRoute from './components/auth/SupabaseProtectedRoute'
+import ForgotPassword from './components/auth/ForgotPassword'
+import ResetPassword from './components/auth/ResetPassword'
 import EstatePlanningApp from './components/EstatePlanningApp'
 import LandingPage from './components/LandingPage'
 import BlogPage from './components/blog/BlogPage'
@@ -26,6 +28,8 @@ function App() {
             {/* Authentication routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             
             {/* Protected routes */}
             <Route 

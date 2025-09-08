@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import TwoFactorAuth from './TwoFactorAuth'
 import './Auth.css'
@@ -7,15 +7,27 @@ import './Auth.css'
 const Login = ({ onSwitchToRegister }) => {
   const location = useLocation()
   const assessmentAnswers = location.state?.assessmentAnswers || null
+  const successMessage = location.state?.message || null
   
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [show2FA, setShow2FA] = useState(false)
   const [tempToken, setTempToken] = useState('')
+  const [isAccountLocked, setIsAccountLocked] = useState(false)
+  const [remainingAttempts, setRemainingAttempts] = useState(null)
   const { login } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (successMessage) {
+      setSuccess(successMessage)
+      // Clear the message after 5 seconds
+      setTimeout(() => setSuccess(''), 5000)
+    }
+  }, [successMessage])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -56,7 +68,16 @@ const Login = ({ onSwitchToRegister }) => {
           navigate('/dashboard')
         }
       } else {
-        setError(result.error || 'Login failed. Please try again.')
+        // Handle different types of login failures
+        if (result.accountLocked) {
+          setIsAccountLocked(true)
+          setError(result.error || 'Account is locked due to multiple failed login attempts.')
+        } else if (result.remainingAttempts !== undefined) {
+          setRemainingAttempts(result.remainingAttempts)
+          setError(result.error || 'Invalid credentials.')
+        } else {
+          setError(result.error || 'Login failed. Please try again.')
+        }
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.')
@@ -125,9 +146,32 @@ const Login = ({ onSwitchToRegister }) => {
         )}
 
         <form onSubmit={handleSubmit} className="auth-form">
+          {success && (
+            <div className="success-message">
+              <div className="success-icon">✅</div>
+              <p>{success}</p>
+            </div>
+          )}
+
           {error && (
             <div className="error-message">
-              {error}
+              <div className="error-icon">❌</div>
+              <p>{error}</p>
+              {remainingAttempts !== null && remainingAttempts > 0 && (
+                <p className="attempts-warning">
+                  ⚠️ {remainingAttempts} attempt{remainingAttempts === 1 ? '' : 's'} remaining before account lockout
+                </p>
+              )}
+              {isAccountLocked && (
+                <div className="lockout-actions">
+                  <p className="lockout-info">
+                    🔒 Your account has been temporarily locked for security.
+                  </p>
+                  <Link to="/forgot-password" className="reset-link">
+                    Reset Password to Unlock Account
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 
@@ -165,6 +209,12 @@ const Login = ({ onSwitchToRegister }) => {
             {isLoading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
+
+        <div className="auth-links">
+          <Link to="/forgot-password" className="auth-link">
+            Forgot Password?
+          </Link>
+        </div>
 
         <div className="auth-footer">
           <p>

@@ -12,7 +12,13 @@ const initializeDemoUser = () => {
       email: 'demo@example.com',
       name: 'Demo User',
       password: '$2a$12$8yB10AdwgmX5Bgfb3xEpdemwh3R22hZeEec2GWlg7H9ZgaaM1UQ2C', // ' DemoPass123!'
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
+      failedLoginAttempts: 0,
+      accountLocked: false,
+      lockoutExpiry: null,
+      lastFailedAttempt: null,
+      passwordResetToken: null,
+      passwordResetExpiry: null
     };
     users.push(demoUser);
   }
@@ -76,4 +82,119 @@ export const deleteUser = (id) => {
     return deletedUser;
   }
   return null;
+};
+
+// Account lockout management functions
+export const recordFailedLoginAttempt = (email) => {
+  initializeDemoUser();
+  
+  const user = users.find(u => u.email === email);
+  if (!user) return null;
+  
+  user.failedLoginAttempts = (user.failedLoginAttempts || 0) + 1;
+  user.lastFailedAttempt = new Date().toISOString();
+  
+  // Lock account after 5 failed attempts
+  if (user.failedLoginAttempts >= 5) {
+    user.accountLocked = true;
+    // Lock for 30 minutes
+    user.lockoutExpiry = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+  }
+  
+  return user;
+};
+
+export const resetFailedLoginAttempts = (email) => {
+  initializeDemoUser();
+  
+  const user = users.find(u => u.email === email);
+  if (!user) return null;
+  
+  user.failedLoginAttempts = 0;
+  user.accountLocked = false;
+  user.lockoutExpiry = null;
+  user.lastFailedAttempt = null;
+  
+  return user;
+};
+
+export const isAccountLocked = (email) => {
+  initializeDemoUser();
+  
+  const user = users.find(u => u.email === email);
+  if (!user) return false;
+  
+  if (user.accountLocked && user.lockoutExpiry) {
+    const now = new Date();
+    const lockoutExpiry = new Date(user.lockoutExpiry);
+    
+    // Check if lockout has expired
+    if (now >= lockoutExpiry) {
+      // Unlock the account
+      user.accountLocked = false;
+      user.lockoutExpiry = null;
+      user.failedLoginAttempts = 0;
+      return false;
+    }
+    
+    return true;
+  }
+  
+  return false;
+};
+
+export const generatePasswordResetToken = (email) => {
+  initializeDemoUser();
+  
+  const user = users.find(u => u.email === email);
+  if (!user) return null;
+  
+  // Generate a secure random token
+  const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  
+  user.passwordResetToken = token;
+  // Token expires in 1 hour
+  user.passwordResetExpiry = new Date(Date.now() + 60 * 60 * 1000).toISOString();
+  
+  return { user, token };
+};
+
+export const validatePasswordResetToken = (token) => {
+  initializeDemoUser();
+  
+  const user = users.find(u => u.passwordResetToken === token);
+  if (!user) return null;
+  
+  // Check if token has expired
+  const now = new Date();
+  const expiry = new Date(user.passwordResetExpiry);
+  
+  if (now >= expiry) {
+    // Clear expired token
+    user.passwordResetToken = null;
+    user.passwordResetExpiry = null;
+    return null;
+  }
+  
+  return user;
+};
+
+export const resetPassword = (token, newPassword) => {
+  initializeDemoUser();
+  
+  const user = validatePasswordResetToken(token);
+  if (!user) return null;
+  
+  // Update password and clear reset token
+  user.password = newPassword;
+  user.passwordResetToken = null;
+  user.passwordResetExpiry = null;
+  
+  // Also reset any lockout status
+  user.failedLoginAttempts = 0;
+  user.accountLocked = false;
+  user.lockoutExpiry = null;
+  user.lastFailedAttempt = null;
+  
+  return user;
 };

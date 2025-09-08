@@ -43,6 +43,12 @@ const startServer = async () => {
     const verify2FAModule = await import('./auth/verify-2fa.js');
     app.post('/api/auth/verify-2fa', verify2FAModule.default);
     
+    const forgotPasswordModule = await import('./auth/forgot-password.js');
+    app.post('/api/auth/forgot-password', forgotPasswordModule.default);
+    
+    const resetPasswordModule = await import('./auth/reset-password.js');
+    app.post('/api/auth/reset-password', resetPasswordModule.default);
+    
     const emailListModule = await import('./email-list.js');
     app.use('/api/email-list', emailListModule.default);
     
