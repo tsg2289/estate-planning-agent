@@ -129,7 +129,7 @@ const createDocumentSections = async (template, formData) => {
     new Paragraph({
       children: [
         new TextRun({
-          text: template.title,
+          text: template.title.toUpperCase(),
           bold: true,
           size: 32,
         }),
