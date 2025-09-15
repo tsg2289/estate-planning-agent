@@ -274,6 +274,56 @@ body {
   user-select: none;
 }
 
+/* Children name input styles */
+.child-name-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.child-name-input-group .form-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.remove-child-button {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.remove-child-button:hover {
+  background: #ff3838;
+}
+
+.add-child-button {
+  background: #2ed573;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.add-child-button:hover {
+  background: #26d065;
+}
+
 .form-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;

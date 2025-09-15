@@ -30,7 +30,7 @@ const WillForm = ({ onSubmit }) => {
     isMarried: '',
     spouseName: '',
     hasChildren: '',
-    childrenNames: '',
+    childrenNames: [''],
     trustName: '',
     trustDate: '',
     executorName: '',
@@ -102,6 +102,33 @@ const WillForm = ({ onSubmit }) => {
       ...prev,
       assets: prev.assets.filter((_, i) => i !== index)
     }))
+  }
+
+  const handleChildNameChange = (index, value) => {
+    const newChildrenNames = [...formData.childrenNames]
+    newChildrenNames[index] = value
+    setFormData(prev => ({
+      ...prev,
+      childrenNames: newChildrenNames
+    }))
+  }
+
+  const addChildName = () => {
+    if (formData.childrenNames.length < 10) {
+      setFormData(prev => ({
+        ...prev,
+        childrenNames: [...prev.childrenNames, '']
+      }))
+    }
+  }
+
+  const removeChildName = (index) => {
+    if (formData.childrenNames.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        childrenNames: prev.childrenNames.filter((_, i) => i !== index)
+      }))
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -363,19 +390,41 @@ const WillForm = ({ onSubmit }) => {
             </div>
           </div>
 
-          {/* Conditional Children Names Field */}
+          {/* Conditional Children Names Fields */}
           {formData.hasChildren === 'yes' && (
             <div className="form-group">
               <label className="form-label">Children's Names</label>
-              <input
-                type="text"
-                name="childrenNames"
-                value={formData.childrenNames}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-                placeholder="List all children's full names"
-              />
+              {formData.childrenNames.map((childName, index) => (
+                <div key={index} className="child-name-input-group">
+                  <input
+                    type="text"
+                    value={childName}
+                    onChange={(e) => handleChildNameChange(index, e.target.value)}
+                    className="form-input"
+                    required
+                    placeholder={`Child ${index + 1} full name`}
+                  />
+                  {formData.childrenNames.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeChildName(index)}
+                      className="remove-child-button"
+                      aria-label="Remove child"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+              ))}
+              {formData.childrenNames.length < 10 && (
+                <button
+                  type="button"
+                  onClick={addChildName}
+                  className="add-child-button"
+                >
+                  + Add Another Child
+                </button>
+              )}
             </div>
           )}
         </div>

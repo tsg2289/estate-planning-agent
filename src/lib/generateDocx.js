@@ -454,7 +454,16 @@ export const formatFormData = (formData, documentType) => {
       
       // Format children status based on children choice
       if (formData.hasChildren === 'yes' && formData.childrenNames) {
-        formatted.childrenStatus = `I have the following children: ${formData.childrenNames}.`
+        // Filter out empty names and join with commas
+        const childrenList = Array.isArray(formData.childrenNames) 
+          ? formData.childrenNames.filter(name => name.trim() !== '').join(', ')
+          : formData.childrenNames
+        
+        if (childrenList) {
+          formatted.childrenStatus = `I have the following children: ${childrenList}.`
+        } else {
+          formatted.childrenStatus = 'I have no children.'
+        }
       } else {
         formatted.childrenStatus = 'I have no children.'
       }
