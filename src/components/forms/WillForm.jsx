@@ -29,6 +29,7 @@ const WillForm = ({ onSubmit }) => {
     testatorDOB: '',
     isMarried: '',
     spouseName: '',
+    hasChildren: '',
     childrenNames: '',
     trustName: '',
     trustDate: '',
@@ -311,17 +312,50 @@ const WillForm = ({ onSubmit }) => {
             </div>
           )}
           
+          {/* Children Status */}
           <div className="form-group">
-            <label className="form-label">Children's Names</label>
-            <input
-              type="text"
-              name="childrenNames"
-              value={formData.childrenNames}
-              onChange={handleInputChange}
-              className="form-input"
-              placeholder="List all children or 'none' if no children"
-            />
+            <label className="form-label">Do you have children?</label>
+            <div className="radio-group">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="hasChildren"
+                  value="yes"
+                  checked={formData.hasChildren === 'yes'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Have Children</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="hasChildren"
+                  value="no"
+                  checked={formData.hasChildren === 'no'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">No Children</span>
+              </label>
+            </div>
           </div>
+
+          {/* Conditional Children Names Field */}
+          {formData.hasChildren === 'yes' && (
+            <div className="form-group">
+              <label className="form-label">Children's Names</label>
+              <input
+                type="text"
+                name="childrenNames"
+                value={formData.childrenNames}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+                placeholder="List all children's full names"
+              />
+            </div>
+          )}
         </div>
 
         {/* Trust Information */}

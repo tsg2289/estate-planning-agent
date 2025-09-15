@@ -445,6 +445,13 @@ export const formatFormData = (formData, documentType) => {
       } else {
         formatted.familyStatus = 'I am not married.'
       }
+      
+      // Format children status based on children choice
+      if (formData.hasChildren === 'yes' && formData.childrenNames) {
+        formatted.childrenStatus = `I have the following children: ${formData.childrenNames}.`
+      } else {
+        formatted.childrenStatus = 'I have no children.'
+      }
       break
       
     case 'trust':
