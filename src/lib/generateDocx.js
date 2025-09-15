@@ -4,7 +4,7 @@
 import { getTemplate, populateTemplate } from './templates.js'
 
 // Import docx library with error handling
-let Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Spacing, BorderStyle
+let Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Spacing, BorderStyle, Footer, PageNumber
 
 /**
  * Initialize the docx library
@@ -21,6 +21,8 @@ const initializeDocx = async () => {
     AlignmentType = docxModule.AlignmentType
     Spacing = docxModule.Spacing
     BorderStyle = docxModule.BorderStyle
+    Footer = docxModule.Footer
+    PageNumber = docxModule.PageNumber
     return true
   } catch (error) {
     console.warn('docx library not available:', error)
@@ -66,7 +68,24 @@ export const generateDocument = async (documentType, formData) => {
     
     // Create the document
     const doc = new Document({
-      sections: sections,
+      sections: sections.map(section => ({
+        ...section,
+        footers: {
+          default: new Footer({
+            children: [
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    children: [PageNumber.CURRENT],
+                    size: 20,
+                  }),
+                ],
+                alignment: AlignmentType.CENTER,
+              }),
+            ],
+          }),
+        },
+      })),
       styles: {
         default: {
           document: {
