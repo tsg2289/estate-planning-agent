@@ -16,7 +16,27 @@ export const useFormProgress = (formType, initialData = {}) => {
       try {
         const savedProgress = progressStorage.loadProgress(formType);
         if (savedProgress && savedProgress.data) {
-          setFormData(savedProgress.data);
+          // Migrate old data format to new format
+          let migratedData = { ...savedProgress.data };
+          
+          // Convert childrenNames from string to array if needed
+          if (formType === 'will' && typeof migratedData.childrenNames === 'string') {
+            if (migratedData.childrenNames.trim() === '') {
+              migratedData.childrenNames = [''];
+            } else {
+              // Split by comma and create array
+              migratedData.childrenNames = migratedData.childrenNames
+                .split(',')
+                .map(name => name.trim())
+                .filter(name => name !== '');
+              // Ensure at least one empty field if no names
+              if (migratedData.childrenNames.length === 0) {
+                migratedData.childrenNames = [''];
+              }
+            }
+          }
+          
+          setFormData(migratedData);
           setLastSaved(savedProgress.lastSaved);
           setProgressPercentage(progressStorage.calculateProgressPercentage(savedProgress));
           console.log(`📂 Loaded saved progress for ${formType}`);

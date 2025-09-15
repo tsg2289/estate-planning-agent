@@ -73,6 +73,12 @@ const WillForm = ({ onSubmit }) => {
     getSaveStatusColor
   } = useFormProgress('will', initialData)
 
+  // Ensure childrenNames is always an array (safety check)
+  const safeFormData = {
+    ...formData,
+    childrenNames: Array.isArray(formData.childrenNames) ? formData.childrenNames : ['']
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({
@@ -105,7 +111,7 @@ const WillForm = ({ onSubmit }) => {
   }
 
   const handleChildNameChange = (index, value) => {
-    const newChildrenNames = [...formData.childrenNames]
+    const newChildrenNames = [...safeFormData.childrenNames]
     newChildrenNames[index] = value
     setFormData(prev => ({
       ...prev,
@@ -114,19 +120,19 @@ const WillForm = ({ onSubmit }) => {
   }
 
   const addChildName = () => {
-    if (formData.childrenNames.length < 10) {
+    if (safeFormData.childrenNames.length < 10) {
       setFormData(prev => ({
         ...prev,
-        childrenNames: [...prev.childrenNames, '']
+        childrenNames: [...(Array.isArray(prev.childrenNames) ? prev.childrenNames : ['']), '']
       }))
     }
   }
 
   const removeChildName = (index) => {
-    if (formData.childrenNames.length > 1) {
+    if (safeFormData.childrenNames.length > 1) {
       setFormData(prev => ({
         ...prev,
-        childrenNames: prev.childrenNames.filter((_, i) => i !== index)
+        childrenNames: (Array.isArray(prev.childrenNames) ? prev.childrenNames : ['']).filter((_, i) => i !== index)
       }))
     }
   }
@@ -394,7 +400,7 @@ const WillForm = ({ onSubmit }) => {
           {formData.hasChildren === 'yes' && (
             <div className="form-group">
               <label className="form-label">Children's Names</label>
-              {formData.childrenNames.map((childName, index) => (
+              {safeFormData.childrenNames.map((childName, index) => (
                 <div key={index} className="child-name-input-group">
                   <input
                     type="text"
@@ -404,7 +410,7 @@ const WillForm = ({ onSubmit }) => {
                     required
                     placeholder={`Child ${index + 1} full name`}
                   />
-                  {formData.childrenNames.length > 1 && (
+                  {safeFormData.childrenNames.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeChildName(index)}
@@ -416,7 +422,7 @@ const WillForm = ({ onSubmit }) => {
                   )}
                 </div>
               ))}
-              {formData.childrenNames.length < 10 && (
+              {safeFormData.childrenNames.length < 10 && (
                 <button
                   type="button"
                   onClick={addChildName}
