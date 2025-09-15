@@ -275,8 +275,8 @@ const WillForm = ({ onSubmit }) => {
                 <input
                   type="radio"
                   name="isMarried"
-                  value="yes"
-                  checked={formData.isMarried === 'yes'}
+                  value="married"
+                  checked={formData.isMarried === 'married'}
                   onChange={handleInputChange}
                   required
                 />
@@ -286,18 +286,40 @@ const WillForm = ({ onSubmit }) => {
                 <input
                   type="radio"
                   name="isMarried"
-                  value="no"
-                  checked={formData.isMarried === 'no'}
+                  value="single"
+                  checked={formData.isMarried === 'single'}
                   onChange={handleInputChange}
                   required
                 />
-                <span className="radio-text">Not Married</span>
+                <span className="radio-text">Single</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="isMarried"
+                  value="divorced"
+                  checked={formData.isMarried === 'divorced'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Divorced</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="isMarried"
+                  value="widowed"
+                  checked={formData.isMarried === 'widowed'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Widowed</span>
               </label>
             </div>
           </div>
 
           {/* Conditional Spouse Name Field */}
-          {formData.isMarried === 'yes' && (
+          {formData.isMarried === 'married' && (
             <div className="form-group">
               <label className="form-label">Spouse's Full Name</label>
               <input

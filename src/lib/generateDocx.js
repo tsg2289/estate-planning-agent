@@ -440,8 +440,14 @@ export const formatFormData = (formData, documentType) => {
       }
       
       // Format family status based on marriage choice
-      if (formData.isMarried === 'yes' && formData.spouseName) {
+      if (formData.isMarried === 'married' && formData.spouseName) {
         formatted.familyStatus = `I am married to ${formData.spouseName}.`
+      } else if (formData.isMarried === 'single') {
+        formatted.familyStatus = 'I am single.'
+      } else if (formData.isMarried === 'divorced') {
+        formatted.familyStatus = 'I am divorced.'
+      } else if (formData.isMarried === 'widowed') {
+        formatted.familyStatus = 'I am widowed.'
       } else {
         formatted.familyStatus = 'I am not married.'
       }
