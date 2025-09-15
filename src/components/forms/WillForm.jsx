@@ -2,6 +2,19 @@ import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
 import ProgressIndicator from '../ProgressIndicator'
 
+// California Counties List
+const CALIFORNIA_COUNTIES = [
+  'Alameda', 'Alpine', 'Amador', 'Butte', 'Calaveras', 'Colusa', 'Contra Costa',
+  'Del Norte', 'El Dorado', 'Fresno', 'Glenn', 'Humboldt', 'Imperial', 'Inyo',
+  'Kern', 'Kings', 'Lake', 'Lassen', 'Los Angeles', 'Madera', 'Marin', 'Mariposa',
+  'Mendocino', 'Merced', 'Modoc', 'Mono', 'Monterey', 'Napa', 'Nevada', 'Orange',
+  'Placer', 'Plumas', 'Riverside', 'Sacramento', 'San Benito', 'San Bernardino',
+  'San Diego', 'San Francisco', 'San Joaquin', 'San Luis Obispo', 'San Mateo',
+  'Santa Barbara', 'Santa Clara', 'Santa Cruz', 'Shasta', 'Sierra', 'Siskiyou',
+  'Solano', 'Sonoma', 'Stanislaus', 'Sutter', 'Tehama', 'Trinity', 'Tulare',
+  'Tuolumne', 'Ventura', 'Yolo', 'Yuba'
+]
+
 const WillForm = ({ onSubmit }) => {
   const initialData = {
     testatorName: '',
@@ -180,14 +193,20 @@ const WillForm = ({ onSubmit }) => {
             </div>
             <div className="form-group">
               <label className="form-label">County</label>
-              <input
-                type="text"
+              <select
                 name="testatorCounty"
                 value={formData.testatorCounty}
                 onChange={handleInputChange}
                 className="form-input"
                 required
-              />
+              >
+                <option value="">Select a County</option>
+                {CALIFORNIA_COUNTIES.map(county => (
+                  <option key={county} value={county}>
+                    {county}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           
