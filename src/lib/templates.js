@@ -73,12 +73,12 @@ export const willTemplate = {
       content: 'No Contest Clause\nIf any beneficiary under this Will contests this Will or the Trust into which it pours over, that beneficiary shall forfeit any share they would otherwise receive.'
     },
     {
-      name: 'signature_section',
-      content: 'SIGNATURE'
+      name: 'article_9',
+      content: 'ARTICLE IX'
     },
     {
-      name: 'testator_signature',
-      content: 'I, {{testatorName}}, declare that I sign this instrument as my Last Will and Testament, that I understand and intend its contents, and that I sign it voluntarily on this ___ day of _______, 20, at {{testatorCity}}, California.\n\n[Testator\'s Signature]'
+      name: 'execution',
+      content: 'Execution\n\nI, {{testatorName}}, declare that I sign this instrument as my Last Will and Testament, that I understand and intend its contents, and that I sign it voluntarily on this ___ day of _______, 20__, at {{testatorCity}}, California.\n\n\n_________________________________\n{{testatorName}}, Testator'
     },
     {
       name: 'attestation_clause',

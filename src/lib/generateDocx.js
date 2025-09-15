@@ -209,24 +209,58 @@ const createDocumentSections = async (template, formData) => {
             })
           )
         }
-      } else if (section.name && section.name.includes('signature')) {
-        // Signature section - make it bold and centered
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: section.content.trim(),
-                bold: true,
-                size: 28,
-              }),
-            ],
-            alignment: AlignmentType.CENTER,
-            spacing: {
-              before: 400,
-              after: 200,
-            },
+      } else if (section.name && (section.name.includes('signature') || section.name === 'execution')) {
+        // Signature and execution sections - handle differently
+        if (section.name === 'execution') {
+          // Execution section - left aligned with proper spacing for signature line
+          const lines = section.content.trim().split('\n')
+          lines.forEach((line, index) => {
+            if (line.trim()) {
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: line,
+                      size: 24,
+                      bold: index === 0, // Make "Execution" title bold
+                    }),
+                  ],
+                  alignment: AlignmentType.LEFT,
+                  spacing: {
+                    before: index === 0 ? 400 : 120,
+                    after: 120,
+                  },
+                })
+              )
+            } else {
+              // Add empty line for spacing (like before signature line)
+              children.push(
+                new Paragraph({
+                  children: [new TextRun({ text: '', size: 24 })],
+                  spacing: { before: 120, after: 120 },
+                })
+              )
+            }
           })
-        )
+        } else {
+          // Original signature section handling - make it bold and centered
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: section.content.trim(),
+                  bold: true,
+                  size: 28,
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: {
+                before: 400,
+                after: 200,
+              },
+            })
+          )
+        }
       } else if (section.name && section.name.includes('attestation')) {
         // Attestation clause - make it bold
         children.push(
