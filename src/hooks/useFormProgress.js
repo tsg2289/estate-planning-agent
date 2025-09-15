@@ -216,6 +216,41 @@ export const useFormProgress = (formType, initialData = {}) => {
                   if (!migratedData.trusteeCounty) {
                     migratedData.trusteeCounty = '';
                   }
+                  
+                  // Add second trustor fields if they don't exist
+                  if (migratedData.hasSecondTrustor === undefined) {
+                    migratedData.hasSecondTrustor = false;
+                  }
+                  if (!migratedData.secondTrustorName) {
+                    migratedData.secondTrustorName = '';
+                  }
+                  if (!migratedData.secondTrustorAddress) {
+                    migratedData.secondTrustorAddress = '';
+                  }
+                  if (!migratedData.secondTrustorCity) {
+                    migratedData.secondTrustorCity = '';
+                  }
+                  if (!migratedData.secondTrustorCounty) {
+                    migratedData.secondTrustorCounty = '';
+                  }
+                  if (!migratedData.secondTrustorState) {
+                    migratedData.secondTrustorState = 'California';
+                  }
+                  if (!migratedData.secondTrustorZip) {
+                    migratedData.secondTrustorZip = '';
+                  }
+                  if (!migratedData.secondTrustorPhone) {
+                    migratedData.secondTrustorPhone = '';
+                  }
+                  if (!migratedData.secondTrustorEmail) {
+                    migratedData.secondTrustorEmail = '';
+                  }
+                  if (!migratedData.secondTrustorSSN) {
+                    migratedData.secondTrustorSSN = '';
+                  }
+                  if (!migratedData.secondTrustorDOB) {
+                    migratedData.secondTrustorDOB = '';
+                  }
                 }
           
           setFormData(migratedData);

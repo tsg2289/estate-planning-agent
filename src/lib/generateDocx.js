@@ -654,11 +654,27 @@ export const formatFormData = (formData, documentType) => {
       }
       formatted.trustTypeDescription = trustTypeDescriptions[formData.trustType] || ''
       
-      // Extract county information from city field or set default
-      // Assuming city format might include county, otherwise default to common CA counties
-      formatted.trustorCounty = extractCountyFromCity(formData.trustorCity) || 'County'
-      formatted.trusteeCity = extractCityFromAddress(formData.trusteeAddress) || formData.trustorCity || 'City'
-      formatted.trusteeCounty = extractCountyFromCity(formatted.trusteeCity) || formatted.trustorCounty
+      // Use the county fields directly (now dropdown selections)
+      formatted.trustorCounty = formData.trustorCounty || 'County'
+      formatted.trusteeCity = formData.trusteeCity || formData.trustorCity || 'City'
+      formatted.trusteeCounty = formData.trusteeCounty || formatted.trustorCounty
+      
+      // Handle multiple trustors
+      if (formData.hasSecondTrustor && formData.secondTrustorName) {
+        formatted.trustorInfo = `Trustor/Grantor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("First Trustor" or "Grantor"); and
+
+Trustor/Grantor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${formData.secondTrustorCounty}, California ("Second Trustor" or "Grantor"); and`
+        
+        formatted.trustorMayServeNote = 'The Trustors may also serve as the initial Trustees.'
+        
+        // Update trust name to include both trustors
+        const firstTrustorLastName = formData.trustorName.split(' ').pop()
+        const secondTrustorLastName = formData.secondTrustorName.split(' ').pop()
+        formatted.trustorName = `${firstTrustorLastName} and ${secondTrustorLastName} Family`
+      } else {
+        formatted.trustorInfo = `Trustor/Grantor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor" or "Grantor"); and`
+        formatted.trustorMayServeNote = 'The Trustor may also serve as the initial Trustee.'
+      }
       
       // Format successor trustee information
       formatted.successorTrusteeName = formData.alternateTrusteeName || '[Name of Successor Trustee]'

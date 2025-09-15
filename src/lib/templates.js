@@ -118,11 +118,11 @@ export const trustTemplate = {
 
 This Revocable Living Trust Agreement ("Trust Agreement") is made this ___ day of ________, 20__, by and between:
 
-Trustor/Grantor: {{trustorName}}, of {{trustorCity}}, {{trustorCounty}}, California ("Trustor" or "Grantor"); and
+{{trustorInfo}}
 
 Trustee: {{trusteeName}}, of {{trusteeCity}}, {{trusteeCounty}}, California ("Trustee").
 
-The Trustor may also serve as the initial Trustee.`
+{{trustorMayServeNote}}`
     },
     {
       name: 'article_2',

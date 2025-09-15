@@ -2,6 +2,68 @@ import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
 import ProgressIndicator from '../ProgressIndicator'
 
+// California Counties List
+const CALIFORNIA_COUNTIES = [
+  'Alameda County',
+  'Alpine County',
+  'Amador County',
+  'Butte County',
+  'Calaveras County',
+  'Colusa County',
+  'Contra Costa County',
+  'Del Norte County',
+  'El Dorado County',
+  'Fresno County',
+  'Glenn County',
+  'Humboldt County',
+  'Imperial County',
+  'Inyo County',
+  'Kern County',
+  'Kings County',
+  'Lake County',
+  'Lassen County',
+  'Los Angeles County',
+  'Madera County',
+  'Marin County',
+  'Mariposa County',
+  'Mendocino County',
+  'Merced County',
+  'Modoc County',
+  'Mono County',
+  'Monterey County',
+  'Napa County',
+  'Nevada County',
+  'Orange County',
+  'Placer County',
+  'Plumas County',
+  'Riverside County',
+  'Sacramento County',
+  'San Benito County',
+  'San Bernardino County',
+  'San Diego County',
+  'San Francisco County',
+  'San Joaquin County',
+  'San Luis Obispo County',
+  'San Mateo County',
+  'Santa Barbara County',
+  'Santa Clara County',
+  'Santa Cruz County',
+  'Shasta County',
+  'Sierra County',
+  'Siskiyou County',
+  'Solano County',
+  'Sonoma County',
+  'Stanislaus County',
+  'Sutter County',
+  'Tehama County',
+  'Trinity County',
+  'Tulare County',
+  'Tuolumne County',
+  'Ventura County',
+  'Yolo County',
+  'Yuba County'
+]
+
 const TrustForm = ({ onSubmit }) => {
   const initialData = {
     trustorName: '',
@@ -14,6 +76,17 @@ const TrustForm = ({ onSubmit }) => {
     trustorEmail: '',
     trustorSSN: '',
     trustorDOB: '',
+    hasSecondTrustor: false,
+    secondTrustorName: '',
+    secondTrustorAddress: '',
+    secondTrustorCity: '',
+    secondTrustorCounty: '',
+    secondTrustorState: 'California',
+    secondTrustorZip: '',
+    secondTrustorPhone: '',
+    secondTrustorEmail: '',
+    secondTrustorSSN: '',
+    secondTrustorDOB: '',
     coTrustorName: '',
     coTrustorAddress: '',
     coTrustorPhone: '',
@@ -51,10 +124,10 @@ const TrustForm = ({ onSubmit }) => {
   } = useFormProgress('trust', initialData)
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value, type, checked } = e.target
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: type === 'checkbox' ? checked : value
     }))
   }
 
@@ -224,15 +297,20 @@ const TrustForm = ({ onSubmit }) => {
             </div>
             <div className="form-group">
               <label className="form-label">County</label>
-              <input
-                type="text"
+              <select
                 name="trustorCounty"
                 value={formData.trustorCounty}
                 onChange={handleInputChange}
                 className="form-input"
-                placeholder="e.g., Los Angeles County"
                 required
-              />
+              >
+                <option value="">Select County</option>
+                {CALIFORNIA_COUNTIES.map((county, index) => (
+                  <option key={index} value={county}>
+                    {county}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           
@@ -298,7 +376,157 @@ const TrustForm = ({ onSubmit }) => {
               required
             />
           </div>
+          
+          <div className="form-group">
+            <label className="form-label">
+              <input
+                type="checkbox"
+                name="hasSecondTrustor"
+                checked={formData.hasSecondTrustor}
+                onChange={handleInputChange}
+                style={{ marginRight: '8px' }}
+              />
+              Add Second Trustor (for joint trusts)
+            </label>
+          </div>
         </div>
+
+        {/* Second Trustor Information */}
+        {formData.hasSecondTrustor && (
+          <div className="form-section">
+            <h3>Second Trustor Information</h3>
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Full Legal Name</label>
+                <input
+                  type="text"
+                  name="secondTrustorName"
+                  value={formData.secondTrustorName}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Date of Birth</label>
+                <input
+                  type="date"
+                  name="secondTrustorDOB"
+                  value={formData.secondTrustorDOB}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Address</label>
+              <input
+                type="text"
+                name="secondTrustorAddress"
+                value={formData.secondTrustorAddress}
+                onChange={handleInputChange}
+                className="form-input"
+                required={formData.hasSecondTrustor}
+              />
+            </div>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">City</label>
+                <input
+                  type="text"
+                  name="secondTrustorCity"
+                  value={formData.secondTrustorCity}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">County</label>
+                <select
+                  name="secondTrustorCounty"
+                  value={formData.secondTrustorCounty}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                >
+                  <option value="">Select County</option>
+                  {CALIFORNIA_COUNTIES.map((county, index) => (
+                    <option key={index} value={county}>
+                      {county}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">State</label>
+                <input
+                  type="text"
+                  name="secondTrustorState"
+                  value={formData.secondTrustorState}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+            </div>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">ZIP Code</label>
+                <input
+                  type="text"
+                  name="secondTrustorZip"
+                  value={formData.secondTrustorZip}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Phone</label>
+                <input
+                  type="tel"
+                  name="secondTrustorPhone"
+                  value={formData.secondTrustorPhone}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                name="secondTrustorEmail"
+                value={formData.secondTrustorEmail}
+                onChange={handleInputChange}
+                className="form-input"
+                required={formData.hasSecondTrustor}
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Social Security Number</label>
+              <input
+                type="text"
+                name="secondTrustorSSN"
+                value={formData.secondTrustorSSN}
+                onChange={handleInputChange}
+                className="form-input"
+                required={formData.hasSecondTrustor}
+              />
+            </div>
+          </div>
+        )}
 
         {/* Co-Trustor Information */}
         <div className="form-section">
@@ -414,15 +642,20 @@ const TrustForm = ({ onSubmit }) => {
             </div>
             <div className="form-group">
               <label className="form-label">Trustee County</label>
-              <input
-                type="text"
+              <select
                 name="trusteeCounty"
                 value={formData.trusteeCounty}
                 onChange={handleInputChange}
                 className="form-input"
-                placeholder="e.g., Los Angeles County"
                 required
-              />
+              >
+                <option value="">Select County</option>
+                {CALIFORNIA_COUNTIES.map((county, index) => (
+                  <option key={index} value={county}>
+                    {county}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           
