@@ -74,8 +74,6 @@ const TrustForm = ({ onSubmit }) => {
     trustorZip: '',
     trustorPhone: '',
     trustorEmail: '',
-    trustorSSN: '',
-    trustorDOB: '',
     hasSecondTrustor: false,
     secondTrustorName: '',
     secondTrustorAddress: '',
@@ -85,14 +83,6 @@ const TrustForm = ({ onSubmit }) => {
     secondTrustorZip: '',
     secondTrustorPhone: '',
     secondTrustorEmail: '',
-    secondTrustorSSN: '',
-    secondTrustorDOB: '',
-    coTrustorName: '',
-    coTrustorAddress: '',
-    coTrustorPhone: '',
-    coTrustorEmail: '',
-    coTrustorSSN: '',
-    coTrustorDOB: '',
     trusteeName: '',
     trusteeAddress: '',
     trusteeCity: '',
@@ -270,29 +260,16 @@ const TrustForm = ({ onSubmit }) => {
         {/* Trustor Information */}
         <div className="form-section">
           <h3>Trustor Information</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Full Legal Name</label>
-              <input
-                type="text"
-                name="trustorName"
-                value={formData.trustorName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Date of Birth</label>
-              <input
-                type="date"
-                name="trustorDOB"
-                value={formData.trustorDOB}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">Full Legal Name</label>
+            <input
+              type="text"
+              name="trustorName"
+              value={formData.trustorName}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+            />
           </div>
           
           <div className="form-group">
@@ -390,18 +367,6 @@ const TrustForm = ({ onSubmit }) => {
           </div>
           
           <div className="form-group">
-            <label className="form-label">Social Security Number</label>
-            <input
-              type="text"
-              name="trustorSSN"
-              value={formData.trustorSSN}
-              onChange={handleInputChange}
-              className="form-input"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
             <label className="form-label">
               <input
                 type="checkbox"
@@ -419,29 +384,16 @@ const TrustForm = ({ onSubmit }) => {
         {formData.hasSecondTrustor && (
           <div className="form-section">
             <h3>Second Trustor Information</h3>
-            <div className="form-row">
-              <div className="form-group">
-                <label className="form-label">Full Legal Name</label>
-                <input
-                  type="text"
-                  name="secondTrustorName"
-                  value={formData.secondTrustorName}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  required={formData.hasSecondTrustor}
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Date of Birth</label>
-                <input
-                  type="date"
-                  name="secondTrustorDOB"
-                  value={formData.secondTrustorDOB}
-                  onChange={handleInputChange}
-                  className="form-input"
-                  required={formData.hasSecondTrustor}
-                />
-              </div>
+            <div className="form-group">
+              <label className="form-label">Full Legal Name</label>
+              <input
+                type="text"
+                name="secondTrustorName"
+                value={formData.secondTrustorName}
+                onChange={handleInputChange}
+                className="form-input"
+                required={formData.hasSecondTrustor}
+              />
             </div>
             
             <div className="form-group">
@@ -537,93 +489,8 @@ const TrustForm = ({ onSubmit }) => {
                 required={formData.hasSecondTrustor}
               />
             </div>
-            
-            <div className="form-group">
-              <label className="form-label">Social Security Number</label>
-              <input
-                type="text"
-                name="secondTrustorSSN"
-                value={formData.secondTrustorSSN}
-                onChange={handleInputChange}
-                className="form-input"
-                required={formData.hasSecondTrustor}
-              />
-            </div>
           </div>
         )}
-
-        {/* Co-Trustor Information */}
-        <div className="form-section">
-          <h3>Co-Trustor Information (if applicable)</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Co-Trustor Name</label>
-              <input
-                type="text"
-                name="coTrustorName"
-                value={formData.coTrustorName}
-                onChange={handleInputChange}
-                className="form-input"
-                placeholder="Leave blank if no co-trustor"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Co-Trustor Date of Birth</label>
-              <input
-                type="date"
-                name="coTrustorDOB"
-                value={formData.coTrustorDOB}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Co-Trustor Address</label>
-            <input
-              type="text"
-              name="coTrustorAddress"
-              value={formData.coTrustorAddress}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Co-Trustor Phone</label>
-              <input
-                type="tel"
-                name="coTrustorPhone"
-                value={formData.coTrustorPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Co-Trustor Email</label>
-              <input
-                type="email"
-                name="coTrustorEmail"
-                value={formData.coTrustorEmail}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Co-Trustor Social Security Number</label>
-            <input
-              type="text"
-              name="coTrustorSSN"
-              value={formData.coTrustorSSN}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
-        </div>
 
         {/* Trustee Information */}
         <div className="form-section">

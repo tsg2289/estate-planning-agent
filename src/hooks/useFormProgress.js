@@ -245,12 +245,18 @@ export const useFormProgress = (formType, initialData = {}) => {
                   if (!migratedData.secondTrustorEmail) {
                     migratedData.secondTrustorEmail = '';
                   }
-                  if (!migratedData.secondTrustorSSN) {
-                    migratedData.secondTrustorSSN = '';
-                  }
-                  if (!migratedData.secondTrustorDOB) {
-                    migratedData.secondTrustorDOB = '';
-                  }
+                  
+                  // Remove deprecated fields
+                  delete migratedData.trustorDOB;
+                  delete migratedData.trustorSSN;
+                  delete migratedData.secondTrustorDOB;
+                  delete migratedData.secondTrustorSSN;
+                  delete migratedData.coTrustorName;
+                  delete migratedData.coTrustorAddress;
+                  delete migratedData.coTrustorPhone;
+                  delete migratedData.coTrustorEmail;
+                  delete migratedData.coTrustorSSN;
+                  delete migratedData.coTrustorDOB;
                   
                   // Migrate old alternate trustee fields to new array structure
                   if (!Array.isArray(migratedData.alternateTrustees)) {
