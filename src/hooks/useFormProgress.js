@@ -196,9 +196,44 @@ export const useFormProgress = (formType, initialData = {}) => {
                     migratedData.specificGifts = [{ beneficiary: '', gift: '' }];
                   }
                   
-                  // Ensure beneficiaries array exists
-                  if (!Array.isArray(migratedData.beneficiaries)) {
-                    migratedData.beneficiaries = [{ name: '', relationship: '', percentage: '', isMinor: false }];
+                  // Migrate old beneficiaries to new structure
+                  if (Array.isArray(migratedData.beneficiaries)) {
+                    // Split beneficiaries into children and other beneficiaries
+                    const children = [];
+                    const otherBeneficiaries = [];
+                    
+                    migratedData.beneficiaries.forEach(beneficiary => {
+                      if (beneficiary.relationship && 
+                          (beneficiary.relationship.toLowerCase().includes('child') ||
+                           beneficiary.relationship.toLowerCase().includes('son') ||
+                           beneficiary.relationship.toLowerCase().includes('daughter'))) {
+                        children.push({
+                          name: beneficiary.name || '',
+                          relationship: beneficiary.relationship || ''
+                        });
+                      } else {
+                        otherBeneficiaries.push({
+                          name: beneficiary.name || '',
+                          relationship: beneficiary.relationship || '',
+                          percentage: beneficiary.percentage || ''
+                        });
+                      }
+                    });
+                    
+                    // Set new structure
+                    migratedData.children = children.length > 0 ? children : [{ name: '', relationship: '' }];
+                    migratedData.otherBeneficiaries = otherBeneficiaries.length > 0 ? otherBeneficiaries : [{ name: '', relationship: '', percentage: '' }];
+                    
+                    // Remove old beneficiaries array
+                    delete migratedData.beneficiaries;
+                  } else {
+                    // Ensure new arrays exist
+                    if (!Array.isArray(migratedData.children)) {
+                      migratedData.children = [{ name: '', relationship: '' }];
+                    }
+                    if (!Array.isArray(migratedData.otherBeneficiaries)) {
+                      migratedData.otherBeneficiaries = [{ name: '', relationship: '', percentage: '' }];
+                    }
                   }
                   
                   // Ensure trustAssets array exists

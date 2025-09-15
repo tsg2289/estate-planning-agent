@@ -92,7 +92,8 @@ const TrustForm = ({ onSubmit }) => {
     alternateTrustees: [{ name: '', address: '', city: '', county: '', phone: '', email: '' }],
     trustType: 'revocable',
     trustName: '',
-    beneficiaries: [{ name: '', relationship: '', percentage: '', isMinor: false }],
+    children: [{ name: '', relationship: '' }],
+    otherBeneficiaries: [{ name: '', relationship: '', percentage: '' }],
     specificGifts: [{ beneficiary: '', gift: '' }],
     trustAssets: [{ description: '', value: '', type: '' }],
     distributionTerms: '',
@@ -120,28 +121,55 @@ const TrustForm = ({ onSubmit }) => {
     }))
   }
 
-  const handleBeneficiaryChange = (index, field, value) => {
-    const newBeneficiaries = [...(formData.beneficiaries || [])]
-    if (newBeneficiaries[index]) {
-      newBeneficiaries[index][field] = value
+  const handleChildChange = (index, field, value) => {
+    const newChildren = [...(formData.children || [])]
+    if (newChildren[index]) {
+      newChildren[index][field] = value
     }
     setFormData(prev => ({
       ...prev,
-      beneficiaries: newBeneficiaries
+      children: newChildren
     }))
   }
 
-  const addBeneficiary = () => {
+  const addChild = () => {
+    if ((formData.children || []).length < 10) {
+      setFormData(prev => ({
+        ...prev,
+        children: [...(prev.children || []), { name: '', relationship: '' }]
+      }))
+    }
+  }
+
+  const removeChild = (index) => {
     setFormData(prev => ({
       ...prev,
-      beneficiaries: [...(prev.beneficiaries || []), { name: '', relationship: '', percentage: '', isMinor: false }]
+      children: (prev.children || []).filter((_, i) => i !== index)
     }))
   }
 
-  const removeBeneficiary = (index) => {
+  const handleOtherBeneficiaryChange = (index, field, value) => {
+    const newOtherBeneficiaries = [...(formData.otherBeneficiaries || [])]
+    if (newOtherBeneficiaries[index]) {
+      newOtherBeneficiaries[index][field] = value
+    }
     setFormData(prev => ({
       ...prev,
-      beneficiaries: (prev.beneficiaries || []).filter((_, i) => i !== index)
+      otherBeneficiaries: newOtherBeneficiaries
+    }))
+  }
+
+  const addOtherBeneficiary = () => {
+    setFormData(prev => ({
+      ...prev,
+      otherBeneficiaries: [...(prev.otherBeneficiaries || []), { name: '', relationship: '', percentage: '' }]
+    }))
+  }
+
+  const removeOtherBeneficiary = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      otherBeneficiaries: (prev.otherBeneficiaries || []).filter((_, i) => i !== index)
     }))
   }
 
@@ -705,69 +733,115 @@ const TrustForm = ({ onSubmit }) => {
         {/* Beneficiaries */}
         <div className="form-section">
           <h3>Beneficiaries</h3>
-          {(formData.beneficiaries || []).map((beneficiary, index) => (
-            <div key={index} className="beneficiary-item">
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-label">Name</label>
-                  <input
-                    type="text"
-                    value={beneficiary.name}
-                    onChange={(e) => handleBeneficiaryChange(index, 'name', e.target.value)}
-                    className="form-input"
-                    required
-                  />
+          
+          {/* Children Section */}
+          <div className="beneficiary-subsection">
+            <h4>Children</h4>
+            <p className="form-description">
+              Add your children as beneficiaries (up to 10 children).
+            </p>
+            {(formData.children || []).map((child, index) => (
+              <div key={index} className="beneficiary-item">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Child's Name</label>
+                    <input
+                      type="text"
+                      value={child.name}
+                      onChange={(e) => handleChildChange(index, 'name', e.target.value)}
+                      className="form-input"
+                      placeholder="e.g., John Smith"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Relationship</label>
+                    <input
+                      type="text"
+                      value={child.relationship}
+                      onChange={(e) => handleChildChange(index, 'relationship', e.target.value)}
+                      className="form-input"
+                      placeholder="e.g., Son, Daughter, Stepchild"
+                    />
+                  </div>
                 </div>
-                <div className="form-group">
-                  <label className="form-label">Relationship</label>
-                  <input
-                    type="text"
-                    value={beneficiary.relationship}
-                    onChange={(e) => handleBeneficiaryChange(index, 'relationship', e.target.value)}
-                    className="form-input"
-                    placeholder="e.g., Spouse, Child, Friend"
-                  />
-                </div>
+                
+                {(formData.children || []).length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeChild(index)}
+                    className="remove-button"
+                  >
+                    Remove Child
+                  </button>
+                )}
               </div>
-              
-              <div className="form-row">
+            ))}
+            
+            {(formData.children || []).length < 10 && (
+              <button type="button" onClick={addChild} className="add-button">
+                Add Child ({(formData.children || []).length}/10)
+              </button>
+            )}
+          </div>
+
+          {/* Other Beneficiaries Section */}
+          <div className="beneficiary-subsection">
+            <h4>Other Beneficiaries</h4>
+            <p className="form-description">
+              Add other beneficiaries such as spouse, relatives, friends, or organizations.
+            </p>
+            {(formData.otherBeneficiaries || []).map((beneficiary, index) => (
+              <div key={index} className="beneficiary-item">
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">Name</label>
+                    <input
+                      type="text"
+                      value={beneficiary.name}
+                      onChange={(e) => handleOtherBeneficiaryChange(index, 'name', e.target.value)}
+                      className="form-input"
+                      placeholder="e.g., Jane Smith, Red Cross"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Relationship</label>
+                    <input
+                      type="text"
+                      value={beneficiary.relationship}
+                      onChange={(e) => handleOtherBeneficiaryChange(index, 'relationship', e.target.value)}
+                      className="form-input"
+                      placeholder="e.g., Spouse, Friend, Charity"
+                    />
+                  </div>
+                </div>
+                
                 <div className="form-group">
                   <label className="form-label">Percentage</label>
                   <input
                     type="text"
                     value={beneficiary.percentage}
-                    onChange={(e) => handleBeneficiaryChange(index, 'percentage', e.target.value)}
+                    onChange={(e) => handleOtherBeneficiaryChange(index, 'percentage', e.target.value)}
                     className="form-input"
                     placeholder="e.g., 50%, 25%"
                   />
                 </div>
-                <div className="form-group">
-                  <label className="form-label">
-                    <input
-                      type="checkbox"
-                      checked={beneficiary.isMinor}
-                      onChange={(e) => handleBeneficiaryChange(index, 'isMinor', e.target.checked)}
-                    />
-                    Is Minor
-                  </label>
-                </div>
+                
+                {(formData.otherBeneficiaries || []).length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeOtherBeneficiary(index)}
+                    className="remove-button"
+                  >
+                    Remove Beneficiary
+                  </button>
+                )}
               </div>
-              
-              {(formData.beneficiaries || []).length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeBeneficiary(index)}
-                  className="remove-button"
-                >
-                  Remove Beneficiary
-                </button>
-              )}
-            </div>
-          ))}
-          
-          <button type="button" onClick={addBeneficiary} className="add-button">
-            Add Beneficiary
-          </button>
+            ))}
+            
+            <button type="button" onClick={addOtherBeneficiary} className="add-button">
+              Add Other Beneficiary
+            </button>
+          </div>
         </div>
 
         {/* Specific Gifts */}
