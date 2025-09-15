@@ -59,8 +59,10 @@ const TrustForm = ({ onSubmit }) => {
   }
 
   const handleBeneficiaryChange = (index, field, value) => {
-    const newBeneficiaries = [...formData.beneficiaries]
-    newBeneficiaries[index][field] = value
+    const newBeneficiaries = [...(formData.beneficiaries || [])]
+    if (newBeneficiaries[index]) {
+      newBeneficiaries[index][field] = value
+    }
     setFormData(prev => ({
       ...prev,
       beneficiaries: newBeneficiaries
@@ -70,20 +72,22 @@ const TrustForm = ({ onSubmit }) => {
   const addBeneficiary = () => {
     setFormData(prev => ({
       ...prev,
-      beneficiaries: [...prev.beneficiaries, { name: '', relationship: '', percentage: '', isMinor: false }]
+      beneficiaries: [...(prev.beneficiaries || []), { name: '', relationship: '', percentage: '', isMinor: false }]
     }))
   }
 
   const removeBeneficiary = (index) => {
     setFormData(prev => ({
       ...prev,
-      beneficiaries: prev.beneficiaries.filter((_, i) => i !== index)
+      beneficiaries: (prev.beneficiaries || []).filter((_, i) => i !== index)
     }))
   }
 
   const handleAssetChange = (index, field, value) => {
-    const newAssets = [...formData.trustAssets]
-    newAssets[index][field] = value
+    const newAssets = [...(formData.trustAssets || [])]
+    if (newAssets[index]) {
+      newAssets[index][field] = value
+    }
     setFormData(prev => ({
       ...prev,
       trustAssets: newAssets
@@ -93,20 +97,22 @@ const TrustForm = ({ onSubmit }) => {
   const addAsset = () => {
     setFormData(prev => ({
       ...prev,
-      trustAssets: [...prev.trustAssets, { description: '', value: '', type: '' }]
+      trustAssets: [...(prev.trustAssets || []), { description: '', value: '', type: '' }]
     }))
   }
 
   const removeAsset = (index) => {
     setFormData(prev => ({
       ...prev,
-      trustAssets: prev.trustAssets.filter((_, i) => i !== index)
+      trustAssets: (prev.trustAssets || []).filter((_, i) => i !== index)
     }))
   }
 
   const handleSpecificGiftChange = (index, field, value) => {
-    const newSpecificGifts = [...formData.specificGifts]
-    newSpecificGifts[index][field] = value
+    const newSpecificGifts = [...(formData.specificGifts || [])]
+    if (newSpecificGifts[index]) {
+      newSpecificGifts[index][field] = value
+    }
     setFormData(prev => ({
       ...prev,
       specificGifts: newSpecificGifts
@@ -116,14 +122,14 @@ const TrustForm = ({ onSubmit }) => {
   const addSpecificGift = () => {
     setFormData(prev => ({
       ...prev,
-      specificGifts: [...prev.specificGifts, { beneficiary: '', gift: '' }]
+      specificGifts: [...(prev.specificGifts || []), { beneficiary: '', gift: '' }]
     }))
   }
 
   const removeSpecificGift = (index) => {
     setFormData(prev => ({
       ...prev,
-      specificGifts: prev.specificGifts.filter((_, i) => i !== index)
+      specificGifts: (prev.specificGifts || []).filter((_, i) => i !== index)
     }))
   }
 
@@ -505,7 +511,7 @@ const TrustForm = ({ onSubmit }) => {
         {/* Beneficiaries */}
         <div className="form-section">
           <h3>Beneficiaries</h3>
-          {formData.beneficiaries.map((beneficiary, index) => (
+          {(formData.beneficiaries || []).map((beneficiary, index) => (
             <div key={index} className="beneficiary-item">
               <div className="form-row">
                 <div className="form-group">
@@ -553,7 +559,7 @@ const TrustForm = ({ onSubmit }) => {
                 </div>
               </div>
               
-              {formData.beneficiaries.length > 1 && (
+              {(formData.beneficiaries || []).length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeBeneficiary(index)}
@@ -576,7 +582,7 @@ const TrustForm = ({ onSubmit }) => {
           <p className="form-description">
             List any specific items or amounts you want to give to particular beneficiaries before the remainder is distributed.
           </p>
-          {formData.specificGifts.map((gift, index) => (
+          {(formData.specificGifts || []).map((gift, index) => (
             <div key={index} className="gift-item">
               <div className="form-row">
                 <div className="form-group">
@@ -601,7 +607,7 @@ const TrustForm = ({ onSubmit }) => {
                 </div>
               </div>
               
-              {formData.specificGifts.length > 1 && (
+              {(formData.specificGifts || []).length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeSpecificGift(index)}
@@ -621,7 +627,7 @@ const TrustForm = ({ onSubmit }) => {
         {/* Trust Assets */}
         <div className="form-section">
           <h3>Trust Assets</h3>
-          {formData.trustAssets.map((asset, index) => (
+          {(formData.trustAssets || []).map((asset, index) => (
             <div key={index} className="asset-item">
               <div className="form-row">
                 <div className="form-group">
@@ -657,7 +663,7 @@ const TrustForm = ({ onSubmit }) => {
                 />
               </div>
               
-              {formData.trustAssets.length > 1 && (
+              {(formData.trustAssets || []).length > 1 && (
                 <button
                   type="button"
                   onClick={() => removeAsset(index)}

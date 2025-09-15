@@ -188,6 +188,35 @@ export const useFormProgress = (formType, initialData = {}) => {
                     }];
                   }
                 }
+
+                // Handle trust form migrations
+                if (formType === 'trust') {
+                  // Ensure specificGifts array exists
+                  if (!Array.isArray(migratedData.specificGifts)) {
+                    migratedData.specificGifts = [{ beneficiary: '', gift: '' }];
+                  }
+                  
+                  // Ensure beneficiaries array exists
+                  if (!Array.isArray(migratedData.beneficiaries)) {
+                    migratedData.beneficiaries = [{ name: '', relationship: '', percentage: '', isMinor: false }];
+                  }
+                  
+                  // Ensure trustAssets array exists
+                  if (!Array.isArray(migratedData.trustAssets)) {
+                    migratedData.trustAssets = [{ description: '', value: '', type: '' }];
+                  }
+                  
+                  // Add missing county fields if they don't exist
+                  if (!migratedData.trustorCounty) {
+                    migratedData.trustorCounty = '';
+                  }
+                  if (!migratedData.trusteeCity) {
+                    migratedData.trusteeCity = '';
+                  }
+                  if (!migratedData.trusteeCounty) {
+                    migratedData.trusteeCounty = '';
+                  }
+                }
           
           setFormData(migratedData);
           setLastSaved(savedProgress.lastSaved);
