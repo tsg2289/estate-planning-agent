@@ -100,6 +100,64 @@ export const useFormProgress = (formType, initialData = {}) => {
                   delete migratedData.alternateExecutorZip;
                   delete migratedData.alternateExecutorPhone;
                 }
+
+                // Convert old guardian format to new array format if needed
+                if (formType === 'will' && !Array.isArray(migratedData.guardians)) {
+                  const guardians = [];
+                  
+                  // Check if old guardian data exists
+                  if (migratedData.guardianName || migratedData.guardianCity || 
+                      migratedData.guardianState || migratedData.guardianPhone) {
+                    guardians.push({
+                      name: migratedData.guardianName || '',
+                      address: '', // Old format didn't have address
+                      city: migratedData.guardianCity || '',
+                      state: migratedData.guardianState || '',
+                      zip: '', // Old format didn't have ZIP
+                      phone: migratedData.guardianPhone || '',
+                      email: '' // Old format didn't have email
+                    });
+                  }
+                  
+                  // Check if alternate guardian data exists
+                  if (migratedData.alternateGuardianName || migratedData.alternateGuardianCity || 
+                      migratedData.alternateGuardianState || migratedData.alternateGuardianPhone) {
+                    guardians.push({
+                      name: migratedData.alternateGuardianName || '',
+                      address: '', // Old format didn't have address
+                      city: migratedData.alternateGuardianCity || '',
+                      state: migratedData.alternateGuardianState || '',
+                      zip: '', // Old format didn't have ZIP
+                      phone: migratedData.alternateGuardianPhone || '',
+                      email: '' // Old format didn't have email
+                    });
+                  }
+                  
+                  // Ensure at least one empty guardian if no data
+                  if (guardians.length === 0) {
+                    guardians.push({
+                      name: '',
+                      address: '',
+                      city: '',
+                      state: '',
+                      zip: '',
+                      phone: '',
+                      email: ''
+                    });
+                  }
+                  
+                  migratedData.guardians = guardians;
+                  
+                  // Clean up old guardian fields
+                  delete migratedData.guardianName;
+                  delete migratedData.guardianCity;
+                  delete migratedData.guardianState;
+                  delete migratedData.guardianPhone;
+                  delete migratedData.alternateGuardianName;
+                  delete migratedData.alternateGuardianCity;
+                  delete migratedData.alternateGuardianState;
+                  delete migratedData.alternateGuardianPhone;
+                }
           
           setFormData(migratedData);
           setLastSaved(savedProgress.lastSaved);

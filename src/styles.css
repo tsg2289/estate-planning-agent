@@ -384,6 +384,66 @@ body {
   background: #26d065;
 }
 
+/* Guardian input styles */
+.guardian-input-group {
+  border: 2px solid #e0e7ff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: #f8fafc;
+}
+
+.guardian-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.guardian-header h4 {
+  margin: 0;
+  color: #374151;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.remove-guardian-button {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.remove-guardian-button:hover {
+  background: #ff3838;
+}
+
+.add-guardian-button {
+  background: #2ed573;
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.add-guardian-button:hover {
+  background: #26d065;
+}
+
 .form-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;

@@ -500,6 +500,41 @@ export const formatFormData = (formData, documentType) => {
           formatted.alternateExecutorPhone = ''
         }
       }
+      
+      // Format guardians for document
+      if (Array.isArray(formData.guardians) && formData.guardians.length > 0) {
+        const primaryGuardian = formData.guardians[0]
+        
+        // Primary guardian info
+        formatted.guardianName = primaryGuardian.name || ''
+        formatted.guardianAddress = primaryGuardian.address || ''
+        formatted.guardianCity = primaryGuardian.city || ''
+        formatted.guardianState = primaryGuardian.state || ''
+        formatted.guardianZip = primaryGuardian.zip || ''
+        formatted.guardianPhone = primaryGuardian.phone || ''
+        formatted.guardianEmail = primaryGuardian.email || ''
+        
+        // Alternate guardian info (second guardian if exists)
+        if (formData.guardians.length > 1) {
+          const alternateGuardian = formData.guardians[1]
+          formatted.alternateGuardianName = alternateGuardian.name || ''
+          formatted.alternateGuardianAddress = alternateGuardian.address || ''
+          formatted.alternateGuardianCity = alternateGuardian.city || ''
+          formatted.alternateGuardianState = alternateGuardian.state || ''
+          formatted.alternateGuardianZip = alternateGuardian.zip || ''
+          formatted.alternateGuardianPhone = alternateGuardian.phone || ''
+          formatted.alternateGuardianEmail = alternateGuardian.email || ''
+        } else {
+          // Clear alternate guardian fields if no second guardian
+          formatted.alternateGuardianName = ''
+          formatted.alternateGuardianAddress = ''
+          formatted.alternateGuardianCity = ''
+          formatted.alternateGuardianState = ''
+          formatted.alternateGuardianZip = ''
+          formatted.alternateGuardianPhone = ''
+          formatted.alternateGuardianEmail = ''
+        }
+      }
       break
       
     case 'trust':

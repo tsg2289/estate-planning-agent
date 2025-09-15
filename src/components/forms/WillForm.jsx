@@ -42,14 +42,15 @@ const WillForm = ({ onSubmit }) => {
       phone: '',
       email: ''
     }],
-    guardianName: '',
-    guardianCity: '',
-    guardianState: '',
-    guardianPhone: '',
-    alternateGuardianName: '',
-    alternateGuardianCity: '',
-    alternateGuardianState: '',
-    alternateGuardianPhone: '',
+    guardians: [{
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }],
     witness1Name: '',
     witness1Address: '',
     witness2Name: '',
@@ -73,11 +74,20 @@ const WillForm = ({ onSubmit }) => {
     getSaveStatusColor
   } = useFormProgress('will', initialData)
 
-  // Ensure childrenNames and executors are always arrays (safety check)
+  // Ensure childrenNames, executors, and guardians are always arrays (safety check)
   const safeFormData = {
     ...formData,
     childrenNames: Array.isArray(formData.childrenNames) ? formData.childrenNames : [''],
     executors: Array.isArray(formData.executors) ? formData.executors : [{
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }],
+    guardians: Array.isArray(formData.guardians) ? formData.guardians : [{
       name: '',
       address: '',
       city: '',
@@ -180,6 +190,44 @@ const WillForm = ({ onSubmit }) => {
       setFormData(prev => ({
         ...prev,
         executors: (Array.isArray(prev.executors) ? prev.executors : [{ name: '', address: '', city: '', state: '', zip: '', phone: '', email: '' }]).filter((_, i) => i !== index)
+      }))
+    }
+  }
+
+  // Handle guardian changes
+  const handleGuardianChange = (index, field, value) => {
+    const newGuardians = [...safeFormData.guardians]
+    newGuardians[index] = { ...newGuardians[index], [field]: value }
+    setFormData(prev => ({
+      ...prev,
+      guardians: newGuardians
+    }))
+  }
+
+  // Add new guardian
+  const addGuardian = () => {
+    if (safeFormData.guardians.length < 5) {
+      setFormData(prev => ({
+        ...prev,
+        guardians: [...(Array.isArray(prev.guardians) ? prev.guardians : [{ name: '', address: '', city: '', state: '', zip: '', phone: '', email: '' }]), {
+          name: '',
+          address: '',
+          city: '',
+          state: '',
+          zip: '',
+          phone: '',
+          email: ''
+        }]
+      }))
+    }
+  }
+
+  // Remove guardian
+  const removeGuardian = (index) => {
+    if (safeFormData.guardians.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        guardians: (Array.isArray(prev.guardians) ? prev.guardians : [{ name: '', address: '', city: '', state: '', zip: '', phone: '', email: '' }]).filter((_, i) => i !== index)
       }))
     }
   }
@@ -626,98 +674,115 @@ const WillForm = ({ onSubmit }) => {
 
         {/* Guardian Information */}
         <div className="form-section">
-          <h3>Guardian for Minor Children</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Guardian Name</label>
-              <input
-                type="text"
-                name="guardianName"
-                value={formData.guardianName}
-                onChange={handleInputChange}
-                className="form-input"
-              />
+          <h3>Guardians for Minor Children</h3>
+          {safeFormData.guardians.map((guardian, index) => (
+            <div key={index} className="guardian-input-group">
+              <div className="guardian-header">
+                <h4>{index === 0 ? 'Primary Guardian' : `Guardian ${index + 1}`}</h4>
+                {safeFormData.guardians.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeGuardian(index)}
+                    className="remove-guardian-button"
+                    aria-label="Remove guardian"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  value={guardian.name}
+                  onChange={(e) => handleGuardianChange(index, 'name', e.target.value)}
+                  className="form-input"
+                  required={index === 0}
+                  placeholder={`${index === 0 ? 'Primary' : 'Alternate'} guardian full name`}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <input
+                  type="text"
+                  value={guardian.address}
+                  onChange={(e) => handleGuardianChange(index, 'address', e.target.value)}
+                  className="form-input"
+                  required={index === 0}
+                  placeholder="Street address"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">City</label>
+                  <input
+                    type="text"
+                    value={guardian.city}
+                    onChange={(e) => handleGuardianChange(index, 'city', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">State</label>
+                  <input
+                    type="text"
+                    value={guardian.state}
+                    onChange={(e) => handleGuardianChange(index, 'state', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">ZIP Code</label>
+                  <input
+                    type="text"
+                    value={guardian.zip}
+                    onChange={(e) => handleGuardianChange(index, 'zip', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    value={guardian.phone}
+                    onChange={(e) => handleGuardianChange(index, 'phone', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input
+                  type="email"
+                  value={guardian.email}
+                  onChange={(e) => handleGuardianChange(index, 'email', e.target.value)}
+                  className="form-input"
+                  required={index === 0}
+                />
+              </div>
             </div>
-            <div className="form-group">
-              <label className="form-label">Guardian Phone</label>
-              <input
-                type="tel"
-                name="guardianPhone"
-                value={formData.guardianPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
+          ))}
           
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Guardian City</label>
-              <input
-                type="text"
-                name="guardianCity"
-                value={formData.guardianCity}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Guardian State</label>
-              <input
-                type="text"
-                name="guardianState"
-                value={formData.guardianState}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Alternate Guardian Name</label>
-              <input
-                type="text"
-                name="alternateGuardianName"
-                value={formData.alternateGuardianName}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Alternate Guardian Phone</label>
-              <input
-                type="tel"
-                name="alternateGuardianPhone"
-                value={formData.alternateGuardianPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Alternate Guardian City</label>
-              <input
-                type="text"
-                name="alternateGuardianCity"
-                value={formData.alternateGuardianCity}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Alternate Guardian State</label>
-              <input
-                type="text"
-                name="alternateGuardianState"
-                value={formData.alternateGuardianState}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
+          {safeFormData.guardians.length < 5 && (
+            <button
+              type="button"
+              onClick={addGuardian}
+              className="add-guardian-button"
+            >
+              + Add Another Guardian
+            </button>
+          )}
         </div>
 
         {/* Assets and Bequests */}
