@@ -34,13 +34,17 @@ const WillForm = ({ onSubmit }) => {
     trustName: '',
     trustDate: '',
     executorName: '',
+    executorAddress: '',
     executorCity: '',
     executorState: '',
+    executorZip: '',
     executorPhone: '',
     executorEmail: '',
     alternateExecutorName: '',
+    alternateExecutorAddress: '',
     alternateExecutorCity: '',
     alternateExecutorState: '',
+    alternateExecutorZip: '',
     alternateExecutorPhone: '',
     guardianName: '',
     guardianCity: '',
@@ -479,6 +483,19 @@ const WillForm = ({ onSubmit }) => {
             />
           </div>
           
+          <div className="form-group">
+            <label className="form-label">Address</label>
+            <input
+              type="text"
+              name="executorAddress"
+              value={formData.executorAddress}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+              placeholder="Street address"
+            />
+          </div>
+          
           <div className="form-row">
             <div className="form-group">
               <label className="form-label">Phone</label>
@@ -531,30 +548,49 @@ const WillForm = ({ onSubmit }) => {
           
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Alternate Executor Name</label>
+              <label className="form-label">ZIP Code</label>
               <input
                 type="text"
-                name="alternateExecutorName"
-                value={formData.alternateExecutorName}
+                name="executorZip"
+                value={formData.executorZip}
                 onChange={handleInputChange}
                 className="form-input"
+                required
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Alternate Executor Phone</label>
-              <input
-                type="tel"
-                name="alternateExecutorPhone"
-                value={formData.alternateExecutorPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
+              {/* Empty to maintain grid layout */}
             </div>
+          </div>
+          
+          <h4>Alternate Executor (Optional)</h4>
+          <div className="form-group">
+            <label className="form-label">Alternate Executor Name</label>
+            <input
+              type="text"
+              name="alternateExecutorName"
+              value={formData.alternateExecutorName}
+              onChange={handleInputChange}
+              className="form-input"
+              placeholder="Full name of alternate executor"
+            />
+          </div>
+          
+          <div className="form-group">
+            <label className="form-label">Address</label>
+            <input
+              type="text"
+              name="alternateExecutorAddress"
+              value={formData.alternateExecutorAddress}
+              onChange={handleInputChange}
+              className="form-input"
+              placeholder="Street address"
+            />
           </div>
           
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Alternate Executor City</label>
+              <label className="form-label">City</label>
               <input
                 type="text"
                 name="alternateExecutorCity"
@@ -564,11 +600,34 @@ const WillForm = ({ onSubmit }) => {
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Alternate Executor State</label>
+              <label className="form-label">State</label>
               <input
                 type="text"
                 name="alternateExecutorState"
                 value={formData.alternateExecutorState}
+                onChange={handleInputChange}
+                className="form-input"
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label">ZIP Code</label>
+              <input
+                type="text"
+                name="alternateExecutorZip"
+                value={formData.alternateExecutorZip}
+                onChange={handleInputChange}
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                name="alternateExecutorPhone"
+                value={formData.alternateExecutorPhone}
                 onChange={handleInputChange}
                 className="form-input"
               />
