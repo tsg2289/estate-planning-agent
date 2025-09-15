@@ -92,7 +92,7 @@ const TrustForm = ({ onSubmit }) => {
     alternateTrustees: [{ name: '', address: '', city: '', county: '', phone: '', email: '' }],
     trustType: 'revocable',
     trustName: '',
-    children: [{ name: '', relationship: '' }],
+    children: [{ name: '', relationship: '', percentage: '' }],
     otherBeneficiaries: [{ name: '', relationship: '', percentage: '' }],
     specificGifts: [{ beneficiary: '', gift: '' }],
     trustAssets: [{ description: '', value: '', type: '' }],
@@ -136,7 +136,7 @@ const TrustForm = ({ onSubmit }) => {
     if ((formData.children || []).length < 10) {
       setFormData(prev => ({
         ...prev,
-        children: [...(prev.children || []), { name: '', relationship: '' }]
+        children: [...(prev.children || []), { name: '', relationship: '', percentage: '' }]
       }))
     }
   }
@@ -763,6 +763,17 @@ const TrustForm = ({ onSubmit }) => {
                       placeholder="e.g., Son, Daughter, Stepchild"
                     />
                   </div>
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Percentage</label>
+                  <input
+                    type="text"
+                    value={child.percentage}
+                    onChange={(e) => handleChildChange(index, 'percentage', e.target.value)}
+                    className="form-input"
+                    placeholder="e.g., 50%, 25%, 33.33%"
+                  />
                 </div>
                 
                 {(formData.children || []).length > 1 && (

@@ -209,7 +209,8 @@ export const useFormProgress = (formType, initialData = {}) => {
                            beneficiary.relationship.toLowerCase().includes('daughter'))) {
                         children.push({
                           name: beneficiary.name || '',
-                          relationship: beneficiary.relationship || ''
+                          relationship: beneficiary.relationship || '',
+                          percentage: beneficiary.percentage || ''
                         });
                       } else {
                         otherBeneficiaries.push({
@@ -221,7 +222,7 @@ export const useFormProgress = (formType, initialData = {}) => {
                     });
                     
                     // Set new structure
-                    migratedData.children = children.length > 0 ? children : [{ name: '', relationship: '' }];
+                    migratedData.children = children.length > 0 ? children : [{ name: '', relationship: '', percentage: '' }];
                     migratedData.otherBeneficiaries = otherBeneficiaries.length > 0 ? otherBeneficiaries : [{ name: '', relationship: '', percentage: '' }];
                     
                     // Remove old beneficiaries array
@@ -229,7 +230,7 @@ export const useFormProgress = (formType, initialData = {}) => {
                   } else {
                     // Ensure new arrays exist
                     if (!Array.isArray(migratedData.children)) {
-                      migratedData.children = [{ name: '', relationship: '' }];
+                      migratedData.children = [{ name: '', relationship: '', percentage: '' }];
                     }
                     if (!Array.isArray(migratedData.otherBeneficiaries)) {
                       migratedData.otherBeneficiaries = [{ name: '', relationship: '', percentage: '' }];

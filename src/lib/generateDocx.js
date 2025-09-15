@@ -775,28 +775,17 @@ const formatSpecificGifts = (specificGifts) => {
 const formatResidueDistribution = (children, otherBeneficiaries) => {
   const distributions = []
   
-  // Add children (equal distribution if no percentage specified for other beneficiaries)
+  // Add children with their specified percentages
   if (children && children.length > 0) {
     const validChildren = children.filter(child => child.name && child.name.trim())
     if (validChildren.length > 0) {
-      // Check if other beneficiaries have percentages
-      const otherBeneficiariesWithPercentages = (otherBeneficiaries || []).filter(b => b.percentage && b.percentage.trim())
-      
-      if (otherBeneficiariesWithPercentages.length === 0) {
-        // Equal distribution among children only
-        const childPercentage = Math.floor(100 / validChildren.length)
-        const remainder = 100 - (childPercentage * validChildren.length)
-        
-        validChildren.forEach((child, index) => {
-          const percentage = index === 0 ? childPercentage + remainder : childPercentage
-          distributions.push(`${percentage}% to ${child.name} (${child.relationship || 'Child'}).`)
-        })
-      } else {
-        // List children without percentages (will be handled in specific gifts or other sections)
-        validChildren.forEach(child => {
+      validChildren.forEach(child => {
+        if (child.percentage && child.percentage.trim()) {
+          distributions.push(`${child.percentage} to ${child.name} (${child.relationship || 'Child'}).`)
+        } else {
           distributions.push(`Equal share to ${child.name} (${child.relationship || 'Child'}).`)
-        })
-      }
+        }
+      })
     }
   }
   
