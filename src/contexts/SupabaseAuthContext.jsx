@@ -21,36 +21,56 @@ export const SupabaseAuthProvider = ({ children }) => {
   useEffect(() => {
     console.log('SupabaseAuthContext: useEffect running, isSupabaseConfigured:', isSupabaseConfigured)
     
+    // Safety timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      console.log('Loading timeout reached, forcing loading to false')
+      setLoading(false)
+    }, 10000) // 10 seconds timeout
+    
     // Check if Supabase is configured
     if (!isSupabaseConfigured) {
       console.log('SupabaseAuthContext: Supabase not configured, setting error and stopping loading')
       setConfigError('Supabase not configured. Please set up your Supabase credentials.')
       setLoading(false)
+      clearTimeout(loadingTimeout)
       return
     }
 
     // Get initial session
     const getInitialSession = async () => {
       console.log('Getting initial session...')
-      const { data: { session }, error } = await supabase.auth.getSession()
-      if (error) {
-        console.error('Error getting session:', error)
-      } else {
-        console.log('Initial session found:', session?.user?.email)
-        setSession(session)
-        setUser(session?.user ?? null)
-        
-        if (session?.user) {
-          try {
-            await loadUserProfile(session.user.id)
-          } catch (error) {
-            console.error('Error loading profile in initial session:', error)
-            setProfile(null)
+      try {
+        const { data: { session }, error } = await supabase.auth.getSession()
+        if (error) {
+          console.error('Error getting session:', error)
+          setSession(null)
+          setUser(null)
+        } else {
+          console.log('Initial session found:', session?.user?.email)
+          setSession(session)
+          setUser(session?.user ?? null)
+          
+          if (session?.user) {
+            // Load profile in background, don't block authentication
+            loadUserProfile(session.user.id).catch(error => {
+              console.error('Error loading profile in initial session:', error)
+              setProfile({
+                id: session.user.id,
+                full_name: null,
+                preferences: {}
+              })
+            })
           }
         }
+      } catch (error) {
+        console.error('Error in getInitialSession:', error)
+        setSession(null)
+        setUser(null)
+      } finally {
+        console.log('Setting loading to false after initial session check')
+        setLoading(false)
+        clearTimeout(loadingTimeout)
       }
-      console.log('Setting loading to false after initial session check')
-      setLoading(false)
     }
 
     getInitialSession()
@@ -63,12 +83,15 @@ export const SupabaseAuthProvider = ({ children }) => {
       setUser(session?.user ?? null)
       
       if (session?.user) {
-        try {
-          await loadUserProfile(session.user.id)
-        } catch (error) {
+        // Load profile in background, don't block auth state change
+        loadUserProfile(session.user.id).catch(error => {
           console.error('Error loading profile in auth state change:', error)
-          setProfile(null)
-        }
+          setProfile({
+            id: session.user.id,
+            full_name: null,
+            preferences: {}
+          })
+        })
       } else {
         setProfile(null)
       }
@@ -76,9 +99,13 @@ export const SupabaseAuthProvider = ({ children }) => {
       // Always set loading to false after auth state change
       console.log('Setting loading to false after auth state change')
       setLoading(false)
+      clearTimeout(loadingTimeout)
     })
 
-    return () => subscription.unsubscribe()
+    return () => {
+      subscription.unsubscribe()
+      clearTimeout(loadingTimeout)
+    }
   }, [])
 
   const loadUserProfile = async (userId) => {
