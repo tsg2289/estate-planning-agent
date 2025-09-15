@@ -124,71 +124,102 @@ export const generateDocument = async (documentType, formData) => {
 const createDocumentSections = async (template, formData) => {
   const children = []
   
-  // Add title
-  children.push(
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: template.title.toUpperCase(),
-          bold: true,
-          size: 32,
-        }),
-      ],
-      heading: HeadingLevel.HEADING_1,
-      alignment: AlignmentType.CENTER,
-      spacing: {
-        before: 400,
-        after: 400,
-      },
-    })
-  )
+  // For trust documents, don't add the main title here since it's handled in title_header section
+  if (!template.title.includes('REVOCABLE LIVING TRUST')) {
+    // Add title for non-trust documents
+    children.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: template.title.toUpperCase(),
+            bold: true,
+            size: 32,
+          }),
+        ],
+        heading: HeadingLevel.HEADING_1,
+        alignment: AlignmentType.CENTER,
+        spacing: {
+          before: 400,
+          after: 400,
+        },
+      })
+    )
+  }
   
   // Add sections with proper formatting
   for (let i = 0; i < template.sections.length; i++) {
     const section = template.sections[i]
     
     if (section.content && section.content.trim()) {
-      // Handle different section types
-      if (section.name && section.name.includes('article')) {
-        // Article headers - combine with next section content
-        const nextSection = template.sections[i + 1]
-        if (nextSection && nextSection.content) {
-          // Split the next section content to get the heading
-          const lines = nextSection.content.trim().split('\n')
-          const heading = lines[0]
-          const remainingContent = lines.slice(1).join('\n')
+      // Handle trust document sections specifically
+      if (template.title.includes('REVOCABLE LIVING TRUST')) {
+        if (section.name === 'title_header') {
+          // Trust title header - special formatting
+          const lines = section.content.trim().split('\n')
+          lines.forEach((line, index) => {
+            if (line.trim()) {
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: line.trim(),
+                      bold: true,
+                      size: index === 0 ? 32 : 28,
+                    }),
+                  ],
+                  alignment: AlignmentType.CENTER,
+                  spacing: {
+                    before: index === 0 ? 200 : 100,
+                    after: index === lines.length - 1 ? 400 : 100,
+                  },
+                })
+              )
+            }
+          })
+        } else if (section.name && section.name.startsWith('article_')) {
+          // Article sections - parse the content to separate header from body
+          const lines = section.content.trim().split('\n').filter(line => line.trim())
           
-          // Create combined article header with heading on same line
-          children.push(
-            new Paragraph({
-              children: [
-                                 new TextRun({
-                   text: section.content.trim(), // ARTICLE I, II, III, etc.
-                   bold: true,
-                   size: 28,
-                   underline: {},
-                 }),
-                new TextRun({
-                  text: ' - ',
-                  size: 28,
-                }),
-                new TextRun({
-                  text: heading, // The heading text
-                  bold: true,
-                  size: 28,
-                }),
-              ],
-              spacing: {
-                before: 300,
-                after: 200,
-              },
-            })
-          )
-          
-          // Add remaining content if any
-          if (remainingContent.trim()) {
-            const remainingLines = remainingContent.trim().split('\n')
-            remainingLines.forEach((line, index) => {
+          if (lines.length > 0) {
+            // First line is the article header
+            const articleHeader = lines[0]
+            
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: articleHeader,
+                    bold: true,
+                    size: 28,
+                    underline: {},
+                  }),
+                ],
+                spacing: {
+                  before: 400,
+                  after: 200,
+                },
+              })
+            )
+            
+            // Add blank line after header
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: '',
+                    size: 12,
+                  }),
+                ],
+                spacing: {
+                  before: 0,
+                  after: 100,
+                },
+              })
+            )
+            
+            // Remaining lines are the content
+            const contentLines = lines.slice(1)
+            contentLines.forEach((line, index) => {
               if (line.trim()) {
                 children.push(
                   new Paragraph({
@@ -200,40 +231,16 @@ const createDocumentSections = async (template, formData) => {
                     ],
                     alignment: AlignmentType.JUSTIFIED,
                     spacing: {
-                      before: index === 0 ? 100 : 0,
-                      after: index === remainingLines.length - 1 ? 200 : 0,
+                      before: 0,
+                      after: line.trim() === '' ? 0 : 100,
                     },
                   })
                 )
               }
             })
           }
-          
-          // Skip the next section since we've already processed it
-          i++
-        } else {
-          // Fallback if no next section
-          children.push(
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: section.content.trim(),
-                  bold: true,
-                  size: 28,
-                }),
-              ],
-              alignment: AlignmentType.JUSTIFIED,
-              spacing: {
-                before: 300,
-                after: 200,
-              },
-            })
-          )
-        }
-      } else if (section.name && (section.name.includes('signature') || section.name === 'execution')) {
-        // Signature and execution sections - handle differently
-        if (section.name === 'execution') {
-          // Execution section - left aligned with proper spacing for signature line
+        } else if (section.name === 'notary_acknowledgment') {
+          // Notary section - bold header
           const lines = section.content.trim().split('\n')
           lines.forEach((line, index) => {
             if (line.trim()) {
@@ -241,93 +248,71 @@ const createDocumentSections = async (template, formData) => {
                 new Paragraph({
                   children: [
                     new TextRun({
-                      text: line,
+                      text: line.trim(),
+                      bold: index === 0, // Make first line (header) bold
                       size: 24,
-                      bold: index === 0, // Make "Execution" title bold
                     }),
                   ],
-                  alignment: AlignmentType.JUSTIFIED,
+                  alignment: index === 0 ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
                   spacing: {
-                    before: index === 0 ? 400 : 120,
-                    after: 120,
+                    before: index === 0 ? 400 : 0,
+                    after: 100,
                   },
                 })
               )
-            } else {
-              // Add empty line for spacing (like before signature line)
+            }
+          })
+        } else if (section.name === 'schedule_a') {
+          // Schedule A - bold header
+          const lines = section.content.trim().split('\n')
+          lines.forEach((line, index) => {
+            if (line.trim()) {
               children.push(
                 new Paragraph({
-                  children: [new TextRun({ text: '', size: 24 })],
-                  spacing: { before: 120, after: 120 },
+                  children: [
+                    new TextRun({
+                      text: line.trim(),
+                      bold: index === 0, // Make first line (header) bold
+                      size: 24,
+                    }),
+                  ],
+                  alignment: index === 0 ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: index === 0 ? 400 : 0,
+                    after: 100,
+                  },
                 })
               )
             }
           })
         } else {
-          // Original signature section handling - make it bold and centered
-          children.push(
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: section.content.trim(),
-                  bold: true,
-                  size: 28,
-                }),
-              ],
-              alignment: AlignmentType.CENTER,
-              spacing: {
-                before: 400,
-                after: 200,
-              },
-            })
-          )
+          // Regular trust content sections
+          const lines = section.content.trim().split('\n')
+          lines.forEach((line, index) => {
+            if (line.trim()) {
+              const isSignatureLine = line.includes('Trustor') && line.includes(',') && !line.includes('Grantor:')
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: line.trim(),
+                      size: 24,
+                      bold: line.includes('IN WITNESS WHEREOF') || isSignatureLine,
+                    }),
+                  ],
+                  alignment: isSignatureLine ? AlignmentType.LEFT : AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: index === 0 ? 200 : 0,
+                    after: line.includes('IN WITNESS WHEREOF') ? 200 : 100,
+                  },
+                })
+              )
+            }
+          })
         }
-      } else if (section.name && section.name === 'page_break') {
-        // Page break - start new page
-        children.push(
-          new Paragraph({
-            children: [new TextRun({ text: '', size: 24 })],
-            pageBreakBefore: true,
-          })
-        )
-      } else if (section.name && section.name === 'witness_attestation_title') {
-        // Witness Attestation title - bold and centered
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: section.content.trim(),
-                bold: true,
-                size: 28,
-              }),
-            ],
-            alignment: AlignmentType.CENTER,
-            spacing: {
-              before: 400,
-              after: 400,
-            },
-          })
-        )
-      } else if (section.name && section.name.includes('attestation')) {
-        // Attestation clause - make it bold
-        children.push(
-          new Paragraph({
-            children: [
-              new TextRun({
-                text: section.content.trim(),
-                bold: true,
-                size: 24,
-              }),
-            ],
-            alignment: AlignmentType.JUSTIFIED,
-            spacing: {
-              before: 300,
-              after: 200,
-            },
-          })
-        )
-      } else if (!template.sections[i - 1]?.name?.includes('article')) {
-        // Regular content - only process if not already handled by article section
+      } else {
+        // Handle other document types (will, poa, etc.) - simplified logic
         const lines = section.content.trim().split('\n')
         lines.forEach((line, index) => {
           if (line.trim()) {
@@ -337,6 +322,7 @@ const createDocumentSections = async (template, formData) => {
                   new TextRun({
                     text: line.trim(),
                     size: 24,
+                    bold: line.includes('ARTICLE') || line.includes('WITNESS'),
                   }),
                 ],
                 alignment: AlignmentType.JUSTIFIED,
