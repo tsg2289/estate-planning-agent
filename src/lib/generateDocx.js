@@ -261,6 +261,32 @@ const createDocumentSections = async (template, formData) => {
             })
           )
         }
+      } else if (section.name && section.name === 'page_break') {
+        // Page break - start new page
+        children.push(
+          new Paragraph({
+            children: [new TextRun({ text: '', size: 24 })],
+            pageBreakBefore: true,
+          })
+        )
+      } else if (section.name && section.name === 'witness_attestation_title') {
+        // Witness Attestation title - bold and centered
+        children.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: section.content.trim(),
+                bold: true,
+                size: 28,
+              }),
+            ],
+            alignment: AlignmentType.CENTER,
+            spacing: {
+              before: 400,
+              after: 400,
+            },
+          })
+        )
       } else if (section.name && section.name.includes('attestation')) {
         // Attestation clause - make it bold
         children.push(
@@ -594,6 +620,18 @@ export const formatFormData = (formData, documentType) => {
         }
       } else {
         formatted.specialBequestsText = 'My Residual Estate will be received by the Beneficiaries with no special bequests.'
+      }
+      
+      // Format attestation date
+      if (formData.attestationDate) {
+        const attestationDate = new Date(formData.attestationDate)
+        formatted.attestationDate = attestationDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      } else {
+        formatted.attestationDate = '___ day of _______, 20__'
       }
       break
       

@@ -64,7 +64,8 @@ const WillForm = ({ onSubmit }) => {
     }],
     residualBeneficiaries: '',
     funeralWishes: '',
-    additionalInstructions: ''
+    additionalInstructions: '',
+    attestationDate: ''
   }
 
   const {
@@ -1020,6 +1021,18 @@ const WillForm = ({ onSubmit }) => {
                 required
               />
             </div>
+          </div>
+          
+          <div className="form-group">
+            <label className="form-label">Attestation Date</label>
+            <input
+              type="date"
+              name="attestationDate"
+              value={formData.attestationDate}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+            />
           </div>
         </div>
 

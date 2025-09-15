@@ -81,8 +81,16 @@ export const willTemplate = {
       content: 'Execution\n\nI, {{testatorName}}, declare that I sign this instrument as my Last Will and Testament, that I understand and intend its contents, and that I sign it voluntarily on this ___ day of _______, 20__, at {{testatorCity}}, California.\n\n\n_________________________________\n{{testatorName}}, Testator'
     },
     {
+      name: 'page_break',
+      content: 'PAGE_BREAK'
+    },
+    {
+      name: 'witness_attestation_title',
+      content: 'WITNESS ATTESTATION'
+    },
+    {
       name: 'attestation_clause',
-      content: 'ATTESTATION CLAUSE\n\nOn the date written above, {{testatorName}} declared to us, the undersigned witnesses, that this instrument is his/her Will, and signed it in our presence. At the request of the testator, we now sign our names as witnesses in the presence of the testator and each other. We are both over the age of 18, and neither of us is named as a beneficiary in this Will.'
+      content: 'On {{attestationDate}}, {{testatorName}} declared to us, the undersigned witnesses, that this instrument is his/her Will, and signed it in our presence. At the request of the testator, we now sign our names as witnesses in the presence of the testator and each other. We are both over the age of 18, and neither of us is named as a beneficiary in this Will.'
     },
     {
       name: 'witness_1',
