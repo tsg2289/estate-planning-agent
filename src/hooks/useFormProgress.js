@@ -251,6 +251,41 @@ export const useFormProgress = (formType, initialData = {}) => {
                   if (!migratedData.secondTrustorDOB) {
                     migratedData.secondTrustorDOB = '';
                   }
+                  
+                  // Migrate old alternate trustee fields to new array structure
+                  if (!Array.isArray(migratedData.alternateTrustees)) {
+                    const alternateTrustees = [];
+                    
+                    // Check if old alternate trustee data exists
+                    if (migratedData.alternateTrusteeName || migratedData.alternateTrusteePhone) {
+                      alternateTrustees.push({
+                        name: migratedData.alternateTrusteeName || '',
+                        address: '',
+                        city: '',
+                        county: '',
+                        phone: migratedData.alternateTrusteePhone || '',
+                        email: ''
+                      });
+                    }
+                    
+                    // Ensure at least one empty alternate trustee if no data
+                    if (alternateTrustees.length === 0) {
+                      alternateTrustees.push({
+                        name: '',
+                        address: '',
+                        city: '',
+                        county: '',
+                        phone: '',
+                        email: ''
+                      });
+                    }
+                    
+                    migratedData.alternateTrustees = alternateTrustees;
+                    
+                    // Clean up old alternate trustee fields
+                    delete migratedData.alternateTrusteeName;
+                    delete migratedData.alternateTrusteePhone;
+                  }
                 }
           
           setFormData(migratedData);

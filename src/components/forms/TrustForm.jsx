@@ -99,8 +99,7 @@ const TrustForm = ({ onSubmit }) => {
     trusteeCounty: '',
     trusteePhone: '',
     trusteeEmail: '',
-    alternateTrusteeName: '',
-    alternateTrusteePhone: '',
+    alternateTrustees: [{ name: '', address: '', city: '', county: '', phone: '', email: '' }],
     trustType: 'revocable',
     trustName: '',
     beneficiaries: [{ name: '', relationship: '', percentage: '', isMinor: false }],
@@ -203,6 +202,31 @@ const TrustForm = ({ onSubmit }) => {
     setFormData(prev => ({
       ...prev,
       specificGifts: (prev.specificGifts || []).filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleAlternateTrusteeChange = (index, field, value) => {
+    const newAlternateTrustees = [...(formData.alternateTrustees || [])]
+    if (newAlternateTrustees[index]) {
+      newAlternateTrustees[index][field] = value
+    }
+    setFormData(prev => ({
+      ...prev,
+      alternateTrustees: newAlternateTrustees
+    }))
+  }
+
+  const addAlternateTrustee = () => {
+    setFormData(prev => ({
+      ...prev,
+      alternateTrustees: [...(prev.alternateTrustees || []), { name: '', address: '', city: '', county: '', phone: '', email: '' }]
+    }))
+  }
+
+  const removeAlternateTrustee = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      alternateTrustees: (prev.alternateTrustees || []).filter((_, i) => i !== index)
     }))
   }
 
@@ -684,28 +708,98 @@ const TrustForm = ({ onSubmit }) => {
             </div>
           </div>
           
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Alternate Trustee Name</label>
-              <input
-                type="text"
-                name="alternateTrusteeName"
-                value={formData.alternateTrusteeName}
-                onChange={handleInputChange}
-                className="form-input"
-              />
+          {/* Alternate Trustees */}
+          <h4>Alternate Trustees</h4>
+          {(formData.alternateTrustees || []).map((trustee, index) => (
+            <div key={index} className="trustee-item">
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Name</label>
+                  <input
+                    type="text"
+                    value={trustee.name}
+                    onChange={(e) => handleAlternateTrusteeChange(index, 'name', e.target.value)}
+                    className="form-input"
+                    placeholder="e.g., John Smith"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    value={trustee.phone}
+                    onChange={(e) => handleAlternateTrusteeChange(index, 'phone', e.target.value)}
+                    className="form-input"
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <input
+                  type="text"
+                  value={trustee.address}
+                  onChange={(e) => handleAlternateTrusteeChange(index, 'address', e.target.value)}
+                  className="form-input"
+                  placeholder="123 Main Street"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">City</label>
+                  <input
+                    type="text"
+                    value={trustee.city}
+                    onChange={(e) => handleAlternateTrusteeChange(index, 'city', e.target.value)}
+                    className="form-input"
+                    placeholder="Los Angeles"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">County</label>
+                  <select
+                    value={trustee.county}
+                    onChange={(e) => handleAlternateTrusteeChange(index, 'county', e.target.value)}
+                    className="form-input"
+                  >
+                    <option value="">Select County</option>
+                    {CALIFORNIA_COUNTIES.map((county, countyIndex) => (
+                      <option key={countyIndex} value={county}>
+                        {county}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input
+                  type="email"
+                  value={trustee.email}
+                  onChange={(e) => handleAlternateTrusteeChange(index, 'email', e.target.value)}
+                  className="form-input"
+                  placeholder="john@example.com"
+                />
+              </div>
+              
+              {(formData.alternateTrustees || []).length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeAlternateTrustee(index)}
+                  className="remove-button"
+                >
+                  Remove Alternate Trustee
+                </button>
+              )}
             </div>
-            <div className="form-group">
-              <label className="form-label">Alternate Trustee Phone</label>
-              <input
-                type="tel"
-                name="alternateTrusteePhone"
-                value={formData.alternateTrusteePhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
+          ))}
+          
+          <button type="button" onClick={addAlternateTrustee} className="add-button">
+            Add Alternate Trustee
+          </button>
         </div>
 
         {/* Trust Details */}

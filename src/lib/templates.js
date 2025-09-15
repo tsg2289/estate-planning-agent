@@ -156,7 +156,9 @@ The Trustee shall manage the Trust Property for the benefit of the Trustor.`
       name: 'article_6',
       content: `ARTICLE VI – SUCCESSOR TRUSTEE
 
-Upon the death, incapacity, or resignation of the initial Trustee, {{successorTrusteeName}} shall serve as Successor Trustee. If that person is unable or unwilling to serve, then {{alternateSuccessorTrusteeName}} shall serve.`
+Upon the death, incapacity, or resignation of the initial Trustee, the following shall serve as Successor Trustees in the order listed:
+
+{{successorTrusteeList}}`
     },
     {
       name: 'article_7',

@@ -677,8 +677,7 @@ Trustor/Grantor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}
       }
       
       // Format successor trustee information
-      formatted.successorTrusteeName = formData.alternateTrusteeName || '[Name of Successor Trustee]'
-      formatted.alternateSuccessorTrusteeName = '[Alternate Successor Trustee]'
+      formatted.successorTrusteeList = formatSuccessorTrustees(formData.alternateTrustees)
       
       // Format specific gifts from specificGifts array
       formatted.specificGifts = formatSpecificGifts(formData.specificGifts)
@@ -809,4 +808,44 @@ const formatTrustAssetsList = (trustAssets) => {
   }).filter(asset => asset !== null)
   
   return assetsList.length > 0 ? assetsList.join('\n\n') : '[No assets listed]'
+}
+
+// Format successor trustees list
+const formatSuccessorTrustees = (alternateTrustees) => {
+  if (!alternateTrustees || alternateTrustees.length === 0) {
+    return '[No successor trustees designated]'
+  }
+  
+  const trusteesList = alternateTrustees.map((trustee, index) => {
+    if (trustee.name && trustee.name.trim()) {
+      const orderNumber = index + 1
+      let trusteeText = `${orderNumber}. ${trustee.name.trim()}`
+      
+      // Add location if city and county are provided
+      if (trustee.city && trustee.county) {
+        trusteeText += `, of ${trustee.city}, ${trustee.county}, California`
+      } else if (trustee.city) {
+        trusteeText += `, of ${trustee.city}, California`
+      }
+      
+      // Add contact information if available
+      if (trustee.phone || trustee.email) {
+        const contacts = []
+        if (trustee.phone) contacts.push(`Phone: ${trustee.phone}`)
+        if (trustee.email) contacts.push(`Email: ${trustee.email}`)
+        trusteeText += ` (${contacts.join(', ')})`
+      }
+      
+      return trusteeText + '.'
+    }
+    return null
+  }).filter(trustee => trustee !== null)
+  
+  if (trusteesList.length === 0) {
+    return '[No successor trustees designated]'
+  }
+  
+  // Add final clause
+  const formattedList = trusteesList.join('\n\n')
+  return formattedList + '\n\nIf none of the above-named persons are able or willing to serve, then any reputable trust company may be appointed as Successor Trustee.'
 }
