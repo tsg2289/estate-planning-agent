@@ -94,11 +94,11 @@ export const willTemplate = {
     },
     {
       name: 'witness_1',
-      content: '{{witness1Name}}, residing at {{witness1Address}}'
+      content: '{{witness1Name}}, residing at {{witness1Address}}\n\n_________________________________\nWitness #1 Signature'
     },
     {
       name: 'witness_2',
-      content: '{{witness2Name}}, residing at {{witness2Address}}'
+      content: '{{witness2Name}}, residing at {{witness2Address}}\n\n_________________________________\nWitness #2 Signature'
     }
   ]
 }
