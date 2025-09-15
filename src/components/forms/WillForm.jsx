@@ -56,7 +56,12 @@ const WillForm = ({ onSubmit }) => {
     witness2Name: '',
     witness2Address: '',
     assets: [{ description: '', value: '', beneficiary: '' }],
-    specificBequests: '',
+    hasSpecialBequests: '',
+    specificBequests: [{
+      name: '',
+      relation: '',
+      property: ''
+    }],
     residualBeneficiaries: '',
     funeralWishes: '',
     additionalInstructions: ''
@@ -74,7 +79,7 @@ const WillForm = ({ onSubmit }) => {
     getSaveStatusColor
   } = useFormProgress('will', initialData)
 
-  // Ensure childrenNames, executors, and guardians are always arrays (safety check)
+  // Ensure childrenNames, executors, guardians, and specificBequests are always arrays (safety check)
   const safeFormData = {
     ...formData,
     childrenNames: Array.isArray(formData.childrenNames) ? formData.childrenNames : [''],
@@ -95,6 +100,11 @@ const WillForm = ({ onSubmit }) => {
       zip: '',
       phone: '',
       email: ''
+    }],
+    specificBequests: Array.isArray(formData.specificBequests) ? formData.specificBequests : [{
+      name: '',
+      relation: '',
+      property: ''
     }]
   }
 
@@ -228,6 +238,40 @@ const WillForm = ({ onSubmit }) => {
       setFormData(prev => ({
         ...prev,
         guardians: (Array.isArray(prev.guardians) ? prev.guardians : [{ name: '', address: '', city: '', state: '', zip: '', phone: '', email: '' }]).filter((_, i) => i !== index)
+      }))
+    }
+  }
+
+  // Handle specific bequest changes
+  const handleBequestChange = (index, field, value) => {
+    const newBequests = [...safeFormData.specificBequests]
+    newBequests[index] = { ...newBequests[index], [field]: value }
+    setFormData(prev => ({
+      ...prev,
+      specificBequests: newBequests
+    }))
+  }
+
+  // Add new specific bequest
+  const addBequest = () => {
+    if (safeFormData.specificBequests.length < 15) {
+      setFormData(prev => ({
+        ...prev,
+        specificBequests: [...(Array.isArray(prev.specificBequests) ? prev.specificBequests : [{ name: '', relation: '', property: '' }]), {
+          name: '',
+          relation: '',
+          property: ''
+        }]
+      }))
+    }
+  }
+
+  // Remove specific bequest
+  const removeBequest = (index) => {
+    if (safeFormData.specificBequests.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        specificBequests: (Array.isArray(prev.specificBequests) ? prev.specificBequests : [{ name: '', relation: '', property: '' }]).filter((_, i) => i !== index)
       }))
     }
   }
@@ -790,15 +834,100 @@ const WillForm = ({ onSubmit }) => {
           <h3>Assets and Bequests</h3>
           
           <div className="form-group">
-            <label className="form-label">Specific Bequests</label>
-            <textarea
-              name="specificBequests"
-              value={formData.specificBequests}
-              onChange={handleInputChange}
-              className="form-textarea"
-              placeholder="List any specific items you want to leave to particular people..."
-            />
+            <label className="form-label">Special Bequests</label>
+            <div className="radio-group">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="hasSpecialBequests"
+                  value="no"
+                  checked={formData.hasSpecialBequests === 'no'}
+                  onChange={handleInputChange}
+                />
+                <span className="radio-text">No Special Bequests</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="hasSpecialBequests"
+                  value="yes"
+                  checked={formData.hasSpecialBequests === 'yes'}
+                  onChange={handleInputChange}
+                />
+                <span className="radio-text">Have Special Bequests</span>
+              </label>
+            </div>
           </div>
+
+          {formData.hasSpecialBequests === 'yes' && (
+            <div className="form-group">
+              <label className="form-label">Special Bequests Details</label>
+              {safeFormData.specificBequests.map((bequest, index) => (
+                <div key={index} className="bequest-input-group">
+                  <div className="bequest-header">
+                    <h4>Bequest {index + 1}</h4>
+                    {safeFormData.specificBequests.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeBequest(index)}
+                        className="remove-bequest-button"
+                        aria-label="Remove bequest"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                  
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label className="form-label">Beneficiary Name</label>
+                      <input
+                        type="text"
+                        value={bequest.name}
+                        onChange={(e) => handleBequestChange(index, 'name', e.target.value)}
+                        className="form-input"
+                        required
+                        placeholder="Full name of beneficiary"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label className="form-label">Relation to You</label>
+                      <input
+                        type="text"
+                        value={bequest.relation}
+                        onChange={(e) => handleBequestChange(index, 'relation', e.target.value)}
+                        className="form-input"
+                        required
+                        placeholder="e.g., son, daughter, friend"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="form-group">
+                    <label className="form-label">Property/Item Given</label>
+                    <textarea
+                      value={bequest.property}
+                      onChange={(e) => handleBequestChange(index, 'property', e.target.value)}
+                      className="form-textarea"
+                      required
+                      placeholder="Describe the specific property, item, or amount being given..."
+                      rows="3"
+                    />
+                  </div>
+                </div>
+              ))}
+              
+              {safeFormData.specificBequests.length < 15 && (
+                <button
+                  type="button"
+                  onClick={addBequest}
+                  className="add-bequest-button"
+                >
+                  + Add Another Bequest
+                </button>
+              )}
+            </div>
+          )}
           
           <div className="form-group">
             <label className="form-label">Residual Beneficiaries</label>

@@ -158,6 +158,36 @@ export const useFormProgress = (formType, initialData = {}) => {
                   delete migratedData.alternateGuardianState;
                   delete migratedData.alternateGuardianPhone;
                 }
+
+                // Convert old specificBequests format to new array format if needed
+                if (formType === 'will' && !Array.isArray(migratedData.specificBequests)) {
+                  // If hasSpecialBequests doesn't exist, determine it from old specificBequests content
+                  if (!migratedData.hasSpecialBequests) {
+                    if (migratedData.specificBequests && migratedData.specificBequests.trim() !== '') {
+                      migratedData.hasSpecialBequests = 'yes';
+                      // Convert old string to array format (basic conversion)
+                      migratedData.specificBequests = [{
+                        name: '',
+                        relation: '',
+                        property: migratedData.specificBequests
+                      }];
+                    } else {
+                      migratedData.hasSpecialBequests = 'no';
+                      migratedData.specificBequests = [{
+                        name: '',
+                        relation: '',
+                        property: ''
+                      }];
+                    }
+                  } else {
+                    // Ensure specificBequests is an array
+                    migratedData.specificBequests = [{
+                      name: '',
+                      relation: '',
+                      property: ''
+                    }];
+                  }
+                }
           
           setFormData(migratedData);
           setLastSaved(savedProgress.lastSaved);

@@ -535,6 +535,32 @@ export const formatFormData = (formData, documentType) => {
           formatted.alternateGuardianEmail = ''
         }
       }
+      
+      // Format special bequests for document
+      if (formData.hasSpecialBequests === 'no') {
+        formatted.specialBequestsText = 'My Residual Estate will be received by the Beneficiaries with no special bequests.'
+      } else if (formData.hasSpecialBequests === 'yes' && Array.isArray(formData.specificBequests)) {
+        // Filter out empty bequests and format them
+        const validBequests = formData.specificBequests.filter(bequest => 
+          bequest.name && bequest.name.trim() !== '' && 
+          bequest.property && bequest.property.trim() !== ''
+        )
+        
+        if (validBequests.length > 0) {
+          const bequestsList = validBequests.map((bequest, index) => {
+            const relation = bequest.relation && bequest.relation.trim() !== '' 
+              ? ` (my ${bequest.relation})` 
+              : ''
+            return `${index + 1}. To ${bequest.name}${relation}: ${bequest.property}`
+          }).join('\n')
+          
+          formatted.specialBequestsText = `I make the following special bequests:\n\n${bequestsList}`
+        } else {
+          formatted.specialBequestsText = 'My Residual Estate will be received by the Beneficiaries with no special bequests.'
+        }
+      } else {
+        formatted.specialBequestsText = 'My Residual Estate will be received by the Beneficiaries with no special bequests.'
+      }
       break
       
     case 'trust':

@@ -30,7 +30,7 @@ export const willTemplate = {
     },
     {
       name: 'disposition_property',
-      content: 'Disposition of Property\nI give all of my estate, of whatever kind and wherever situated, to the then-acting Trustee(s) of the {{trustName}}, dated {{trustDate}}, as amended from time to time, to be added to and administered as part of that trust according to its terms. My intent is that this gift shall be a "pour-over" to such trust.'
+      content: 'Disposition of Property\n{{specialBequestsText}}\n\nI give all of my remaining estate, of whatever kind and wherever situated, to the then-acting Trustee(s) of the {{trustName}}, dated {{trustDate}}, as amended from time to time, to be added to and administered as part of that trust according to its terms. My intent is that this gift shall be a "pour-over" to such trust.'
     },
     {
       name: 'article_4',
