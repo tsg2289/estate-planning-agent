@@ -7,7 +7,8 @@ const TrustForm = ({ onSubmit }) => {
     trustorName: '',
     trustorAddress: '',
     trustorCity: '',
-    trustorState: '',
+    trustorCounty: '',
+    trustorState: 'California',
     trustorZip: '',
     trustorPhone: '',
     trustorEmail: '',
@@ -21,6 +22,8 @@ const TrustForm = ({ onSubmit }) => {
     coTrustorDOB: '',
     trusteeName: '',
     trusteeAddress: '',
+    trusteeCity: '',
+    trusteeCounty: '',
     trusteePhone: '',
     trusteeEmail: '',
     alternateTrusteeName: '',
@@ -28,6 +31,7 @@ const TrustForm = ({ onSubmit }) => {
     trustType: 'revocable',
     trustName: '',
     beneficiaries: [{ name: '', relationship: '', percentage: '', isMinor: false }],
+    specificGifts: [{ beneficiary: '', gift: '' }],
     trustAssets: [{ description: '', value: '', type: '' }],
     distributionTerms: '',
     trustPurpose: '',
@@ -97,6 +101,29 @@ const TrustForm = ({ onSubmit }) => {
     setFormData(prev => ({
       ...prev,
       trustAssets: prev.trustAssets.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleSpecificGiftChange = (index, field, value) => {
+    const newSpecificGifts = [...formData.specificGifts]
+    newSpecificGifts[index][field] = value
+    setFormData(prev => ({
+      ...prev,
+      specificGifts: newSpecificGifts
+    }))
+  }
+
+  const addSpecificGift = () => {
+    setFormData(prev => ({
+      ...prev,
+      specificGifts: [...prev.specificGifts, { beneficiary: '', gift: '' }]
+    }))
+  }
+
+  const removeSpecificGift = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      specificGifts: prev.specificGifts.filter((_, i) => i !== index)
     }))
   }
 
@@ -189,6 +216,21 @@ const TrustForm = ({ onSubmit }) => {
                 required
               />
             </div>
+            <div className="form-group">
+              <label className="form-label">County</label>
+              <input
+                type="text"
+                name="trustorCounty"
+                value={formData.trustorCounty}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="e.g., Los Angeles County"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
             <div className="form-group">
               <label className="form-label">State</label>
               <input
@@ -354,6 +396,32 @@ const TrustForm = ({ onSubmit }) => {
           
           <div className="form-row">
             <div className="form-group">
+              <label className="form-label">Trustee City</label>
+              <input
+                type="text"
+                name="trusteeCity"
+                value={formData.trusteeCity}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Trustee County</label>
+              <input
+                type="text"
+                name="trusteeCounty"
+                value={formData.trusteeCounty}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="e.g., Los Angeles County"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
+            <div className="form-group">
               <label className="form-label">Trustee Phone</label>
               <input
                 type="tel"
@@ -499,6 +567,54 @@ const TrustForm = ({ onSubmit }) => {
           
           <button type="button" onClick={addBeneficiary} className="add-button">
             Add Beneficiary
+          </button>
+        </div>
+
+        {/* Specific Gifts */}
+        <div className="form-section">
+          <h3>Specific Gifts (Optional)</h3>
+          <p className="form-description">
+            List any specific items or amounts you want to give to particular beneficiaries before the remainder is distributed.
+          </p>
+          {formData.specificGifts.map((gift, index) => (
+            <div key={index} className="gift-item">
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Beneficiary Name</label>
+                  <input
+                    type="text"
+                    value={gift.beneficiary}
+                    onChange={(e) => handleSpecificGiftChange(index, 'beneficiary', e.target.value)}
+                    className="form-input"
+                    placeholder="e.g., John Smith"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Specific Gift</label>
+                  <input
+                    type="text"
+                    value={gift.gift}
+                    onChange={(e) => handleSpecificGiftChange(index, 'gift', e.target.value)}
+                    className="form-input"
+                    placeholder="e.g., my wedding ring, $10,000"
+                  />
+                </div>
+              </div>
+              
+              {formData.specificGifts.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeSpecificGift(index)}
+                  className="remove-button"
+                >
+                  Remove Specific Gift
+                </button>
+              )}
+            </div>
+          ))}
+          
+          <button type="button" onClick={addSpecificGift} className="add-button">
+            Add Specific Gift
           </button>
         </div>
 

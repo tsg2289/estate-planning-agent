@@ -104,64 +104,125 @@ export const willTemplate = {
 }
 
 export const trustTemplate = {
-  title: 'LIVING TRUST AGREEMENT',
+  title: 'REVOCABLE LIVING TRUST AGREEMENT',
   sections: [
     {
-      name: 'header',
-      content: `
-        This Living Trust Agreement (the "Trust") is made this {{currentDate}} by and between 
-        {{trustorName}} (hereinafter referred to as the "Trustor"), and {{trusteeName}} 
-        (hereinafter referred to as the "Trustee").
-      `
+      name: 'title_header',
+      content: `REVOCABLE LIVING TRUST AGREEMENT
+
+(of {{trustorName}})`
     },
     {
-      name: 'trust_info',
-      content: `
-        The name of this Trust shall be "{{trustName}}" and it shall be governed by the laws of {{trustorState}}.
-      `
+      name: 'article_1',
+      content: `ARTICLE I – IDENTIFICATION OF PARTIES
+
+This Revocable Living Trust Agreement ("Trust Agreement") is made this ___ day of ________, 20__, by and between:
+
+Trustor/Grantor: {{trustorName}}, of {{trustorCity}}, {{trustorCounty}}, California ("Trustor" or "Grantor"); and
+
+Trustee: {{trusteeName}}, of {{trusteeCity}}, {{trusteeCounty}}, California ("Trustee").
+
+The Trustor may also serve as the initial Trustee.`
     },
     {
-      name: 'trust_type',
-      content: `
-        This is a {{trustType}} trust, which means {{trustTypeDescription}}.
-      `
+      name: 'article_2',
+      content: `ARTICLE II – NAME OF TRUST
+
+This Trust shall be known as the {{trustorName}} Revocable Living Trust, dated __________, 20__.`
     },
     {
-      name: 'trust_purpose',
-      content: `
-        The purpose of this Trust is: {{trustPurpose}}
-      `
+      name: 'article_3',
+      content: `ARTICLE III – REVOCABILITY
+
+This Trust is revocable. During the lifetime of the Trustor, the Trustor may amend, revoke, or terminate this Trust, in whole or in part, by a written instrument delivered to the Trustee.`
     },
     {
-      name: 'trustee_powers',
-      content: `
-        The Trustee shall have the following powers and authority:
-        - To manage, control, and dispose of trust property
-        - To invest and reinvest trust assets
-        - To make distributions to beneficiaries
-        - To pay expenses and taxes
-        - To engage professional advisors
-      `
+      name: 'article_4',
+      content: `ARTICLE IV – TRUST PROPERTY
+
+The Trustor hereby transfers, assigns, and delivers to the Trustee all property listed on Schedule A (attached hereto and incorporated herein). The Trustee shall hold, manage, and distribute said property in accordance with this Trust Agreement.`
     },
     {
-      name: 'beneficiaries',
-      content: `
-        The beneficiaries of this Trust are:
-        {{beneficiariesList}}
-      `
+      name: 'article_5',
+      content: `ARTICLE V – MANAGEMENT DURING LIFETIME
+
+During the lifetime of the Trustor:
+
+The Trustor is entitled to all income and principal of the Trust Property.
+
+The Trustee shall manage the Trust Property for the benefit of the Trustor.`
     },
     {
-      name: 'distribution_terms',
-      content: `
-        Distributions from this Trust shall be made as follows:
-        {{distributionTerms}}
-      `
+      name: 'article_6',
+      content: `ARTICLE VI – SUCCESSOR TRUSTEE
+
+Upon the death, incapacity, or resignation of the initial Trustee, {{successorTrusteeName}} shall serve as Successor Trustee. If that person is unable or unwilling to serve, then {{alternateSuccessorTrusteeName}} shall serve.`
     },
     {
-      name: 'trust_termination',
-      content: `
-        This Trust shall terminate upon {{terminationConditions}}.
-      `
+      name: 'article_7',
+      content: `ARTICLE VII – DISTRIBUTION UPON DEATH OF TRUSTOR
+
+Upon the death of the Trustor, the Trustee shall distribute the remaining Trust Property as follows:
+
+Specific Gifts – The Trustee shall distribute the following property:
+
+{{specificGifts}}
+
+Residue – The remainder of the Trust Property shall be distributed as follows:
+
+{{residueDistribution}}`
+    },
+    {
+      name: 'article_8',
+      content: `ARTICLE VIII – POWERS OF TRUSTEE
+
+The Trustee shall have all powers granted by the California Probate Code, including but not limited to the power to:
+
+Buy, sell, lease, and manage real and personal property.
+
+Invest and reinvest Trust assets.
+
+Employ agents, accountants, and attorneys.`
+    },
+    {
+      name: 'article_9',
+      content: `ARTICLE IX – GOVERNING LAW
+
+This Trust shall be governed by and construed in accordance with the laws of the State of California.`
+    },
+    {
+      name: 'article_10',
+      content: `ARTICLE X – GENERAL PROVISIONS
+
+Spendthrift Clause – No interest of any beneficiary shall be subject to claims of creditors or to legal process.
+
+No Bond – No bond shall be required of any Trustee.
+
+Severability – If any provision is invalid, the remaining provisions shall continue in effect.`
+    },
+    {
+      name: 'article_11',
+      content: `ARTICLE XI – SIGNATURES
+
+IN WITNESS WHEREOF, the Trustor has executed this Trust Agreement as of the day and year first written above.
+
+{{trustorName}}, Trustor
+
+{{trusteeName}}, Trustee`
+    },
+    {
+      name: 'notary_acknowledgment',
+      content: `NOTARY ACKNOWLEDGMENT
+
+(A California Notary acknowledgment block should be attached here.)`
+    },
+    {
+      name: 'schedule_a',
+      content: `SCHEDULE A – TRUST PROPERTY
+
+(List all property being transferred into the Trust: real estate, bank accounts, investments, personal property, etc.)
+
+{{trustAssetsList}}`
     }
   ]
 }

@@ -667,6 +667,26 @@ export const formatFormData = (formData, documentType) => {
         'special-needs': 'the trust is designed to provide for beneficiaries with special needs'
       }
       formatted.trustTypeDescription = trustTypeDescriptions[formData.trustType] || ''
+      
+      // Extract county information from city field or set default
+      // Assuming city format might include county, otherwise default to common CA counties
+      formatted.trustorCounty = extractCountyFromCity(formData.trustorCity) || 'County'
+      formatted.trusteeCity = extractCityFromAddress(formData.trusteeAddress) || formData.trustorCity || 'City'
+      formatted.trusteeCounty = extractCountyFromCity(formatted.trusteeCity) || formatted.trustorCounty
+      
+      // Format successor trustee information
+      formatted.successorTrusteeName = formData.alternateTrusteeName || '[Name of Successor Trustee]'
+      formatted.alternateSuccessorTrusteeName = '[Alternate Successor Trustee]'
+      
+      // Format specific gifts from specificGifts array
+      formatted.specificGifts = formatSpecificGifts(formData.specificGifts)
+      
+      // Format residue distribution from beneficiaries
+      formatted.residueDistribution = formatResidueDistribution(formData.beneficiaries)
+      
+      // Format trust assets list for Schedule A
+      formatted.trustAssetsList = formatTrustAssetsList(formData.trustAssets)
+      
       break
       
     case 'poa':
@@ -682,4 +702,109 @@ export const formatFormData = (formData, documentType) => {
   }
   
   return formatted
+}
+
+/**
+ * Helper functions for trust document formatting
+ */
+
+// Extract county from city string (e.g., "Los Angeles, Los Angeles County" -> "Los Angeles County")
+const extractCountyFromCity = (cityString) => {
+  if (!cityString) return null
+  
+  // Common California county mappings
+  const countyMappings = {
+    'los angeles': 'Los Angeles County',
+    'san francisco': 'San Francisco County',
+    'san diego': 'San Diego County',
+    'orange': 'Orange County',
+    'riverside': 'Riverside County',
+    'san bernardino': 'San Bernardino County',
+    'alameda': 'Alameda County',
+    'santa clara': 'Santa Clara County',
+    'sacramento': 'Sacramento County',
+    'contra costa': 'Contra Costa County'
+  }
+  
+  const cityLower = cityString.toLowerCase()
+  for (const [city, county] of Object.entries(countyMappings)) {
+    if (cityLower.includes(city)) {
+      return county
+    }
+  }
+  
+  // If county is already mentioned in the string
+  if (cityLower.includes('county')) {
+    return cityString
+  }
+  
+  return null
+}
+
+// Extract city from address string
+const extractCityFromAddress = (address) => {
+  if (!address) return null
+  
+  // Simple extraction - assume city is after the street address
+  const parts = address.split(',')
+  if (parts.length >= 2) {
+    return parts[1].trim()
+  }
+  
+  return null
+}
+
+// Format specific gifts section
+const formatSpecificGifts = (specificGifts) => {
+  if (!specificGifts || specificGifts.length === 0) {
+    return '[No specific gifts designated]'
+  }
+  
+  const gifts = specificGifts.map(gift => {
+    if (gift.beneficiary && gift.gift) {
+      return `To ${gift.beneficiary}, ${gift.gift}.`
+    }
+    return null
+  }).filter(gift => gift !== null)
+  
+  return gifts.length > 0 ? gifts.join('\n\n') : '[No specific gifts designated]'
+}
+
+// Format residue distribution section
+const formatResidueDistribution = (beneficiaries) => {
+  if (!beneficiaries || beneficiaries.length === 0) {
+    return '[No residue distribution specified]'
+  }
+  
+  const distributions = beneficiaries.map(beneficiary => {
+    if (beneficiary.name && beneficiary.percentage) {
+      return `${beneficiary.percentage} to ${beneficiary.name}.`
+    }
+    return null
+  }).filter(dist => dist !== null)
+  
+  return distributions.length > 0 ? distributions.join('\n\n') : '[No residue distribution specified]'
+}
+
+// Format trust assets list for Schedule A
+const formatTrustAssetsList = (trustAssets) => {
+  if (!trustAssets || trustAssets.length === 0) {
+    return '[No assets listed]'
+  }
+  
+  const assetsList = trustAssets.map(asset => {
+    if (asset.description) {
+      let assetText = asset.description
+      if (asset.type) {
+        assetText += ` (${asset.type})`
+      }
+      if (asset.value) {
+        assetText += ` - Estimated Value: ${asset.value}`
+      }
+      return assetText
+    }
+    return null
+  }).filter(asset => asset !== null)
+  
+  return assetsList.length > 0 ? assetsList.join('\n\n') : '[No assets listed]'
 }
