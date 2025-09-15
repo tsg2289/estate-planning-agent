@@ -55,11 +55,14 @@ export const generateDocument = async (documentType, formData) => {
     // Get the appropriate template
     const template = getTemplate(documentType)
     
-    // Populate template with form data
-    const populatedTemplate = populateTemplate(template, formData)
+    // Format form data for document generation
+    const formattedData = formatFormData(formData, documentType)
+    
+    // Populate template with formatted form data
+    const populatedTemplate = populateTemplate(template, formattedData)
     
     // Create document sections
-    const sections = await createDocumentSections(populatedTemplate, formData)
+    const sections = await createDocumentSections(populatedTemplate, formattedData)
     
     // Create the document
     const doc = new Document({
