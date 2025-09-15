@@ -435,6 +435,13 @@ export const formatFormData = (formData, documentType) => {
         const today = new Date()
         formatted.testatorAge = today.getFullYear() - birthDate.getFullYear()
       }
+      
+      // Format family status based on marriage choice
+      if (formData.isMarried === 'yes' && formData.spouseName) {
+        formatted.familyStatus = `I am married to ${formData.spouseName}.`
+      } else {
+        formatted.familyStatus = 'I am not married.'
+      }
       break
       
     case 'trust':

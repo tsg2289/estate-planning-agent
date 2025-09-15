@@ -22,7 +22,7 @@ export const willTemplate = {
     },
     {
       name: 'family_identification',
-      content: 'Family Identification\nI am married to {{spouseName}}. (If not married, state: I am not married.)\nI have the following children: {{childrenNames}}.\n(If none, state: I have no children.)'
+      content: 'Family Identification\n{{familyStatus}}\nI have the following children: {{childrenNames}}.\n(If none, state: I have no children.)'
     },
     {
       name: 'article_3',

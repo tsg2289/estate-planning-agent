@@ -27,6 +27,7 @@ const WillForm = ({ onSubmit }) => {
     testatorEmail: '',
     testatorSSN: '',
     testatorDOB: '',
+    isMarried: '',
     spouseName: '',
     childrenNames: '',
     trustName: '',
@@ -264,7 +265,38 @@ const WillForm = ({ onSubmit }) => {
         {/* Family Information */}
         <div className="form-section">
           <h3>Family Information</h3>
-          <div className="form-row">
+          
+          {/* Marriage Status */}
+          <div className="form-group">
+            <label className="form-label">Marital Status</label>
+            <div className="radio-group">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="isMarried"
+                  value="yes"
+                  checked={formData.isMarried === 'yes'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Married</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="isMarried"
+                  value="no"
+                  checked={formData.isMarried === 'no'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Not Married</span>
+              </label>
+            </div>
+          </div>
+
+          {/* Conditional Spouse Name Field */}
+          {formData.isMarried === 'yes' && (
             <div className="form-group">
               <label className="form-label">Spouse's Full Name</label>
               <input
@@ -273,20 +305,22 @@ const WillForm = ({ onSubmit }) => {
                 value={formData.spouseName}
                 onChange={handleInputChange}
                 className="form-input"
-                placeholder="Leave blank if not married"
+                required
+                placeholder="Enter spouse's full legal name"
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">Children's Names</label>
-              <input
-                type="text"
-                name="childrenNames"
-                value={formData.childrenNames}
-                onChange={handleInputChange}
-                className="form-input"
-                placeholder="List all children or 'none' if no children"
-              />
-            </div>
+          )}
+          
+          <div className="form-group">
+            <label className="form-label">Children's Names</label>
+            <input
+              type="text"
+              name="childrenNames"
+              value={formData.childrenNames}
+              onChange={handleInputChange}
+              className="form-input"
+              placeholder="List all children or 'none' if no children"
+            />
           </div>
         </div>
 
