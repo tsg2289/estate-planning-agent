@@ -179,6 +179,7 @@ const createDocumentSections = async (template, formData) => {
                         size: 24,
                       }),
                     ],
+                    alignment: AlignmentType.JUSTIFIED,
                     spacing: {
                       before: index === 0 ? 100 : 0,
                       after: index === remainingLines.length - 1 ? 200 : 0,
@@ -202,6 +203,7 @@ const createDocumentSections = async (template, formData) => {
                   size: 28,
                 }),
               ],
+              alignment: AlignmentType.JUSTIFIED,
               spacing: {
                 before: 300,
                 after: 200,
@@ -225,7 +227,7 @@ const createDocumentSections = async (template, formData) => {
                       bold: index === 0, // Make "Execution" title bold
                     }),
                   ],
-                  alignment: AlignmentType.LEFT,
+                  alignment: AlignmentType.JUSTIFIED,
                   spacing: {
                     before: index === 0 ? 400 : 120,
                     after: 120,
@@ -298,6 +300,7 @@ const createDocumentSections = async (template, formData) => {
                 size: 24,
               }),
             ],
+            alignment: AlignmentType.JUSTIFIED,
             spacing: {
               before: 300,
               after: 200,
@@ -317,6 +320,7 @@ const createDocumentSections = async (template, formData) => {
                     size: 24,
                   }),
                 ],
+                alignment: AlignmentType.JUSTIFIED,
                 spacing: {
                   before: index === 0 ? 200 : 0,
                   after: index === lines.length - 1 ? 200 : 0,
