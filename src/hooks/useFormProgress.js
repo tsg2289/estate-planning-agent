@@ -19,22 +19,87 @@ export const useFormProgress = (formType, initialData = {}) => {
           // Migrate old data format to new format
           let migratedData = { ...savedProgress.data };
           
-          // Convert childrenNames from string to array if needed
-          if (formType === 'will' && typeof migratedData.childrenNames === 'string') {
-            if (migratedData.childrenNames.trim() === '') {
-              migratedData.childrenNames = [''];
-            } else {
-              // Split by comma and create array
-              migratedData.childrenNames = migratedData.childrenNames
-                .split(',')
-                .map(name => name.trim())
-                .filter(name => name !== '');
-              // Ensure at least one empty field if no names
-              if (migratedData.childrenNames.length === 0) {
-                migratedData.childrenNames = [''];
-              }
-            }
-          }
+                // Convert childrenNames from string to array if needed
+                if (formType === 'will' && typeof migratedData.childrenNames === 'string') {
+                  if (migratedData.childrenNames.trim() === '') {
+                    migratedData.childrenNames = [''];
+                  } else {
+                    // Split by comma and create array
+                    migratedData.childrenNames = migratedData.childrenNames
+                      .split(',')
+                      .map(name => name.trim())
+                      .filter(name => name !== '');
+                    // Ensure at least one empty field if no names
+                    if (migratedData.childrenNames.length === 0) {
+                      migratedData.childrenNames = [''];
+                    }
+                  }
+                }
+
+                // Convert old executor format to new array format if needed
+                if (formType === 'will' && !Array.isArray(migratedData.executors)) {
+                  const executors = [];
+                  
+                  // Check if old executor data exists
+                  if (migratedData.executorName || migratedData.executorAddress || migratedData.executorCity || 
+                      migratedData.executorState || migratedData.executorZip || migratedData.executorPhone || 
+                      migratedData.executorEmail) {
+                    executors.push({
+                      name: migratedData.executorName || '',
+                      address: migratedData.executorAddress || '',
+                      city: migratedData.executorCity || '',
+                      state: migratedData.executorState || '',
+                      zip: migratedData.executorZip || '',
+                      phone: migratedData.executorPhone || '',
+                      email: migratedData.executorEmail || ''
+                    });
+                  }
+                  
+                  // Check if alternate executor data exists
+                  if (migratedData.alternateExecutorName || migratedData.alternateExecutorAddress || 
+                      migratedData.alternateExecutorCity || migratedData.alternateExecutorState || 
+                      migratedData.alternateExecutorZip || migratedData.alternateExecutorPhone) {
+                    executors.push({
+                      name: migratedData.alternateExecutorName || '',
+                      address: migratedData.alternateExecutorAddress || '',
+                      city: migratedData.alternateExecutorCity || '',
+                      state: migratedData.alternateExecutorState || '',
+                      zip: migratedData.alternateExecutorZip || '',
+                      phone: migratedData.alternateExecutorPhone || '',
+                      email: '' // Alternate executor email wasn't in old format
+                    });
+                  }
+                  
+                  // Ensure at least one empty executor if no data
+                  if (executors.length === 0) {
+                    executors.push({
+                      name: '',
+                      address: '',
+                      city: '',
+                      state: '',
+                      zip: '',
+                      phone: '',
+                      email: ''
+                    });
+                  }
+                  
+                  migratedData.executors = executors;
+                  
+                  // Clean up old executor fields
+                  delete migratedData.executorName;
+                  delete migratedData.executorAddress;
+                  delete migratedData.executorCity;
+                  delete migratedData.executorState;
+                  delete migratedData.executorZip;
+                  delete migratedData.executorPhone;
+                  delete migratedData.executorEmail;
+                  delete migratedData.alternateExecutorName;
+                  delete migratedData.alternateExecutorAddress;
+                  delete migratedData.alternateExecutorCity;
+                  delete migratedData.alternateExecutorState;
+                  delete migratedData.alternateExecutorZip;
+                  delete migratedData.alternateExecutorPhone;
+                }
           
           setFormData(migratedData);
           setLastSaved(savedProgress.lastSaved);

@@ -467,6 +467,39 @@ export const formatFormData = (formData, documentType) => {
       } else {
         formatted.childrenStatus = 'I have no children.'
       }
+      
+      // Format executors for document
+      if (Array.isArray(formData.executors) && formData.executors.length > 0) {
+        const primaryExecutor = formData.executors[0]
+        
+        // Primary executor info
+        formatted.executorName = primaryExecutor.name || ''
+        formatted.executorAddress = primaryExecutor.address || ''
+        formatted.executorCity = primaryExecutor.city || ''
+        formatted.executorState = primaryExecutor.state || ''
+        formatted.executorZip = primaryExecutor.zip || ''
+        formatted.executorPhone = primaryExecutor.phone || ''
+        formatted.executorEmail = primaryExecutor.email || ''
+        
+        // Alternate executor info (second executor if exists)
+        if (formData.executors.length > 1) {
+          const alternateExecutor = formData.executors[1]
+          formatted.alternateExecutorName = alternateExecutor.name || ''
+          formatted.alternateExecutorAddress = alternateExecutor.address || ''
+          formatted.alternateExecutorCity = alternateExecutor.city || ''
+          formatted.alternateExecutorState = alternateExecutor.state || ''
+          formatted.alternateExecutorZip = alternateExecutor.zip || ''
+          formatted.alternateExecutorPhone = alternateExecutor.phone || ''
+        } else {
+          // Clear alternate executor fields if no second executor
+          formatted.alternateExecutorName = ''
+          formatted.alternateExecutorAddress = ''
+          formatted.alternateExecutorCity = ''
+          formatted.alternateExecutorState = ''
+          formatted.alternateExecutorZip = ''
+          formatted.alternateExecutorPhone = ''
+        }
+      }
       break
       
     case 'trust':

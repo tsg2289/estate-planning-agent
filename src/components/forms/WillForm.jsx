@@ -33,19 +33,15 @@ const WillForm = ({ onSubmit }) => {
     childrenNames: [''],
     trustName: '',
     trustDate: '',
-    executorName: '',
-    executorAddress: '',
-    executorCity: '',
-    executorState: '',
-    executorZip: '',
-    executorPhone: '',
-    executorEmail: '',
-    alternateExecutorName: '',
-    alternateExecutorAddress: '',
-    alternateExecutorCity: '',
-    alternateExecutorState: '',
-    alternateExecutorZip: '',
-    alternateExecutorPhone: '',
+    executors: [{
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }],
     guardianName: '',
     guardianCity: '',
     guardianState: '',
@@ -77,10 +73,19 @@ const WillForm = ({ onSubmit }) => {
     getSaveStatusColor
   } = useFormProgress('will', initialData)
 
-  // Ensure childrenNames is always an array (safety check)
+  // Ensure childrenNames and executors are always arrays (safety check)
   const safeFormData = {
     ...formData,
-    childrenNames: Array.isArray(formData.childrenNames) ? formData.childrenNames : ['']
+    childrenNames: Array.isArray(formData.childrenNames) ? formData.childrenNames : [''],
+    executors: Array.isArray(formData.executors) ? formData.executors : [{
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }]
   }
 
   const handleInputChange = (e) => {
@@ -137,6 +142,44 @@ const WillForm = ({ onSubmit }) => {
       setFormData(prev => ({
         ...prev,
         childrenNames: (Array.isArray(prev.childrenNames) ? prev.childrenNames : ['']).filter((_, i) => i !== index)
+      }))
+    }
+  }
+
+  // Handle executor changes
+  const handleExecutorChange = (index, field, value) => {
+    const newExecutors = [...safeFormData.executors]
+    newExecutors[index] = { ...newExecutors[index], [field]: value }
+    setFormData(prev => ({
+      ...prev,
+      executors: newExecutors
+    }))
+  }
+
+  // Add new executor
+  const addExecutor = () => {
+    if (safeFormData.executors.length < 5) {
+      setFormData(prev => ({
+        ...prev,
+        executors: [...(Array.isArray(prev.executors) ? prev.executors : [{ name: '', address: '', city: '', state: '', zip: '', phone: '', email: '' }]), {
+          name: '',
+          address: '',
+          city: '',
+          state: '',
+          zip: '',
+          phone: '',
+          email: ''
+        }]
+      }))
+    }
+  }
+
+  // Remove executor
+  const removeExecutor = (index) => {
+    if (safeFormData.executors.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        executors: (Array.isArray(prev.executors) ? prev.executors : [{ name: '', address: '', city: '', state: '', zip: '', phone: '', email: '' }]).filter((_, i) => i !== index)
       }))
     }
   }
@@ -470,169 +513,115 @@ const WillForm = ({ onSubmit }) => {
 
         {/* Executor Information */}
         <div className="form-section">
-          <h3>Executor (Personal Representative)</h3>
-          <div className="form-group">
-            <label className="form-label">Full Name</label>
-            <input
-              type="text"
-              name="executorName"
-              value={formData.executorName}
-              onChange={handleInputChange}
-              className="form-input"
-              required
-            />
-          </div>
+          <h3>Executors (Personal Representatives)</h3>
+          {safeFormData.executors.map((executor, index) => (
+            <div key={index} className="executor-input-group">
+              <div className="executor-header">
+                <h4>{index === 0 ? 'Primary Executor' : `Executor ${index + 1}`}</h4>
+                {safeFormData.executors.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeExecutor(index)}
+                    className="remove-executor-button"
+                    aria-label="Remove executor"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  value={executor.name}
+                  onChange={(e) => handleExecutorChange(index, 'name', e.target.value)}
+                  className="form-input"
+                  required={index === 0}
+                  placeholder={`${index === 0 ? 'Primary' : 'Alternate'} executor full name`}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <input
+                  type="text"
+                  value={executor.address}
+                  onChange={(e) => handleExecutorChange(index, 'address', e.target.value)}
+                  className="form-input"
+                  required={index === 0}
+                  placeholder="Street address"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">City</label>
+                  <input
+                    type="text"
+                    value={executor.city}
+                    onChange={(e) => handleExecutorChange(index, 'city', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">State</label>
+                  <input
+                    type="text"
+                    value={executor.state}
+                    onChange={(e) => handleExecutorChange(index, 'state', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">ZIP Code</label>
+                  <input
+                    type="text"
+                    value={executor.zip}
+                    onChange={(e) => handleExecutorChange(index, 'zip', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    value={executor.phone}
+                    onChange={(e) => handleExecutorChange(index, 'phone', e.target.value)}
+                    className="form-input"
+                    required={index === 0}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input
+                  type="email"
+                  value={executor.email}
+                  onChange={(e) => handleExecutorChange(index, 'email', e.target.value)}
+                  className="form-input"
+                  required={index === 0}
+                />
+              </div>
+            </div>
+          ))}
           
-          <div className="form-group">
-            <label className="form-label">Address</label>
-            <input
-              type="text"
-              name="executorAddress"
-              value={formData.executorAddress}
-              onChange={handleInputChange}
-              className="form-input"
-              required
-              placeholder="Street address"
-            />
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Phone</label>
-              <input
-                type="tel"
-                name="executorPhone"
-                value={formData.executorPhone}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                name="executorEmail"
-                value={formData.executorEmail}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">City</label>
-              <input
-                type="text"
-                name="executorCity"
-                value={formData.executorCity}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">State</label>
-              <input
-                type="text"
-                name="executorState"
-                value={formData.executorState}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">ZIP Code</label>
-              <input
-                type="text"
-                name="executorZip"
-                value={formData.executorZip}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              {/* Empty to maintain grid layout */}
-            </div>
-          </div>
-          
-          <h4>Alternate Executor (Optional)</h4>
-          <div className="form-group">
-            <label className="form-label">Alternate Executor Name</label>
-            <input
-              type="text"
-              name="alternateExecutorName"
-              value={formData.alternateExecutorName}
-              onChange={handleInputChange}
-              className="form-input"
-              placeholder="Full name of alternate executor"
-            />
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Address</label>
-            <input
-              type="text"
-              name="alternateExecutorAddress"
-              value={formData.alternateExecutorAddress}
-              onChange={handleInputChange}
-              className="form-input"
-              placeholder="Street address"
-            />
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">City</label>
-              <input
-                type="text"
-                name="alternateExecutorCity"
-                value={formData.alternateExecutorCity}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">State</label>
-              <input
-                type="text"
-                name="alternateExecutorState"
-                value={formData.alternateExecutorState}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
-          
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">ZIP Code</label>
-              <input
-                type="text"
-                name="alternateExecutorZip"
-                value={formData.alternateExecutorZip}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Phone</label>
-              <input
-                type="tel"
-                name="alternateExecutorPhone"
-                value={formData.alternateExecutorPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
+          {safeFormData.executors.length < 5 && (
+            <button
+              type="button"
+              onClick={addExecutor}
+              className="add-executor-button"
+            >
+              + Add Another Executor
+            </button>
+          )}
         </div>
 
         {/* Guardian Information */}
