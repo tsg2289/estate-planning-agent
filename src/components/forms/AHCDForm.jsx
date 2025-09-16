@@ -96,6 +96,17 @@ const AHCDForm = ({ onSubmit }) => {
 
   const handleWitnessChange = (index, field, value) => {
     const newWitnesses = [...formData.witnesses]
+    
+    // Ensure we have at least 2 witness objects
+    while (newWitnesses.length <= index) {
+      newWitnesses.push({ name: '', address: '', city: '', state: '', phone: '', signatureDate: '' })
+    }
+    
+    // Ensure the witness object exists and has all required fields
+    if (!newWitnesses[index]) {
+      newWitnesses[index] = { name: '', address: '', city: '', state: '', phone: '', signatureDate: '' }
+    }
+    
     newWitnesses[index][field] = value
     setFormData(prev => ({
       ...prev,
