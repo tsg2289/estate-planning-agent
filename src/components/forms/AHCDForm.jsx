@@ -37,6 +37,7 @@ const AHCDForm = ({ onSubmit }) => {
     endOfLifeChoice: '', // 'not-prolong' or 'prolong'
     painReliefExceptions: '',
     healthCareWishes: '',
+    personalOrganDonation: false, // New field for section 3.1
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -671,6 +672,28 @@ const AHCDForm = ({ onSubmit }) => {
             <p className="form-help-text">
               Use this space to add any specific healthcare wishes or modify the instructions you've given above.
             </p>
+          </div>
+        </div>
+
+        {/* Part 3.1 - Personal Organ Donation */}
+        <div className="form-section">
+          <h3>Part 3 - Donation of Organs and Body</h3>
+          <div className="form-group">
+            <label className="form-checkbox-label">
+              <input
+                type="checkbox"
+                name="personalOrganDonation"
+                checked={formData.personalOrganDonation}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  personalOrganDonation: e.target.checked
+                }))}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                <strong>(3.1) ☐ Upon my death, I give my organs, tissues, and parts</strong> (mark box to indicate yes). By checking the box above, and notwithstanding my choice in Part 2 of this form, I authorize my agent to consent to any temporary medical procedure necessary solely to evaluate and/or maintain my organs, tissues, and/or parts for purposes of donation.
+              </span>
+            </label>
           </div>
         </div>
 

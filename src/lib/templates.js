@@ -509,6 +509,18 @@ export const ahcdTemplate = {
       content: `
         Additional health care instructions: [None specified]
       `
+    },
+    {
+      name: 'part3_title',
+      content: `
+        PART 3
+      `
+    },
+    {
+      name: 'organ_donation',
+      content: `
+        (3.1) {{personalOrganDonationCheckbox}} Upon my death, I give my organs, tissues, and parts (mark box to indicate yes). By checking the box above, and notwithstanding my choice in Part 2 of this form, I authorize my agent to consent to any temporary medical procedure necessary solely to evaluate and/or maintain my organs, tissues, and/or parts for purposes of donation.
+      `
     }
   ]
 }

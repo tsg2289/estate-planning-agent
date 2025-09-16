@@ -1103,6 +1103,9 @@ ________________________________________________________________________________
 ___________________________________________________________________________________________________`
       }
       
+      // Format personal organ donation choice (Part 3.1)
+      formatted.personalOrganDonationCheckbox = formData.personalOrganDonation ? '☑' : '☐'
+      
       break
       
     case 'poa':
