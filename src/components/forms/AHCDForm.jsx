@@ -677,11 +677,12 @@ const AHCDForm = ({ onSubmit }) => {
 
         {/* Part 3 Header */}
         <div className="form-section">
-          <h3>Part 3 - Donation of Organs and Body</h3>
+          <h3>Part 3</h3>
         </div>
 
         {/* Part 3.1 - Personal Organ Donation */}
         <div className="form-section">
+          <h3>Donation of Organs and Body</h3>
           <div className="form-group">
             <label className="form-checkbox-label">
               <input
