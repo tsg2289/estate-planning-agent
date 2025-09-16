@@ -1185,9 +1185,13 @@ ________________________________________________________________________________
         formatted.signatureDate = '_________________________________________________'
       }
       
-      // Format signature image (for now, we'll show a placeholder in text document)
+      // Format signature image/document
       if (formData.signatureImage) {
-        formatted.signatureImage = '[SIGNATURE IMAGE UPLOADED]'
+        if (formData.signatureImage.startsWith('data:application/pdf')) {
+          formatted.signatureImage = '[SIGNATURE PDF DOCUMENT UPLOADED]'
+        } else {
+          formatted.signatureImage = '[SIGNATURE IMAGE UPLOADED]'
+        }
       } else {
         formatted.signatureImage = '_________________________________________________'
       }

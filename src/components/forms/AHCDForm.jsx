@@ -925,30 +925,45 @@ const AHCDForm = ({ onSubmit }) => {
               <label className="form-label">Upload Your Signature</label>
               <input
                 type="file"
-                accept="image/*"
+                accept="image/*,.pdf"
                 onChange={handleSignatureUpload}
                 className="form-input"
                 style={{ padding: '0.5rem' }}
               />
               <p className="form-help-text">
-                Upload an image of your signature (PNG, JPG, etc.). This will appear in your document.
+                Upload your signature as an image (PNG, JPG, etc.) or PDF document. This will appear in your document.
               </p>
               {formData.signatureImage && (
                 <div style={{ marginTop: '1rem' }}>
                   <p className="form-help-text" style={{ color: '#28a745', fontWeight: 'bold' }}>
                     ✅ Signature uploaded successfully
                   </p>
-                  <img 
-                    src={formData.signatureImage} 
-                    alt="Uploaded signature" 
-                    style={{ 
-                      maxWidth: '300px', 
-                      maxHeight: '100px', 
+                  {formData.signatureImage.startsWith('data:application/pdf') ? (
+                    <div style={{ 
+                      padding: '1rem', 
                       border: '1px solid #ddd', 
-                      padding: '0.5rem',
-                      backgroundColor: 'white'
-                    }} 
-                  />
+                      backgroundColor: '#f8f9fa',
+                      borderRadius: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem'
+                    }}>
+                      <span style={{ fontSize: '2rem' }}>📄</span>
+                      <span>PDF signature document uploaded</span>
+                    </div>
+                  ) : (
+                    <img 
+                      src={formData.signatureImage} 
+                      alt="Uploaded signature" 
+                      style={{ 
+                        maxWidth: '300px', 
+                        maxHeight: '100px', 
+                        border: '1px solid #ddd', 
+                        padding: '0.5rem',
+                        backgroundColor: 'white'
+                      }} 
+                    />
+                  )}
                 </div>
               )}
             </div>
