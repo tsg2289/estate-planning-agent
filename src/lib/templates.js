@@ -423,6 +423,12 @@ export const ahcdTemplate = {
       `
     },
     {
+      name: 'agent_obligation',
+      content: `
+        (1.4) AGENT'S OBLIGATION: My agent shall make health care decisions for me in accordance with this power of attorney for health care, any instructions I give in Part 2 of this form, and my other wishes to the extent known to my agent. To the extent my wishes are unknown, my agent shall make health care decisions for me in accordance with what my agent determines to be in my best interest. In determining my best interest, my agent shall consider my personal values to the extent known to my agent.
+      `
+    },
+    {
       name: 'life_sustaining_treatment',
       content: `
         Regarding life-sustaining treatment, my wishes are: {{lifeSustainingTreatment}}
