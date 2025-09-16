@@ -17,9 +17,14 @@ const AHCDForm = ({ onSubmit }) => {
     healthCareAgentAddress: '',
     healthCareAgentPhone: '',
     healthCareAgentEmail: '',
-    alternateHealthCareAgent: '',
-    alternateHealthCareAgentPhone: '',
-    alternateHealthCareAgentEmail: '',
+    alternateHealthCareAgents: [
+      {
+        name: '',
+        address: '',
+        phone: '',
+        email: ''
+      }
+    ],
     endOfLifeWishes: '',
     lifeSustainingTreatment: 'default',
     artificialNutrition: 'default',
@@ -72,6 +77,34 @@ const AHCDForm = ({ onSubmit }) => {
     setFormData(prev => ({
       ...prev,
       witnesses: prev.witnesses.filter((_, i) => i !== index)
+    }))
+  }
+
+  const handleAlternateHealthCareAgentChange = (index, field, value) => {
+    const newAlternateAgents = [...formData.alternateHealthCareAgents]
+    newAlternateAgents[index][field] = value
+    setFormData(prev => ({
+      ...prev,
+      alternateHealthCareAgents: newAlternateAgents
+    }))
+  }
+
+  const addAlternateHealthCareAgent = () => {
+    setFormData(prev => ({
+      ...prev,
+      alternateHealthCareAgents: [...prev.alternateHealthCareAgents, {
+        name: '',
+        address: '',
+        phone: '',
+        email: ''
+      }]
+    }))
+  }
+
+  const removeAlternateHealthCareAgent = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      alternateHealthCareAgents: prev.alternateHealthCareAgents.filter((_, i) => i !== index)
     }))
   }
 
@@ -281,43 +314,103 @@ const AHCDForm = ({ onSubmit }) => {
           </div>
         </div>
 
-        {/* Alternate Health Care Agent */}
+        {/* Alternate Health Care Agents */}
         <div className="form-section">
-          <h3>Alternate Health Care Agent (Optional)</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Alternate Agent Name</label>
-              <input
-                type="text"
-                name="alternateHealthCareAgent"
-                value={formData.alternateHealthCareAgent}
-                onChange={handleInputChange}
-                className="form-input"
-                placeholder="Leave blank if no alternate agent"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Alternate Agent Phone</label>
-              <input
-                type="tel"
-                name="alternateHealthCareAgentPhone"
-                value={formData.alternateHealthCareAgentPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
+          <h3>Alternate Health Care Agents (Optional)</h3>
+          <p className="form-help-text">
+            If your primary health care agent is unable or unwilling to serve, these alternate agents will serve in the order listed.
+          </p>
           
-          <div className="form-group">
-            <label className="form-label">Alternate Agent Email</label>
-            <input
-              type="email"
-              name="alternateHealthCareAgentEmail"
-              value={formData.alternateHealthCareAgentEmail}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
+          {formData.alternateHealthCareAgents.map((agent, index) => (
+            <div key={index} className="alternate-agent-item">
+              <div className="form-row" style={{ alignItems: 'center', marginBottom: '1rem' }}>
+                <h4 style={{ margin: 0, flex: 1 }}>
+                  Alternate Health Care Agent {index + 1}
+                </h4>
+                {formData.alternateHealthCareAgents.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeAlternateHealthCareAgent(index)}
+                    className="remove-button"
+                    style={{ 
+                      background: '#dc3545', 
+                      color: 'white', 
+                      border: 'none', 
+                      borderRadius: '4px', 
+                      padding: '0.5rem 1rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Name</label>
+                <input
+                  type="text"
+                  value={agent.name}
+                  onChange={(e) => handleAlternateHealthCareAgentChange(index, 'name', e.target.value)}
+                  className="form-input"
+                  placeholder="Leave blank if no alternate agent"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <input
+                  type="text"
+                  value={agent.address}
+                  onChange={(e) => handleAlternateHealthCareAgentChange(index, 'address', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    value={agent.phone}
+                    onChange={(e) => handleAlternateHealthCareAgentChange(index, 'phone', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    value={agent.email}
+                    onChange={(e) => handleAlternateHealthCareAgentChange(index, 'email', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          <button
+            type="button"
+            onClick={addAlternateHealthCareAgent}
+            className="add-button"
+            style={{
+              background: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '0.75rem 1.5rem',
+              cursor: 'pointer',
+              fontSize: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>+</span>
+            Add Another Alternate Agent
+          </button>
         </div>
 
         {/* End of Life Wishes */}

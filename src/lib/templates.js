@@ -311,6 +311,7 @@ export const ahcdTemplate = {
       content: `
         If {{healthCareAgent}} is unable or unwilling to serve as my Health Care Agent, 
         I designate {{alternateHealthCareAgent}} as my Alternate Health Care Agent.
+        {{alternateHealthCareAgentDetails}}
       `
     },
     {

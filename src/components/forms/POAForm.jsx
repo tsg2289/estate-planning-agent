@@ -20,10 +20,17 @@ const POAForm = ({ onSubmit }) => {
     agentZip: '',
     agentPhone: '',
     agentEmail: '',
-    alternateAgentName: '',
-    alternateAgentAddress: '',
-    alternateAgentPhone: '',
-    alternateAgentEmail: '',
+    alternateAgents: [
+      {
+        name: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        phone: '',
+        email: ''
+      }
+    ],
     scope: 'general',
     effectiveDate: '',
     terminationDate: '',
@@ -85,6 +92,37 @@ const POAForm = ({ onSubmit }) => {
       ...prev,
       allPowersSelected: !prev.allPowersSelected,
       specificPowers: !prev.allPowersSelected ? [] : prev.specificPowers
+    }))
+  }
+
+  const handleAlternateAgentChange = (index, field, value) => {
+    const newAlternateAgents = [...formData.alternateAgents]
+    newAlternateAgents[index][field] = value
+    setFormData(prev => ({
+      ...prev,
+      alternateAgents: newAlternateAgents
+    }))
+  }
+
+  const addAlternateAgent = () => {
+    setFormData(prev => ({
+      ...prev,
+      alternateAgents: [...prev.alternateAgents, {
+        name: '',
+        address: '',
+        city: '',
+        state: '',
+        zip: '',
+        phone: '',
+        email: ''
+      }]
+    }))
+  }
+
+  const removeAlternateAgent = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      alternateAgents: prev.alternateAgents.filter((_, i) => i !== index)
     }))
   }
 
@@ -334,51 +372,131 @@ const POAForm = ({ onSubmit }) => {
         {/* Alternate Agent Information */}
         <div className="form-section">
           <h3>Alternate Agent Information (Optional)</h3>
-          <div className="form-group">
-            <label className="form-label">Alternate Agent Name</label>
-            <input
-              type="text"
-              name="alternateAgentName"
-              value={formData.alternateAgentName}
-              onChange={handleInputChange}
-              className="form-input"
-              placeholder="Leave blank if no alternate agent"
-            />
-          </div>
+          <p className="form-help-text">
+            If your primary agent is unable or unwilling to serve, these alternate agents will serve in the order listed.
+          </p>
           
-          <div className="form-group">
-            <label className="form-label">Alternate Agent Address</label>
-            <input
-              type="text"
-              name="alternateAgentAddress"
-              value={formData.alternateAgentAddress}
-              onChange={handleInputChange}
-              className="form-input"
-            />
-          </div>
+          {formData.alternateAgents.map((agent, index) => (
+            <div key={index} className="alternate-agent-item">
+              <div className="form-row" style={{ alignItems: 'center', marginBottom: '1rem' }}>
+                <h4 style={{ margin: 0, flex: 1 }}>
+                  Alternate Agent {index + 1}
+                </h4>
+                {formData.alternateAgents.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeAlternateAgent(index)}
+                    className="remove-button"
+                    style={{ 
+                      background: '#dc3545', 
+                      color: 'white', 
+                      border: 'none', 
+                      borderRadius: '4px', 
+                      padding: '0.5rem 1rem',
+                      cursor: 'pointer',
+                      fontSize: '0.875rem'
+                    }}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Name</label>
+                <input
+                  type="text"
+                  value={agent.name}
+                  onChange={(e) => handleAlternateAgentChange(index, 'name', e.target.value)}
+                  className="form-input"
+                  placeholder="Leave blank if no alternate agent"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <input
+                  type="text"
+                  value={agent.address}
+                  onChange={(e) => handleAlternateAgentChange(index, 'address', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">City</label>
+                  <input
+                    type="text"
+                    value={agent.city}
+                    onChange={(e) => handleAlternateAgentChange(index, 'city', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">State</label>
+                  <input
+                    type="text"
+                    value={agent.state}
+                    onChange={(e) => handleAlternateAgentChange(index, 'state', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">ZIP Code</label>
+                  <input
+                    type="text"
+                    value={agent.zip}
+                    onChange={(e) => handleAlternateAgentChange(index, 'zip', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    value={agent.phone}
+                    onChange={(e) => handleAlternateAgentChange(index, 'phone', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Email</label>
+                <input
+                  type="email"
+                  value={agent.email}
+                  onChange={(e) => handleAlternateAgentChange(index, 'email', e.target.value)}
+                  className="form-input"
+                />
+              </div>
+            </div>
+          ))}
           
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Alternate Agent Phone</label>
-              <input
-                type="tel"
-                name="alternateAgentPhone"
-                value={formData.alternateAgentPhone}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Alternate Agent Email</label>
-              <input
-                type="email"
-                name="alternateAgentEmail"
-                value={formData.alternateAgentEmail}
-                onChange={handleInputChange}
-                className="form-input"
-              />
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={addAlternateAgent}
+            className="add-button"
+            style={{
+              background: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '0.75rem 1.5rem',
+              cursor: 'pointer',
+              fontSize: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem'
+            }}
+          >
+            <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>+</span>
+            Add Another Alternate Agent
+          </button>
         </div>
 
         {/* Power of Attorney Details */}

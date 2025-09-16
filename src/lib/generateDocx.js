@@ -794,6 +794,98 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
       
       break
       
+    case 'ahcd':
+      // Format alternate health care agent details
+      if (formData.alternateHealthCareAgents && Array.isArray(formData.alternateHealthCareAgents)) {
+        const validAlternateAgents = formData.alternateHealthCareAgents.filter(agent => agent.name && agent.name.trim())
+        
+        if (validAlternateAgents.length > 0) {
+          let alternateAgentDetails = ''
+          
+          if (validAlternateAgents.length === 1) {
+            const agent = validAlternateAgents[0]
+            formatted.alternateHealthCareAgent = agent.name
+            
+            // Add address and contact info
+            const agentInfo = []
+            if (agent.address && agent.address.trim()) {
+              agentInfo.push(`Address: ${agent.address}`)
+            }
+            if (agent.phone && agent.phone.trim()) {
+              agentInfo.push(`Phone: ${agent.phone}`)
+            }
+            if (agent.email && agent.email.trim()) {
+              agentInfo.push(`Email: ${agent.email}`)
+            }
+            
+            if (agentInfo.length > 0) {
+              alternateAgentDetails = ` ${agentInfo.join(', ')}.`
+            }
+          } else {
+            // Multiple alternate agents
+            const agentNames = validAlternateAgents.map(agent => agent.name).join(', ')
+            formatted.alternateHealthCareAgent = agentNames
+            
+            alternateAgentDetails = ' The alternate agents will serve in the following order:\n\n'
+            validAlternateAgents.forEach((agent, index) => {
+              alternateAgentDetails += `${index + 1}. ${agent.name}`
+              
+              const agentInfo = []
+              if (agent.address && agent.address.trim()) {
+                agentInfo.push(`Address: ${agent.address}`)
+              }
+              if (agent.phone && agent.phone.trim()) {
+                agentInfo.push(`Phone: ${agent.phone}`)
+              }
+              if (agent.email && agent.email.trim()) {
+                agentInfo.push(`Email: ${agent.email}`)
+              }
+              
+              if (agentInfo.length > 0) {
+                alternateAgentDetails += ` - ${agentInfo.join(', ')}`
+              }
+              
+              alternateAgentDetails += '\n'
+            })
+          }
+          
+          formatted.alternateHealthCareAgentDetails = alternateAgentDetails
+        } else {
+          formatted.alternateHealthCareAgent = ''
+          formatted.alternateHealthCareAgentDetails = ''
+        }
+      }
+      // Legacy support for old single alternate agent format
+      else if (formData.alternateHealthCareAgent && formData.alternateHealthCareAgent.trim()) {
+        formatted.alternateHealthCareAgent = formData.alternateHealthCareAgent
+        
+        let alternateAgentDetails = ''
+        
+        // Add address if provided
+        if (formData.alternateHealthCareAgentAddress && formData.alternateHealthCareAgentAddress.trim()) {
+          alternateAgentDetails += ` Address: ${formData.alternateHealthCareAgentAddress}.`
+        }
+        
+        // Add contact information
+        const contactInfo = []
+        if (formData.alternateHealthCareAgentPhone && formData.alternateHealthCareAgentPhone.trim()) {
+          contactInfo.push(`Phone: ${formData.alternateHealthCareAgentPhone}`)
+        }
+        if (formData.alternateHealthCareAgentEmail && formData.alternateHealthCareAgentEmail.trim()) {
+          contactInfo.push(`Email: ${formData.alternateHealthCareAgentEmail}`)
+        }
+        
+        if (contactInfo.length > 0) {
+          alternateAgentDetails += ` ${contactInfo.join(', ')}.`
+        }
+        
+        formatted.alternateHealthCareAgentDetails = alternateAgentDetails
+      } else {
+        formatted.alternateHealthCareAgent = ''
+        formatted.alternateHealthCareAgentDetails = ''
+      }
+      break
+      
     case 'poa':
       // Format scope description
       const scopeDescriptions = {
@@ -859,15 +951,108 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         specialInstructions += `${formData.additionalProvisions.trim()}\n`
       }
       
-      // Add alternate agent if provided
-      if (formData.alternateAgentName && formData.alternateAgentName.trim()) {
-        specialInstructions += `If ${formData.agentName} is unable or unwilling to serve as my Agent, I appoint ${formData.alternateAgentName} as my Alternate Agent.`
-        if (formData.alternateAgentAddress && formData.alternateAgentAddress.trim()) {
-          specialInstructions += ` Address: ${formData.alternateAgentAddress}`
-          if (formData.alternateAgentPhone) {
-            specialInstructions += `, Phone: ${formData.alternateAgentPhone}`
+      // Add alternate agents if provided
+      if (formData.alternateAgents && Array.isArray(formData.alternateAgents)) {
+        const validAlternateAgents = formData.alternateAgents.filter(agent => agent.name && agent.name.trim())
+        
+        if (validAlternateAgents.length > 0) {
+          if (validAlternateAgents.length === 1) {
+            const agent = validAlternateAgents[0]
+            specialInstructions += `If ${formData.agentName} is unable or unwilling to serve as my Agent, I appoint ${agent.name} as my Alternate Agent.`
+            
+            // Build full address for alternate agent
+            const alternateAgentFullAddress = [
+              agent.address,
+              agent.city,
+              agent.state,
+              agent.zip
+            ].filter(item => item && item.trim()).join(', ')
+            
+            if (alternateAgentFullAddress) {
+              specialInstructions += ` Address: ${alternateAgentFullAddress}`
+            }
+            
+            // Add contact information
+            const contactInfo = []
+            if (agent.phone && agent.phone.trim()) {
+              contactInfo.push(`Phone: ${agent.phone}`)
+            }
+            if (agent.email && agent.email.trim()) {
+              contactInfo.push(`Email: ${agent.email}`)
+            }
+            
+            if (contactInfo.length > 0) {
+              specialInstructions += `, ${contactInfo.join(', ')}`
+            }
+            
+            specialInstructions += '\n'
+          } else {
+            // Multiple alternate agents
+            specialInstructions += `If ${formData.agentName} is unable or unwilling to serve as my Agent, I appoint the following persons as my Alternate Agents in the order listed:\n\n`
+            
+            validAlternateAgents.forEach((agent, index) => {
+              specialInstructions += `${index + 1}. ${agent.name}`
+              
+              // Build full address
+              const agentFullAddress = [
+                agent.address,
+                agent.city,
+                agent.state,
+                agent.zip
+              ].filter(item => item && item.trim()).join(', ')
+              
+              if (agentFullAddress) {
+                specialInstructions += `, Address: ${agentFullAddress}`
+              }
+              
+              // Add contact information
+              const contactInfo = []
+              if (agent.phone && agent.phone.trim()) {
+                contactInfo.push(`Phone: ${agent.phone}`)
+              }
+              if (agent.email && agent.email.trim()) {
+                contactInfo.push(`Email: ${agent.email}`)
+              }
+              
+              if (contactInfo.length > 0) {
+                specialInstructions += `, ${contactInfo.join(', ')}`
+              }
+              
+              specialInstructions += '\n'
+            })
           }
         }
+      }
+      
+      // Legacy support for old single alternate agent format
+      else if (formData.alternateAgentName && formData.alternateAgentName.trim()) {
+        specialInstructions += `If ${formData.agentName} is unable or unwilling to serve as my Agent, I appoint ${formData.alternateAgentName} as my Alternate Agent.`
+        
+        // Build full address for alternate agent
+        const alternateAgentFullAddress = [
+          formData.alternateAgentAddress,
+          formData.alternateAgentCity,
+          formData.alternateAgentState,
+          formData.alternateAgentZip
+        ].filter(item => item && item.trim()).join(', ')
+        
+        if (alternateAgentFullAddress) {
+          specialInstructions += ` Address: ${alternateAgentFullAddress}`
+        }
+        
+        // Add contact information
+        const contactInfo = []
+        if (formData.alternateAgentPhone && formData.alternateAgentPhone.trim()) {
+          contactInfo.push(`Phone: ${formData.alternateAgentPhone}`)
+        }
+        if (formData.alternateAgentEmail && formData.alternateAgentEmail.trim()) {
+          contactInfo.push(`Email: ${formData.alternateAgentEmail}`)
+        }
+        
+        if (contactInfo.length > 0) {
+          specialInstructions += `, ${contactInfo.join(', ')}`
+        }
+        
         specialInstructions += '\n'
       }
       
