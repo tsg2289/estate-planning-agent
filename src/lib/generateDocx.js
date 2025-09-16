@@ -134,13 +134,14 @@ const createDocumentSections = async (template, formData) => {
             text: template.title.toUpperCase(),
             bold: true,
             size: 32,
+            color: "2E75B6", // Blue color to match the image
           }),
         ],
         heading: HeadingLevel.HEADING_1,
         alignment: AlignmentType.CENTER,
         spacing: {
           before: 400,
-          after: 400,
+          after: 200,
         },
       })
     )
@@ -314,34 +315,49 @@ const createDocumentSections = async (template, formData) => {
       } else {
         // Handle other document types (will, poa, etc.)
         if (section.name === 'statutory_notice') {
-          // Special formatting for POA statutory notice
+          // Special formatting for POA statutory notice to match exact layout
           const content = section.content.trim()
-          const lines = content.split('\n').filter(line => line.trim())
           
-          lines.forEach((line, index) => {
-            const trimmedLine = line.trim()
-            if (trimmedLine) {
-              // Check if line contains "NOTICE:" to make it bold
-              const isNoticeLine = trimmedLine.includes('NOTICE:')
-              
-              children.push(
-                new Paragraph({
-                  children: [
-                    new TextRun({
-                      text: trimmedLine,
-                      size: 24,
-                      bold: isNoticeLine,
-                    }),
-                  ],
-                  alignment: AlignmentType.JUSTIFIED,
-                  spacing: {
-                    before: index === 0 ? 200 : 120,
-                    after: index === lines.length - 1 ? 200 : 120,
-                  },
-                })
-              )
-            }
-          })
+          // First line: "(California Probate Code Section 4401)" - centered
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "(California Probate Code Section 4401)",
+                  size: 24,
+                }),
+              ],
+              alignment: AlignmentType.CENTER,
+              spacing: {
+                before: 200,
+                after: 200,
+              },
+            })
+          )
+          
+          // NOTICE text - split into bold "NOTICE:" and regular text
+          const noticeText = "NOTICE: THE POWERS GRANTED BY THIS DOCUMENT ARE BROAD AND SWEEPING. THEY ARE EXPLAINED IN THE UNIFORM STATUTORY FORM POWER OF ATTORNEY ACT (CALIFORNIA PROBATE CODE SECTIONS 4400–4465). THE POWERS LISTED IN THIS DOCUMENT DO NOT INCLUDE ALL POWERS THAT ARE AVAILABLE UNDER THE PROBATE CODE. ADDITIONAL POWERS AVAILABLE UNDER THE PROBATE CODE MAY BE ADDED BY SPECIFICALLY LISTING THEM UNDER THE SPECIAL INSTRUCTIONS SECTION OF THIS DOCUMENT. IF YOU HAVE ANY QUESTIONS ABOUT THESE POWERS, OBTAIN COMPETENT LEGAL ADVICE. THIS DOCUMENT DOES NOT AUTHORIZE ANYONE TO MAKE MEDICAL AND OTHER HEALTHCARE DECISIONS FOR YOU. YOU MAY REVOKE THIS POWER OF ATTORNEY IF YOU LATER WISH TO DO SO."
+          
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: "NOTICE:",
+                  size: 24,
+                  bold: true,
+                }),
+                new TextRun({
+                  text: " THE POWERS GRANTED BY THIS DOCUMENT ARE BROAD AND SWEEPING. THEY ARE EXPLAINED IN THE UNIFORM STATUTORY FORM POWER OF ATTORNEY ACT (CALIFORNIA PROBATE CODE SECTIONS 4400–4465). THE POWERS LISTED IN THIS DOCUMENT DO NOT INCLUDE ALL POWERS THAT ARE AVAILABLE UNDER THE PROBATE CODE. ADDITIONAL POWERS AVAILABLE UNDER THE PROBATE CODE MAY BE ADDED BY SPECIFICALLY LISTING THEM UNDER THE SPECIAL INSTRUCTIONS SECTION OF THIS DOCUMENT. IF YOU HAVE ANY QUESTIONS ABOUT THESE POWERS, OBTAIN COMPETENT LEGAL ADVICE. THIS DOCUMENT DOES NOT AUTHORIZE ANYONE TO MAKE MEDICAL AND OTHER HEALTHCARE DECISIONS FOR YOU. YOU MAY REVOKE THIS POWER OF ATTORNEY IF YOU LATER WISH TO DO SO.",
+                  size: 24,
+                }),
+              ],
+              alignment: AlignmentType.JUSTIFIED,
+              spacing: {
+                before: 0,
+                after: 300,
+              },
+            })
+          )
         } else {
           // Handle other sections with standard formatting
           const lines = section.content.trim().split('\n')
