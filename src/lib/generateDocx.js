@@ -1093,6 +1093,16 @@ ________________________________________________________________________________
 ___________________________________________________________________________________________________`
       }
       
+      // Format health care wishes
+      if (formData.healthCareWishes && formData.healthCareWishes.trim()) {
+        formatted.healthCareWishes = formData.healthCareWishes.trim()
+      } else {
+        // Show blank lines if no wishes specified
+        formatted.healthCareWishes = `___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________`
+      }
+      
       break
       
     case 'poa':

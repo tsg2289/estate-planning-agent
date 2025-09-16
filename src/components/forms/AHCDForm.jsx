@@ -36,6 +36,7 @@ const AHCDForm = ({ onSubmit }) => {
     immediateAuthorityEffective: false,
     endOfLifeChoice: '', // 'not-prolong' or 'prolong'
     painReliefExceptions: '',
+    healthCareWishes: '',
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -648,6 +649,27 @@ const AHCDForm = ({ onSubmit }) => {
             />
             <p className="form-help-text">
               Leave blank if you want pain relief treatment to be provided at all times without exceptions.
+            </p>
+          </div>
+        </div>
+
+        {/* Health Care Wishes */}
+        <div className="form-section">
+          <h3>Wishes for Physical and Mental Health Care</h3>
+          <div className="form-group">
+            <label className="form-label">
+              (If you do not agree with any of the optional choices above and wish to write your own, or if you wish to add to the instructions you have given above, you may do so here.) I direct that:
+            </label>
+            <textarea
+              name="healthCareWishes"
+              value={formData.healthCareWishes}
+              onChange={handleInputChange}
+              className="form-textarea"
+              placeholder="Enter any additional or custom healthcare wishes and instructions..."
+              rows="4"
+            />
+            <p className="form-help-text">
+              Use this space to add any specific healthcare wishes or modify the instructions you've given above.
             </p>
           </div>
         </div>

@@ -473,6 +473,14 @@ export const ahcdTemplate = {
       `
     },
     {
+      name: 'health_care_wishes',
+      content: `
+        WISHES FOR PHYSICAL AND MENTAL HEALTH CARE: (If you do not agree with any of the optional choices above and wish to write your own, or if you wish to add to the instructions you have given above, you may do so here.) I direct that:
+
+        {{healthCareWishes}}
+      `
+    },
+    {
       name: 'life_sustaining_treatment',
       content: `
         Regarding life-sustaining treatment, my wishes are: {{lifeSustainingTreatment}}
