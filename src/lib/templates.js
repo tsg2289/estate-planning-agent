@@ -521,6 +521,52 @@ export const ahcdTemplate = {
       content: `
         (3.1) {{personalOrganDonationCheckbox}} Upon my death, I give my organs, tissues, and parts (mark box to indicate yes). By checking the box above, and notwithstanding my choice in Part 2 of this form, I authorize my agent to consent to any temporary medical procedure necessary solely to evaluate and/or maintain my organs, tissues, and/or parts for purposes of donation.
       `
+    },
+    {
+      name: 'part4_title',
+      content: `
+        PART 4
+      `
+    },
+    {
+      name: 'primary_physician_title',
+      content: `
+        PRIMARY PHYSICIAN
+
+        (OPTIONAL)
+      `
+    },
+    {
+      name: 'primary_physician_designation',
+      content: `
+        (4.1) I designate the following physician as my primary physician:
+
+        {{primaryPhysicianName}}
+
+        (name of physician)
+
+        {{primaryPhysicianAddress}}
+
+        {{primaryPhysicianPhone}}
+
+        (phone)
+      `
+    },
+    {
+      name: 'alternate_primary_physician',
+      content: `
+        OPTIONAL: If the physician I have designated above is not willing, able, or reasonably available to act as my primary physician, I designate the following physician as my primary physician:
+
+        {{alternatePrimaryPhysicianName}}
+
+        (name of physician)
+
+        {{alternatePrimaryPhysicianAddress}}
+
+        {{alternatePrimaryPhysicianPhone}}
+
+        (phone)
+      `
     }
   ]
 }

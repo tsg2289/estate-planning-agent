@@ -1106,6 +1106,72 @@ ________________________________________________________________________________
       // Format personal organ donation choice (Part 3.1)
       formatted.personalOrganDonationCheckbox = formData.personalOrganDonation ? '☑' : '☐'
       
+      // Format primary physician information (Part 4)
+      if (formData.primaryPhysicianName && formData.primaryPhysicianName.trim()) {
+        formatted.primaryPhysicianName = formData.primaryPhysicianName.trim()
+      } else {
+        formatted.primaryPhysicianName = '___________________________________________________________________________________________________'
+      }
+      
+      if (formData.primaryPhysicianAddress && formData.primaryPhysicianAddress.trim()) {
+        let addressParts = [formData.primaryPhysicianAddress.trim()]
+        if (formData.primaryPhysicianCity && formData.primaryPhysicianCity.trim()) {
+          addressParts.push(formData.primaryPhysicianCity.trim())
+        }
+        if (formData.primaryPhysicianState && formData.primaryPhysicianState.trim()) {
+          addressParts.push(formData.primaryPhysicianState.trim())
+        }
+        if (formData.primaryPhysicianZip && formData.primaryPhysicianZip.trim()) {
+          addressParts.push(formData.primaryPhysicianZip.trim())
+        }
+        formatted.primaryPhysicianAddress = addressParts.join(', ')
+      } else {
+        formatted.primaryPhysicianAddress = `___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________
+
+(address)                    (city)                    (state)                    (ZIP Code)`
+      }
+      
+      if (formData.primaryPhysicianPhone && formData.primaryPhysicianPhone.trim()) {
+        formatted.primaryPhysicianPhone = formData.primaryPhysicianPhone.trim()
+      } else {
+        formatted.primaryPhysicianPhone = '___________________________________________________________________________________________________'
+      }
+      
+      // Format alternate primary physician information
+      if (formData.alternatePrimaryPhysicianName && formData.alternatePrimaryPhysicianName.trim()) {
+        formatted.alternatePrimaryPhysicianName = formData.alternatePrimaryPhysicianName.trim()
+      } else {
+        formatted.alternatePrimaryPhysicianName = '___________________________________________________________________________________________________'
+      }
+      
+      if (formData.alternatePrimaryPhysicianAddress && formData.alternatePrimaryPhysicianAddress.trim()) {
+        let addressParts = [formData.alternatePrimaryPhysicianAddress.trim()]
+        if (formData.alternatePrimaryPhysicianCity && formData.alternatePrimaryPhysicianCity.trim()) {
+          addressParts.push(formData.alternatePrimaryPhysicianCity.trim())
+        }
+        if (formData.alternatePrimaryPhysicianState && formData.alternatePrimaryPhysicianState.trim()) {
+          addressParts.push(formData.alternatePrimaryPhysicianState.trim())
+        }
+        if (formData.alternatePrimaryPhysicianZip && formData.alternatePrimaryPhysicianZip.trim()) {
+          addressParts.push(formData.alternatePrimaryPhysicianZip.trim())
+        }
+        formatted.alternatePrimaryPhysicianAddress = addressParts.join(', ')
+      } else {
+        formatted.alternatePrimaryPhysicianAddress = `___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________
+
+(address)                    (city)                    (state)                    (ZIP Code)`
+      }
+      
+      if (formData.alternatePrimaryPhysicianPhone && formData.alternatePrimaryPhysicianPhone.trim()) {
+        formatted.alternatePrimaryPhysicianPhone = formData.alternatePrimaryPhysicianPhone.trim()
+      } else {
+        formatted.alternatePrimaryPhysicianPhone = '___________________________________________________________________________________________________'
+      }
+      
       break
       
     case 'poa':

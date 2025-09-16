@@ -38,6 +38,19 @@ const AHCDForm = ({ onSubmit }) => {
     painReliefExceptions: '',
     healthCareWishes: '',
     personalOrganDonation: false, // New field for section 3.1
+    // Part 4 - Primary Physician fields
+    primaryPhysicianName: '',
+    primaryPhysicianAddress: '',
+    primaryPhysicianCity: '',
+    primaryPhysicianState: '',
+    primaryPhysicianZip: '',
+    primaryPhysicianPhone: '',
+    alternatePrimaryPhysicianName: '',
+    alternatePrimaryPhysicianAddress: '',
+    alternatePrimaryPhysicianCity: '',
+    alternatePrimaryPhysicianState: '',
+    alternatePrimaryPhysicianZip: '',
+    alternatePrimaryPhysicianPhone: '',
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -699,6 +712,169 @@ const AHCDForm = ({ onSubmit }) => {
                 <strong>(3.1) ☐ Upon my death, I give my organs, tissues, and parts</strong> (mark box to indicate yes). By checking the box above, and notwithstanding my choice in Part 2 of this form, I authorize my agent to consent to any temporary medical procedure necessary solely to evaluate and/or maintain my organs, tissues, and/or parts for purposes of donation.
               </span>
             </label>
+          </div>
+        </div>
+
+        {/* Part 4 Header */}
+        <div className="form-section">
+          <h3>Part 4</h3>
+        </div>
+
+        {/* Part 4 - Primary Physician */}
+        <div className="form-section">
+          <h3>Primary Physician</h3>
+          <p className="form-help-text" style={{ fontWeight: 'bold', textAlign: 'center' }}>
+            (OPTIONAL)
+          </p>
+          
+          <div className="form-group">
+            <label className="form-label">
+              (4.1) I designate the following physician as my primary physician:
+            </label>
+            
+            <div className="form-group">
+              <label className="form-label">Name of Physician</label>
+              <input
+                type="text"
+                name="primaryPhysicianName"
+                value={formData.primaryPhysicianName}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="Enter physician's full name"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Address</label>
+              <input
+                type="text"
+                name="primaryPhysicianAddress"
+                value={formData.primaryPhysicianAddress}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="Enter street address"
+              />
+            </div>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">City</label>
+                <input
+                  type="text"
+                  name="primaryPhysicianCity"
+                  value={formData.primaryPhysicianCity}
+                  onChange={handleInputChange}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">State</label>
+                <input
+                  type="text"
+                  name="primaryPhysicianState"
+                  value={formData.primaryPhysicianState}
+                  onChange={handleInputChange}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">ZIP Code</label>
+                <input
+                  type="text"
+                  name="primaryPhysicianZip"
+                  value={formData.primaryPhysicianZip}
+                  onChange={handleInputChange}
+                  className="form-input"
+                />
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                name="primaryPhysicianPhone"
+                value={formData.primaryPhysicianPhone}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="Enter phone number"
+              />
+            </div>
+          </div>
+          
+          <div className="form-group" style={{ marginTop: '2rem' }}>
+            <label className="form-label">
+              OPTIONAL: If the physician I have designated above is not willing, able, or reasonably available to act as my primary physician, I designate the following physician as my primary physician:
+            </label>
+            
+            <div className="form-group">
+              <label className="form-label">Name of Physician</label>
+              <input
+                type="text"
+                name="alternatePrimaryPhysicianName"
+                value={formData.alternatePrimaryPhysicianName}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="Enter alternate physician's full name"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Address</label>
+              <input
+                type="text"
+                name="alternatePrimaryPhysicianAddress"
+                value={formData.alternatePrimaryPhysicianAddress}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="Enter street address"
+              />
+            </div>
+            
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">City</label>
+                <input
+                  type="text"
+                  name="alternatePrimaryPhysicianCity"
+                  value={formData.alternatePrimaryPhysicianCity}
+                  onChange={handleInputChange}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">State</label>
+                <input
+                  type="text"
+                  name="alternatePrimaryPhysicianState"
+                  value={formData.alternatePrimaryPhysicianState}
+                  onChange={handleInputChange}
+                  className="form-input"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">ZIP Code</label>
+                <input
+                  type="text"
+                  name="alternatePrimaryPhysicianZip"
+                  value={formData.alternatePrimaryPhysicianZip}
+                  onChange={handleInputChange}
+                  className="form-input"
+                />
+              </div>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                name="alternatePrimaryPhysicianPhone"
+                value={formData.alternatePrimaryPhysicianPhone}
+                onChange={handleInputChange}
+                className="form-input"
+                placeholder="Enter phone number"
+              />
+            </div>
           </div>
         </div>
 
