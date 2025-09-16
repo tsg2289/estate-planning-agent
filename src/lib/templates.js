@@ -281,6 +281,8 @@ export const poaTemplate = {
       name: 'statutory_powers',
       content: `
         {{statutoryPowersList}}
+        
+        YOU NEED NOT INITIAL ANY OTHER LINES IF YOU INITIAL LINE (N)
       `
     },
   ]
