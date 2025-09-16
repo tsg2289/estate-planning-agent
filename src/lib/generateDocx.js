@@ -941,16 +941,6 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         specialInstructions += `${formData.limitations.trim()}\n`
       }
       
-      // Add compensation if provided
-      if (formData.compensation && formData.compensation.trim()) {
-        specialInstructions += `Agent Compensation: ${formData.compensation.trim()}\n`
-      }
-      
-      // Add additional provisions if provided
-      if (formData.additionalProvisions && formData.additionalProvisions.trim()) {
-        specialInstructions += `${formData.additionalProvisions.trim()}\n`
-      }
-      
       // Add alternate agents if provided
       if (formData.alternateAgents && Array.isArray(formData.alternateAgents)) {
         const validAlternateAgents = formData.alternateAgents.filter(agent => agent.name && agent.name.trim())

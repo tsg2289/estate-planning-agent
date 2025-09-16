@@ -37,9 +37,7 @@ const POAForm = ({ onSubmit }) => {
     specificPowers: [],
     allPowersSelected: false,
     incapacitationChoice: 'durable', // 'durable' or 'non-durable'
-    limitations: '',
-    compensation: '',
-    additionalProvisions: ''
+    limitations: ''
   }
 
   const {
@@ -635,35 +633,6 @@ const POAForm = ({ onSubmit }) => {
           </div>
         </div>
 
-        {/* Compensation */}
-        <div className="form-section">
-          <h3>Agent Compensation</h3>
-          <div className="form-group">
-            <label className="form-label">Compensation Terms</label>
-            <textarea
-              name="compensation"
-              value={formData.compensation}
-              onChange={handleInputChange}
-              className="form-textarea"
-              placeholder="Describe how and when the agent will be compensated for their services..."
-            />
-          </div>
-        </div>
-
-        {/* Additional Provisions */}
-        <div className="form-section">
-          <h3>Additional Provisions</h3>
-          <div className="form-group">
-            <label className="form-label">Additional Provisions</label>
-            <textarea
-              name="additionalProvisions"
-              value={formData.additionalProvisions}
-              onChange={handleInputChange}
-              className="form-textarea"
-              placeholder="Any additional terms, conditions, or special provisions you'd like to include..."
-            />
-          </div>
-        </div>
 
         <button type="submit" className="form-button">
           Complete Power of Attorney
