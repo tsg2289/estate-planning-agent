@@ -461,13 +461,7 @@ export const ahcdTemplate = {
       content: `
         (2.1) END-OF-LIFE DECISIONS: I direct that my health care providers and others involved in my care provide, withhold, or withdraw treatment in accordance with the choice I have marked below:
 
-        {{endOfLifeChoiceA}} (a) Choice Not To Prolong Life
-
-        I do not want my life to be prolonged if (1) I have an incurable and irreversible condition that will result in my death within a relatively short time, (2) I become unconscious and, to a reasonable degree of medical certainty, I will not regain consciousness, or (3) the likely risks and burdens of treatment would outweigh the expected benefits, OR
-
-        {{endOfLifeChoiceB}} (b) Choice To Prolong Life
-
-        I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.
+        {{selectedEndOfLifeChoice}}
       `
     },
     {
