@@ -54,6 +54,8 @@ const AHCDForm = ({ onSubmit }) => {
     // Part 5.2 - Signature fields
     signatureDate: '',
     signatureImage: null, // For uploaded signature
+    // Part 6 - Special Witness Requirement
+    isSkilledNursingPatient: false, // New field for skilled nursing facility status
     witnesses: [
       { name: '', address: '', city: '', state: '', phone: '', signatureDate: '' },
       { name: '', address: '', city: '', state: '', phone: '', signatureDate: '' }
@@ -996,6 +998,73 @@ const AHCDForm = ({ onSubmit }) => {
                 This is automatically filled from your address entered in the first section.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Part 6 - Special Witness Requirement */}
+        <div className="form-section">
+          <h3>Part 6 - Special Witness Requirement</h3>
+          
+          <div className="form-group">
+            <label className="form-label">
+              Are you currently a patient in a skilled nursing facility?
+            </label>
+            <p className="form-help-text">
+              A skilled nursing facility is a health care facility that provides skilled nursing care and supportive care to patients whose primary need is for availability of skilled nursing care on an extended basis.
+            </p>
+            
+            <div style={{ marginTop: '1rem' }}>
+              <label className="form-checkbox-label">
+                <input
+                  type="radio"
+                  name="isSkilledNursingPatient"
+                  value="true"
+                  checked={formData.isSkilledNursingPatient === true}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    isSkilledNursingPatient: e.target.value === 'true'
+                  }))}
+                  className="form-checkbox"
+                />
+                <span className="form-checkbox-text">
+                  <strong>Yes</strong> - I am currently a patient in a skilled nursing facility
+                </span>
+              </label>
+              
+              <label className="form-checkbox-label" style={{ marginTop: '0.5rem' }}>
+                <input
+                  type="radio"
+                  name="isSkilledNursingPatient"
+                  value="false"
+                  checked={formData.isSkilledNursingPatient === false}
+                  onChange={(e) => setFormData(prev => ({
+                    ...prev,
+                    isSkilledNursingPatient: false
+                  }))}
+                  className="form-checkbox"
+                />
+                <span className="form-checkbox-text">
+                  <strong>No</strong> - I am not a patient in a skilled nursing facility
+                </span>
+              </label>
+            </div>
+            
+            {formData.isSkilledNursingPatient && (
+              <div style={{ 
+                marginTop: '1.5rem', 
+                padding: '1rem', 
+                backgroundColor: '#fff3cd', 
+                border: '1px solid #ffeaa7',
+                borderRadius: '4px'
+              }}>
+                <p style={{ margin: 0, fontWeight: 'bold', color: '#856404' }}>
+                  ⚠️ Additional Requirement
+                </p>
+                <p style={{ margin: '0.5rem 0 0 0', color: '#856404' }}>
+                  Since you are a patient in a skilled nursing facility, your document will include Part 6 which requires a patient advocate or ombudsman to sign as an additional witness. This person will need to sign the printed document.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 

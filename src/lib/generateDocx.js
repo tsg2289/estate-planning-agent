@@ -1280,6 +1280,17 @@ ________________________________________________________________________________
       // This section provides blank signature lines for witnesses to sign physically
       formatted.additionalWitnessSignature = '_________________________________________________'
       
+      // Part 6 - Special Witness Requirement (only if skilled nursing patient)
+      formatted.isSkilledNursingPatient = formData.isSkilledNursingPatient || false
+      if (formatted.isSkilledNursingPatient) {
+        // Provide blank signature lines for patient advocate/ombudsman
+        formatted.ombudsmanSignature = '_________________________________________________'
+        formatted.ombudsmanDate = '_________________________________________________'
+        formatted.ombudsmanName = '_________________________________________________'
+        formatted.ombudsmanAddress = '_________________________________________________'
+        formatted.ombudsmanCityState = '_________________________________________________'
+      }
+      
       break
       
     case 'poa':

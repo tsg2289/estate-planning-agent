@@ -655,6 +655,50 @@ export const ahcdTemplate = {
 
         (signature of witness)
       `
+    },
+    {
+      name: 'part6_skilled_nursing',
+      content: `
+        PART 6
+        
+        SPECIAL WITNESS REQUIREMENT
+        
+        (6.1) The following statement is required only if you are a patient in a skilled nursing facility--a health care facility that provides the following basic services: skilled nursing care and supportive care to patients whose primary need is for availability of skilled nursing care on an extended basis. The patient advocate or ombudsman must sign the following statement:
+
+        STATEMENT OF PATIENT ADVOCATE OR OMBUDSMAN
+
+        I declare under penalty of perjury under the laws of California that I am a patient advocate or ombudsman as designated by the State Department of Aging and that I am serving as a witness as required by Section 4675 of the Probate Code.
+
+        {{ombudsmanDate}}
+
+        _________________________________________________
+
+        (date)
+
+        {{ombudsmanSignature}}
+
+        _________________________________________________
+
+        (sign your name)
+
+        {{ombudsmanAddress}}
+
+        _________________________________________________
+
+        (address)
+
+        {{ombudsmanName}}
+
+        _________________________________________________
+
+        (print your name)
+
+        {{ombudsmanCityState}}
+
+        _________________________________________________
+
+        (city)                    (state)
+      `
     }
   ]
 }
@@ -686,7 +730,16 @@ export const populateTemplate = (template, data) => {
     })
   }
   
-  populatedTemplate.sections = template.sections.map(section => ({
+  // Filter sections based on conditions (e.g., Part 6 only for skilled nursing patients)
+  let sectionsToInclude = template.sections.filter(section => {
+    // Only include Part 6 if the person is a skilled nursing patient
+    if (section.name === 'part6_skilled_nursing') {
+      return data.isSkilledNursingPatient === true
+    }
+    return true // Include all other sections
+  })
+  
+  populatedTemplate.sections = sectionsToInclude.map(section => ({
     ...section,
     content: section.content.replace(/\{\{(\w+)\}\}/g, (match, key) => {
       return data[key] || match
