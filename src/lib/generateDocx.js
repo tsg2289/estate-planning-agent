@@ -862,6 +862,33 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         // Default to durable
         formatted.incapacitationText = 'This power of attorney will continue to be effective even though I become incapacitated.'
       }
+      
+      // Create conditional appointment text
+      const hasPrincipalInfo = formData.principalName && formData.principalName.trim()
+      const hasAgentInfo = formData.agentName && formData.agentName.trim()
+      
+      if (hasPrincipalInfo && hasAgentInfo) {
+        // Names provided - show actual names and addresses without instructional text
+        const principalFullAddress = [
+          formData.principalAddress,
+          formData.principalCity,
+          formData.principalState,
+          formData.principalZip
+        ].filter(item => item && item.trim()).join(', ')
+        
+        const agentFullAddress = [
+          formData.agentAddress,
+          formData.agentCity, 
+          formData.agentState,
+          formData.agentZip
+        ].filter(item => item && item.trim()).join(', ')
+        
+        formatted.appointmentText = `I, ${formData.principalName}, ${principalFullAddress} appoint ${formData.agentName}, ${agentFullAddress} as my agent (attorney-in-fact) to act for me in any lawful way with respect to the following initialed subjects:`
+      } else {
+        // Names not provided - show instructional text with blanks
+        formatted.appointmentText = `I, _____________________________________________________________________________ (your name and address) appoint ________________________________________________________________________ __________________________________ (name and address of the person appointed, or of each person appointed if you want to designate more than one) as my agent (attorney-in-fact) to act for me in any lawful way with respect to the following initialed subjects:`
+      }
+      
       break
   }
   

@@ -254,11 +254,7 @@ export const poaTemplate = {
       name: 'appointment_form',
       content: `
         ____________
-        I, {{principalName}}, {{principalAddress}}, {{principalCity}}, {{principalState}} {{principalZip}} (your name
-        and address) appoint {{agentName}}, {{agentAddress}}, {{agentCity}}, {{agentState}} {{agentZip}}
-        (name and address of the person appointed, or of each person
-        appointed if you want to designate more than one) as my agent (attorney-in-fact) to act for me in any lawful way
-        with respect to the following initialed subjects:
+        {{appointmentText}}
         TO GRANT ALL OF THE FOLLOWING POWERS, INITIAL THE LINE IN FRONT OF (N) AND IGNORE
         THE LINES IN FRONT OF THE OTHER POWERS.
         TO GRANT ONE OR MORE, BUT FEWER THAN ALL, OF THE FOLLOWING POWERS, INITIAL THE
