@@ -429,6 +429,12 @@ export const ahcdTemplate = {
       `
     },
     {
+      name: 'conservator_nomination',
+      content: `
+        (1.6) NOMINATION OF CONSERVATOR: If a conservator of my person needs to be appointed for me by a court, I nominate the agent designated in this form. If that agent is not willing, able, or reasonably available to act as conservator, I nominate the alternate agents whom I have named, in the order designated.
+      `
+    },
+    {
       name: 'life_sustaining_treatment',
       content: `
         Regarding life-sustaining treatment, my wishes are: {{lifeSustainingTreatment}}
