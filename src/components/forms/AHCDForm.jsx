@@ -12,7 +12,6 @@ const AHCDForm = ({ onSubmit }) => {
     principalPhone: '',
     principalEmail: '',
     principalDOB: '',
-    principalSSN: '',
     healthCareAgent: '',
     healthCareAgentAddress: '',
     healthCareAgentPhone: '',
@@ -235,29 +234,16 @@ const AHCDForm = ({ onSubmit }) => {
             </div>
           </div>
           
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Email</label>
-              <input
-                type="email"
-                name="principalEmail"
-                value={formData.principalEmail}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Social Security Number</label>
-              <input
-                type="text"
-                name="principalSSN"
-                value={formData.principalSSN}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              name="principalEmail"
+              value={formData.principalEmail}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+            />
           </div>
         </div>
 
