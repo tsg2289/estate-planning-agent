@@ -689,6 +689,22 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
       // Format successor trustee information
       formatted.successorTrusteeList = formatSuccessorTrustees(formData.alternateTrustees)
       
+      // Extract primary and alternate successor trustees for Article 3
+      if (formData.alternateTrustees && formData.alternateTrustees.length > 0) {
+        const primaryTrustee = formData.alternateTrustees[0]
+        formatted.successorTrusteePrimary = primaryTrustee && primaryTrustee.name ? primaryTrustee.name : '[Name of Successor Trustee]'
+        
+        if (formData.alternateTrustees.length > 1) {
+          const alternateTrustee = formData.alternateTrustees[1]
+          formatted.successorTrusteeAlternate = alternateTrustee && alternateTrustee.name ? alternateTrustee.name : '[Alternate Successor Trustee]'
+        } else {
+          formatted.successorTrusteeAlternate = '[Alternate Successor Trustee]'
+        }
+      } else {
+        formatted.successorTrusteePrimary = '[Name of Successor Trustee]'
+        formatted.successorTrusteeAlternate = '[Alternate Successor Trustee]'
+      }
+      
       // Format specific gifts from specificGifts array
       formatted.specificGifts = formatSpecificGifts(formData.specificGifts)
       

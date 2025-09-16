@@ -622,8 +622,8 @@ const TrustForm = ({ onSubmit }) => {
             </div>
           </div>
           
-          {/* Alternate Trustees */}
-          <h4>Alternate Trustees - Download</h4>
+          {/* Successor Trustees */}
+          <h4>Successor Trustee</h4>
           {(formData.alternateTrustees || []).map((trustee, index) => (
             <div key={index} className="trustee-item">
               <div className="form-row">
@@ -728,14 +728,14 @@ const TrustForm = ({ onSubmit }) => {
                   onClick={() => removeAlternateTrustee(index)}
                   className="remove-button"
                 >
-                  Remove Alternate Trustee
+                  Remove Successor Trustee
                 </button>
               )}
             </div>
           ))}
           
           <button type="button" onClick={addAlternateTrustee} className="add-button">
-            Add Alternate Trustee
+            Add Successor Trustee
           </button>
         </div>
 

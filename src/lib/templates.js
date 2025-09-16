@@ -133,19 +133,29 @@ This Trust shall be known as the {{trustName}}, dated {{trustDateFormatted}}.`
     },
     {
       name: 'article_3',
-      content: `ARTICLE III – REVOCABILITY
+      content: `ARTICLE III – TRUSTEES
+
+Initial Trustees: We, the Trustors, shall serve as initial Co-Trustees.
+
+Successor Trustee: If either or both of us are unable or unwilling to serve, then {{successorTrusteePrimary}} shall serve as Successor Trustee. If that person is unable or unwilling to serve, then {{successorTrusteeAlternate}} shall serve.
+
+A Successor Trustee shall have all the powers granted under this Trust and the California Probate Code.`
+    },
+    {
+      name: 'article_4',
+      content: `ARTICLE IV – REVOCABILITY
 
 This Trust is revocable. During the lifetime of the Trustor, the Trustor may amend, revoke, or terminate this Trust, in whole or in part, by a written instrument delivered to the Trustee.`
     },
     {
-      name: 'article_4',
-      content: `ARTICLE IV – TRUST PROPERTY
+      name: 'article_5',
+      content: `ARTICLE V – TRUST PROPERTY
 
 The Trustor hereby transfers, assigns, and delivers to the Trustee all property listed on Schedule A (attached hereto and incorporated herein). The Trustee shall hold, manage, and distribute said property in accordance with this Trust Agreement.`
     },
     {
-      name: 'article_5',
-      content: `ARTICLE V – MANAGEMENT DURING LIFETIME
+      name: 'article_6',
+      content: `ARTICLE VI – MANAGEMENT DURING LIFETIME
 
 During the lifetime of the Trustor:
 
@@ -154,16 +164,16 @@ The Trustor is entitled to all income and principal of the Trust Property.
 The Trustee shall manage the Trust Property for the benefit of the Trustor.`
     },
     {
-      name: 'article_6',
-      content: `ARTICLE VI – SUCCESSOR TRUSTEE
+      name: 'article_7',
+      content: `ARTICLE VII – SUCCESSOR TRUSTEE
 
 Upon the death, incapacity, or resignation of the initial Trustee, the following shall serve as Successor Trustees in the order listed:
 
 {{successorTrusteeList}}`
     },
     {
-      name: 'article_7',
-      content: `ARTICLE VII – DISTRIBUTION UPON DEATH OF TRUSTOR
+      name: 'article_8',
+      content: `ARTICLE VIII – DISTRIBUTION UPON DEATH OF TRUSTOR
 
 Upon the death of the Trustor, the Trustee shall distribute the remaining Trust Property as follows:
 
@@ -176,8 +186,8 @@ Residue – The remainder of the Trust Property shall be distributed as follows:
 {{residueDistribution}}`
     },
     {
-      name: 'article_8',
-      content: `ARTICLE VIII – POWERS OF TRUSTEE
+      name: 'article_9',
+      content: `ARTICLE IX – POWERS OF TRUSTEE
 
 The Trustee shall have all powers granted by the California Probate Code, including but not limited to the power to:
 
@@ -188,14 +198,14 @@ Invest and reinvest Trust assets.
 Employ agents, accountants, and attorneys.`
     },
     {
-      name: 'article_9',
-      content: `ARTICLE IX – GOVERNING LAW
+      name: 'article_10',
+      content: `ARTICLE X – GOVERNING LAW
 
 This Trust shall be governed by and construed in accordance with the laws of the State of California.`
     },
     {
-      name: 'article_10',
-      content: `ARTICLE X – GENERAL PROVISIONS
+      name: 'article_11',
+      content: `ARTICLE XI – GENERAL PROVISIONS
 
 Spendthrift Clause – No interest of any beneficiary shall be subject to claims of creditors or to legal process.
 
@@ -204,8 +214,8 @@ No Bond – No bond shall be required of any Trustee.
 Severability – If any provision is invalid, the remaining provisions shall continue in effect.`
     },
     {
-      name: 'article_11',
-      content: `ARTICLE XI – SIGNATURES
+      name: 'article_12',
+      content: `ARTICLE XII – SIGNATURES
 
 IN WITNESS WHEREOF, the Trustor has executed this Trust Agreement as of the day and year first written above.
 
