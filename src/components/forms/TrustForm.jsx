@@ -76,6 +76,7 @@ const TrustForm = ({ onSubmit }) => {
     trustorEmail: '',
     hasSecondTrustor: false,
     secondTrustorName: '',
+    secondTrustorRelationship: 'spouse',
     secondTrustorAddress: '',
     secondTrustorCity: '',
     secondTrustorCounty: '',
@@ -412,16 +413,33 @@ const TrustForm = ({ onSubmit }) => {
         {formData.hasSecondTrustor && (
           <div className="form-section">
             <h3>Second Trustor Information</h3>
-            <div className="form-group">
-              <label className="form-label">Full Legal Name</label>
-              <input
-                type="text"
-                name="secondTrustorName"
-                value={formData.secondTrustorName}
-                onChange={handleInputChange}
-                className="form-input"
-                required={formData.hasSecondTrustor}
-              />
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Full Legal Name</label>
+                <input
+                  type="text"
+                  name="secondTrustorName"
+                  value={formData.secondTrustorName}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Relationship</label>
+                <select
+                  name="secondTrustorRelationship"
+                  value={formData.secondTrustorRelationship}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasSecondTrustor}
+                >
+                  <option value="spouse">Spouse</option>
+                  <option value="partner">Partner</option>
+                  <option value="co-trustor">Co-Trustor</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
             </div>
             
             <div className="form-group">
@@ -604,7 +622,7 @@ const TrustForm = ({ onSubmit }) => {
           </div>
           
           {/* Alternate Trustees */}
-          <h4>Alternate Trustees - Download</h4>
+          <h4>Alternate Trustees - {formData.hasSecondTrustor && formData.secondTrustorRelationship ? `${formData.secondTrustorRelationship.charAt(0).toUpperCase() + formData.secondTrustorRelationship.slice(1)} ` : ''}Download</h4>
           {(formData.alternateTrustees || []).map((trustee, index) => (
             <div key={index} className="trustee-item">
               <div className="form-row">
