@@ -395,10 +395,9 @@ export const ahcdTemplate = {
       `
     },
     {
-      name: 'health_care_agent',
+      name: 'agent_designation',
       content: `
-        I designate {{healthCareAgent}} as my Health Care Agent to make health care decisions 
-        for me when I am unable to make them for myself.
+        (1.1) DESIGNATION OF AGENT: I designate {{healthCareAgent}} as my Health Care Agent to make health care decisions for me when I am unable to make them for myself.
       `
     },
     {
