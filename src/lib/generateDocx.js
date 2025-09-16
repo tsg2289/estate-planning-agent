@@ -152,6 +152,12 @@ const createDocumentSections = async (template, formData) => {
     const section = template.sections[i]
     
     if (section.content && section.content.trim()) {
+      // Handle page breaks
+      if (section.content.trim() === 'PAGE_BREAK') {
+        // Page breaks are handled at the section level, skip content processing
+        continue
+      }
+      
       // Handle trust document sections specifically
       if (template.title.includes('REVOCABLE LIVING TRUST')) {
         if (section.name === 'title_header') {
@@ -416,21 +422,129 @@ const createDocumentSections = async (template, formData) => {
     }
   }
   
-  return [
-    {
-      properties: {
-        page: {
-          margin: {
-            top: 1440,
-            right: 1440,
-            bottom: 1440,
-            left: 1440,
+  // Split content into sections based on page breaks
+  const sections = []
+  let currentSectionChildren = []
+  let pageBreakFound = false
+  
+  for (let i = 0; i < template.sections.length; i++) {
+    const section = template.sections[i]
+    
+    if (section.content && section.content.trim() === 'PAGE_BREAK') {
+      // Create a section with current children
+      if (currentSectionChildren.length > 0) {
+        sections.push({
+          properties: {
+            page: {
+              margin: {
+                top: 1440,
+                right: 1440,
+                bottom: 1440,
+                left: 1440,
+              },
+            },
+          },
+          children: currentSectionChildren,
+        })
+        currentSectionChildren = []
+      }
+      pageBreakFound = true
+    }
+  }
+  
+  // Add remaining children as the final section (or only section if no page breaks)
+  if (children.length > 0) {
+    if (pageBreakFound) {
+      // Split children based on where we are in the template processing
+      const notaryCertificateIndex = template.sections.findIndex(s => s.name === 'notary_certificate')
+      if (notaryCertificateIndex !== -1) {
+        // Find where notary certificate content starts in children array
+        const notaryStartIndex = children.findIndex(child => 
+          child.children && child.children[0] && 
+          child.children[0].text && 
+          child.children[0].text.includes('CERTIFICATE OF ACKNOWLEDGMENT')
+        )
+        
+        if (notaryStartIndex !== -1) {
+          // Add main document section
+          sections.push({
+            properties: {
+              page: {
+                margin: {
+                  top: 1440,
+                  right: 1440,
+                  bottom: 1440,
+                  left: 1440,
+                },
+              },
+            },
+            children: children.slice(0, notaryStartIndex),
+          })
+          
+          // Add notary certificate as separate page
+          sections.push({
+            properties: {
+              page: {
+                margin: {
+                  top: 1440,
+                  right: 1440,
+                  bottom: 1440,
+                  left: 1440,
+                },
+              },
+            },
+            children: children.slice(notaryStartIndex),
+          })
+        } else {
+          // Fallback - add all children to one section
+          sections.push({
+            properties: {
+              page: {
+                margin: {
+                  top: 1440,
+                  right: 1440,
+                  bottom: 1440,
+                  left: 1440,
+                },
+              },
+            },
+            children: children,
+          })
+        }
+      } else {
+        sections.push({
+          properties: {
+            page: {
+              margin: {
+                top: 1440,
+                right: 1440,
+                bottom: 1440,
+                left: 1440,
+              },
+            },
+          },
+          children: children,
+        })
+      }
+    } else {
+      // No page breaks, single section
+      sections.push({
+        properties: {
+          page: {
+            margin: {
+              top: 1440,
+              right: 1440,
+              bottom: 1440,
+              left: 1440,
+            },
           },
         },
-      },
-      children: children,
-    },
-  ]
+        children: children,
+      })
+    }
+  }
+  
+  return sections
 }
 
 /**
