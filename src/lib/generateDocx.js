@@ -1063,22 +1063,22 @@ ________________________________________________________________________________
         formatted.agentPostdeathAuthorities = '[No postdeath authorities selected]'
       }
       
-      // Format selected end-of-life choice only
+      // Format selected end-of-life choice only (without checkmarks)
       if (formData.endOfLifeChoice === 'not-prolong') {
-        formatted.selectedEndOfLifeChoice = `☑ (a) Choice Not To Prolong Life
+        formatted.selectedEndOfLifeChoice = `(a) Choice Not To Prolong Life
 
         I do not want my life to be prolonged if (1) I have an incurable and irreversible condition that will result in my death within a relatively short time, (2) I become unconscious and, to a reasonable degree of medical certainty, I will not regain consciousness, or (3) the likely risks and burdens of treatment would outweigh the expected benefits.`
       } else if (formData.endOfLifeChoice === 'prolong') {
-        formatted.selectedEndOfLifeChoice = `☑ (b) Choice To Prolong Life
+        formatted.selectedEndOfLifeChoice = `(b) Choice To Prolong Life
 
         I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.`
       } else {
-        // Show both options with empty checkboxes if no choice made
-        formatted.selectedEndOfLifeChoice = `☐ (a) Choice Not To Prolong Life
+        // Show both options without checkboxes if no choice made
+        formatted.selectedEndOfLifeChoice = `(a) Choice Not To Prolong Life
 
         I do not want my life to be prolonged if (1) I have an incurable and irreversible condition that will result in my death within a relatively short time, (2) I become unconscious and, to a reasonable degree of medical certainty, I will not regain consciousness, or (3) the likely risks and burdens of treatment would outweigh the expected benefits, OR
 
-        ☐ (b) Choice To Prolong Life
+        (b) Choice To Prolong Life
 
         I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.`
       }

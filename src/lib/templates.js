@@ -489,15 +489,9 @@ export const ahcdTemplate = {
       `
     },
     {
-      name: 'funeral_wishes',
-      content: `
-        My funeral and burial preferences are: {{funeralWishes}}
-      `
-    },
-    {
       name: 'additional_instructions',
       content: `
-        Additional health care instructions: {{additionalInstructions}}
+        Additional health care instructions: [None specified]
       `
     }
   ]

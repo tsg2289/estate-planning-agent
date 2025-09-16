@@ -32,8 +32,6 @@ const AHCDForm = ({ onSubmit }) => {
     agentCanDonateOrgans: false,
     agentCanAuthorizeAutopsy: false,
     agentCanDirectDisposition: false,
-    funeralWishes: '',
-    additionalInstructions: '',
     agentAuthorityExceptions: '',
     immediateAuthorityEffective: false,
     endOfLifeChoice: '', // 'not-prolong' or 'prolong'
@@ -629,36 +627,6 @@ const AHCDForm = ({ onSubmit }) => {
                 I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.
               </span>
             </label>
-          </div>
-        </div>
-
-        {/* Funeral Wishes */}
-        <div className="form-section">
-          <h3>Funeral and Burial Wishes</h3>
-          <div className="form-group">
-            <label className="form-label">Funeral and Burial Wishes</label>
-            <textarea
-              name="funeralWishes"
-              value={formData.funeralWishes}
-              onChange={handleInputChange}
-              className="form-textarea"
-              placeholder="Any specific wishes for funeral arrangements, burial, cremation, or memorial services..."
-            />
-          </div>
-        </div>
-
-        {/* Additional Instructions */}
-        <div className="form-section">
-          <h3>Additional Instructions</h3>
-          <div className="form-group">
-            <label className="form-label">Additional Instructions</label>
-            <textarea
-              name="additionalInstructions"
-              value={formData.additionalInstructions}
-              onChange={handleInputChange}
-              className="form-textarea"
-              placeholder="Any other instructions, preferences, or special requests you'd like to include..."
-            />
           </div>
         </div>
 
