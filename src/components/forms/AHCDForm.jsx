@@ -36,6 +36,7 @@ const AHCDForm = ({ onSubmit }) => {
     additionalInstructions: '',
     agentAuthorityExceptions: '',
     immediateAuthorityEffective: false,
+    endOfLifeChoice: '', // 'not-prolong' or 'prolong'
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -586,6 +587,46 @@ const AHCDForm = ({ onSubmit }) => {
               />
               <span className="form-checkbox-text">
                 Direct disposition of my remains
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Part 2 - End-of-Life Decisions */}
+        <div className="form-section">
+          <h3>Part 2 - End-of-Life Decisions</h3>
+          <div className="form-group">
+            <p className="form-help-text">
+              Please select your preference for end-of-life care decisions:
+            </p>
+            
+            <label className="form-checkbox-label">
+              <input
+                type="radio"
+                name="endOfLifeChoice"
+                value="not-prolong"
+                checked={formData.endOfLifeChoice === 'not-prolong'}
+                onChange={handleInputChange}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                <strong>(a) Choice Not To Prolong Life</strong><br />
+                I do not want my life to be prolonged if (1) I have an incurable and irreversible condition that will result in my death within a relatively short time, (2) I become unconscious and, to a reasonable degree of medical certainty, I will not regain consciousness, or (3) the likely risks and burdens of treatment would outweigh the expected benefits.
+              </span>
+            </label>
+            
+            <label className="form-checkbox-label">
+              <input
+                type="radio"
+                name="endOfLifeChoice"
+                value="prolong"
+                checked={formData.endOfLifeChoice === 'prolong'}
+                onChange={handleInputChange}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                <strong>(b) Choice To Prolong Life</strong><br />
+                I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.
               </span>
             </label>
           </div>

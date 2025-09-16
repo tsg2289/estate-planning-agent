@@ -1063,6 +1063,10 @@ ________________________________________________________________________________
         formatted.agentPostdeathAuthorities = '[No postdeath authorities selected]'
       }
       
+      // Format end-of-life decision checkboxes
+      formatted.endOfLifeChoiceA = formData.endOfLifeChoice === 'not-prolong' ? '☑' : '☐'
+      formatted.endOfLifeChoiceB = formData.endOfLifeChoice === 'prolong' ? '☑' : '☐'
+      
       break
       
     case 'poa':
