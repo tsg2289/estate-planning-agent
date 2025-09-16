@@ -578,6 +578,38 @@ export const ahcdTemplate = {
       name: 'signature_section',
       content: `
         (5.1) EFFECT OF COPY: A copy of this form has the same effect as the original.
+
+        (5.2) SIGNATURE: Sign and date the form here:
+
+        {{signatureDate}}
+
+        _________________________________________________
+
+        (date)
+
+        {{signatureImage}}
+
+        _________________________________________________
+
+        (sign your name)
+
+        {{signatureAddress}}
+
+        _________________________________________________
+
+        (address)
+
+        {{signatureName}}
+
+        _________________________________________________
+
+        (print your name)
+
+        {{signatureCityStateZip}}
+
+        _________________________________________________
+
+        (city)                    (state)
       `
     }
   ]

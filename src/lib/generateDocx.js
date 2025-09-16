@@ -1172,8 +1172,60 @@ ________________________________________________________________________________
         formatted.alternatePrimaryPhysicianPhone = '___________________________________________________________________________________________________'
       }
       
-      // Part 5 - Signature section (document only, no form fields needed)
-      // This section is static text that appears in all AHCD documents
+      // Part 5 - Signature section
+      // Format signature date
+      if (formData.signatureDate && formData.signatureDate.trim()) {
+        const date = new Date(formData.signatureDate)
+        formatted.signatureDate = date.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        })
+      } else {
+        formatted.signatureDate = '_________________________________________________'
+      }
+      
+      // Format signature image (for now, we'll show a placeholder in text document)
+      if (formData.signatureImage) {
+        formatted.signatureImage = '[SIGNATURE IMAGE UPLOADED]'
+      } else {
+        formatted.signatureImage = '_________________________________________________'
+      }
+      
+      // Format principal name for signature (from Part 1)
+      if (formData.principalName && formData.principalName.trim()) {
+        formatted.signatureName = formData.principalName.trim()
+      } else {
+        formatted.signatureName = '_________________________________________________'
+      }
+      
+      // Format principal address for signature (from Part 1)
+      if (formData.principalAddress && formData.principalAddress.trim()) {
+        let addressParts = []
+        if (formData.principalAddress.trim()) {
+          addressParts.push(formData.principalAddress.trim())
+        }
+        if (formData.principalCity && formData.principalCity.trim()) {
+          addressParts.push(formData.principalCity.trim())
+        }
+        if (formData.principalState && formData.principalState.trim()) {
+          addressParts.push(formData.principalState.trim())
+        }
+        if (formData.principalZip && formData.principalZip.trim()) {
+          addressParts.push(formData.principalZip.trim())
+        }
+        
+        if (addressParts.length > 0) {
+          formatted.signatureAddress = addressParts[0]
+          formatted.signatureCityStateZip = addressParts.slice(1).join(', ')
+        } else {
+          formatted.signatureAddress = '_________________________________________________'
+          formatted.signatureCityStateZip = '_________________________________________________'
+        }
+      } else {
+        formatted.signatureAddress = '_________________________________________________'
+        formatted.signatureCityStateZip = '_________________________________________________'
+      }
       
       break
       

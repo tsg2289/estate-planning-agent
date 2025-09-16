@@ -51,6 +51,9 @@ const AHCDForm = ({ onSubmit }) => {
     alternatePrimaryPhysicianState: '',
     alternatePrimaryPhysicianZip: '',
     alternatePrimaryPhysicianPhone: '',
+    // Part 5.2 - Signature fields
+    signatureDate: '',
+    signatureImage: null, // For uploaded signature
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -72,6 +75,20 @@ const AHCDForm = ({ onSubmit }) => {
       ...prev,
       [name]: value
     }))
+  }
+
+  const handleSignatureUpload = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (event) => {
+        setFormData(prev => ({
+          ...prev,
+          signatureImage: event.target.result
+        }))
+      }
+      reader.readAsDataURL(file)
+    }
   }
 
   const handleWitnessChange = (index, field, value) => {
@@ -874,6 +891,94 @@ const AHCDForm = ({ onSubmit }) => {
                 className="form-input"
                 placeholder="Enter phone number"
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Part 5 Header */}
+        <div className="form-section">
+          <h3>Part 5</h3>
+        </div>
+
+        {/* Part 5.2 - Signature Section */}
+        <div className="form-section">
+          <h3>Signature</h3>
+          
+          <div className="form-group">
+            <label className="form-label">
+              (5.2) SIGNATURE: Sign and date the form here:
+            </label>
+            
+            <div className="form-group">
+              <label className="form-label">Date</label>
+              <input
+                type="date"
+                name="signatureDate"
+                value={formData.signatureDate}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+              />
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Upload Your Signature</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleSignatureUpload}
+                className="form-input"
+                style={{ padding: '0.5rem' }}
+              />
+              <p className="form-help-text">
+                Upload an image of your signature (PNG, JPG, etc.). This will appear in your document.
+              </p>
+              {formData.signatureImage && (
+                <div style={{ marginTop: '1rem' }}>
+                  <p className="form-help-text" style={{ color: '#28a745', fontWeight: 'bold' }}>
+                    ✅ Signature uploaded successfully
+                  </p>
+                  <img 
+                    src={formData.signatureImage} 
+                    alt="Uploaded signature" 
+                    style={{ 
+                      maxWidth: '300px', 
+                      maxHeight: '100px', 
+                      border: '1px solid #ddd', 
+                      padding: '0.5rem',
+                      backgroundColor: 'white'
+                    }} 
+                  />
+                </div>
+              )}
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Your Name (Auto-filled from Part 1)</label>
+              <input
+                type="text"
+                value={formData.principalName || ''}
+                className="form-input"
+                disabled
+                style={{ backgroundColor: '#f8f9fa', color: '#6c757d' }}
+              />
+              <p className="form-help-text">
+                This is automatically filled from your name entered in the first section.
+              </p>
+            </div>
+            
+            <div className="form-group">
+              <label className="form-label">Your Address (Auto-filled from Part 1)</label>
+              <textarea
+                value={`${formData.principalAddress || ''}\n${formData.principalCity || ''}, ${formData.principalState || ''} ${formData.principalZip || ''}`.trim()}
+                className="form-textarea"
+                disabled
+                rows="3"
+                style={{ backgroundColor: '#f8f9fa', color: '#6c757d' }}
+              />
+              <p className="form-help-text">
+                This is automatically filled from your address entered in the first section.
+              </p>
             </div>
           </div>
         </div>
