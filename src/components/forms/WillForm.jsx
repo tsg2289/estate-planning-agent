@@ -25,7 +25,6 @@ const WillForm = ({ onSubmit }) => {
     testatorZip: '',
     testatorPhone: '',
     testatorEmail: '',
-    testatorSSN: '',
     testatorDOB: '',
     isMarried: '',
     spouseName: '',
