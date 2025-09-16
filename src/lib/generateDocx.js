@@ -1024,6 +1024,18 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         formatted.healthCareAgent = primaryAgentText
       }
       
+      // Format agent authority exceptions
+      if (formData.agentAuthorityExceptions && formData.agentAuthorityExceptions.trim()) {
+        formatted.agentAuthorityExceptions = formData.agentAuthorityExceptions.trim()
+      } else {
+        // Show blank lines if no exceptions specified
+        formatted.agentAuthorityExceptions = `___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________`
+      }
+      
       // Format authority effectiveness checkbox
       formatted.authorityEffectivenessCheckbox = formData.immediateAuthorityEffective ? '☑' : '☐'
       

@@ -33,6 +33,7 @@ const AHCDForm = ({ onSubmit }) => {
     autopsy: 'no-preference',
     funeralWishes: '',
     additionalInstructions: '',
+    agentAuthorityExceptions: '',
     immediateAuthorityEffective: false,
     witnesses: [{ name: '', address: '', phone: '' }]
   }
@@ -398,6 +399,27 @@ const AHCDForm = ({ onSubmit }) => {
             <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>+</span>
             Add Another Alternate Agent
           </button>
+        </div>
+
+        {/* Agent Authority Exceptions */}
+        <div className="form-section">
+          <h3>Agent's Authority Limitations</h3>
+          <div className="form-group">
+            <label className="form-label">
+              (1.2) AGENT'S AUTHORITY: My agent is authorized to make all physical and mental health care decisions for me, including decisions to provide, withhold, or withdraw artificial nutrition and hydration and all other forms of health care to keep me alive, except as I state here:
+            </label>
+            <textarea
+              name="agentAuthorityExceptions"
+              value={formData.agentAuthorityExceptions}
+              onChange={handleInputChange}
+              className="form-textarea"
+              placeholder="Enter any specific limitations or exceptions to your agent's authority..."
+              rows="4"
+            />
+            <p className="form-help-text">
+              Leave blank if you want your agent to have full authority without exceptions.
+            </p>
+          </div>
         </div>
 
         {/* Agent Authority Effectiveness */}
