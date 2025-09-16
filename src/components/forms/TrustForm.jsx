@@ -89,7 +89,7 @@ const TrustForm = ({ onSubmit }) => {
     trusteeCounty: '',
     trusteePhone: '',
     trusteeEmail: '',
-    alternateTrustees: [{ name: '', address: '', city: '', county: '', phone: '', email: '' }],
+    alternateTrustees: [{ name: '', address: '', city: '', county: '', state: 'California', zip: '', phone: '', email: '' }],
     trustType: 'revocable',
     trustName: '',
     children: [{ name: '', relationship: '', percentage: '' }],
@@ -237,7 +237,7 @@ const TrustForm = ({ onSubmit }) => {
   const addAlternateTrustee = () => {
     setFormData(prev => ({
       ...prev,
-      alternateTrustees: [...(prev.alternateTrustees || []), { name: '', address: '', city: '', county: '', phone: '', email: '' }]
+      alternateTrustees: [...(prev.alternateTrustees || []), { name: '', address: '', city: '', county: '', state: 'California', zip: '', phone: '', email: '' }]
     }))
   }
 
@@ -604,7 +604,7 @@ const TrustForm = ({ onSubmit }) => {
           </div>
           
           {/* Alternate Trustees */}
-          <h4>Alternate Trustees</h4>
+          <h4>Alternate Trustees - Download</h4>
           {(formData.alternateTrustees || []).map((trustee, index) => (
             <div key={index} className="trustee-item">
               <div className="form-row">
@@ -666,6 +666,29 @@ const TrustForm = ({ onSubmit }) => {
                       </option>
                     ))}
                   </select>
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">State</label>
+                  <input
+                    type="text"
+                    value={trustee.state || 'California'}
+                    onChange={(e) => handleAlternateTrusteeChange(index, 'state', e.target.value)}
+                    className="form-input"
+                    placeholder="California"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">ZIP Code</label>
+                  <input
+                    type="text"
+                    value={trustee.zip || ''}
+                    onChange={(e) => handleAlternateTrusteeChange(index, 'zip', e.target.value)}
+                    className="form-input"
+                    placeholder="90210"
+                  />
                 </div>
               </div>
               
