@@ -661,9 +661,9 @@ export const formatFormData = (formData, documentType) => {
       
       // Handle multiple trustors
       if (formData.hasSecondTrustor && formData.secondTrustorName) {
-        formatted.trustorInfo = `Trustor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("First Trustor"); and
-
-Trustor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${formData.secondTrustorCounty}, California ("Second Trustor"); and`
+        formatted.trustorInfo = `Trustor, ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor") and
+Trustor, ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${formData.secondTrustorCounty}, California ("Trustor") establish
+this Revocable Living Trust Agreement this ___day of _______, 20__.`
         
         formatted.trustorMayServeNote = 'The Trustors may also serve as the initial Trustees.'
         
@@ -672,7 +672,8 @@ Trustor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${form
         const secondTrustorLastName = formData.secondTrustorName.split(' ').pop()
         formatted.trustorName = `${firstTrustorLastName} and ${secondTrustorLastName} Family`
       } else {
-        formatted.trustorInfo = `Trustor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor"); and`
+        formatted.trustorInfo = `Trustor, ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor") establish
+this Revocable Living Trust Agreement this ___day of _______, 20__.`
         formatted.trustorMayServeNote = 'The Trustor may also serve as the initial Trustee.'
       }
       
