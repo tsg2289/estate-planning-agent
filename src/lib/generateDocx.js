@@ -358,6 +358,36 @@ const createDocumentSections = async (template, formData) => {
               },
             })
           )
+        } else if (section.name === 'appointment_form') {
+          // Special formatting for appointment form section
+          const content = section.content.trim()
+          const lines = content.split('\n').filter(line => line.trim())
+          
+          lines.forEach((line, index) => {
+            const trimmedLine = line.trim()
+            if (trimmedLine) {
+              // Check if this is one of the instruction lines that needs extra spacing
+              const isInstructionLine = trimmedLine.startsWith('TO GRANT ALL') || 
+                                       trimmedLine.startsWith('TO GRANT ONE OR MORE') || 
+                                       trimmedLine.startsWith('TO WITHHOLD A POWER')
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: trimmedLine,
+                      size: 24,
+                    }),
+                  ],
+                  alignment: AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: isInstructionLine ? 240 : (index === 0 ? 200 : 0),
+                    after: isInstructionLine ? 240 : (index === lines.length - 1 ? 200 : 0),
+                  },
+                })
+              )
+            }
+          })
         } else {
           // Handle other sections with standard formatting
           const lines = section.content.trim().split('\n')
