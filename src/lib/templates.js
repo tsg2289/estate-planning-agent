@@ -347,6 +347,46 @@ export const ahcdTemplate = {
   title: 'ADVANCE HEALTH CARE DIRECTIVE',
   sections: [
     {
+      name: 'legal_explanation',
+      content: `
+        ADVANCE HEALTH CARE DIRECTIVE
+        (California Probate Code Section 4701)
+        Explanation
+        
+        You have the right to give instructions about your own physical and mental health care. You also have the right to name someone else to make those health care decisions for you. This form lets you do either or both of these things. It also lets you express your wishes regarding donation of organs and the designation of your primary physician. If you use this form, you may complete or modify all or any part of it. You are free to use a different form.
+
+        Part 1 of this form is a power of attorney for health care. Part 1 lets you name another individual as agent to make health care decisions for you if you become incapable of making your own decisions or if you want someone else to make those decisions for you now even though you are still capable. You may also name an alternate agent to act for you if your first choice is not willing, able, or reasonably available to make decisions for you. (Your agent may not be an operator or employee of a community care facility or a residential care facility where you are receiving care, or your supervising health care provider or employee of the health care institution where you are receiving care, unless your agent is related to you or is a coworker.)
+
+        Unless the form you sign limits the authority of your agent, your agent may make all health care decisions for you. This form has a place for you to limit the authority of your agent. You need not limit the authority of your agent if you wish to rely on your agent for all health care decisions that may have to be made. If you choose not to limit the authority of your agent, your agent will have the right to:
+
+        (a) Consent or refuse consent to any care, treatment, service, or procedure to maintain, diagnose, or otherwise affect a physical or mental condition.
+
+        (b) Select or discharge health care providers and institutions.
+
+        (c) For all physical and mental health care, approve or disapprove diagnostic tests, surgical procedures, and programs of medication.
+
+        (d) Direct the provision, withholding, or withdrawal of artificial nutrition and hydration and all other forms of health care, including cardiopulmonary resuscitation.
+
+        (e) Donate your organs, tissues, and parts, authorize an autopsy, and direct disposition of remains.
+
+        However, your agent will not be able to commit you to a mental health facility, or consent to convulsive treatment, psychosurgery, sterilization, or abortion for you.
+
+        Part 2 of this form lets you give specific instructions about any aspect of your health care, whether or not you appoint an agent. Choices are provided for you to express your wishes regarding the provision, withholding, or withdrawal of treatment to keep you alive, as well as the provision of pain relief. Space is also provided for you to add to the choices you have made or for you to write out any additional wishes. If you are satisfied to allow your agent to determine what is best for you in making end-of-life decisions, you need not fill out Part 2 of this form.
+
+        Part 3 of this form lets you express an intention to donate your bodily organs, tissues, and parts following your death.
+
+        Part 4 of this form lets you designate a physician to have primary responsibility for your health care.
+
+        After completing this form, sign and date the form at the end. The form shall be signed by two qualified witnesses or acknowledged before a notary public. Give a copy of the signed and completed form to your physician, to any other health care providers you may have, to any health care institution at which you are receiving care, and to any health care agents you have named. You should talk to the person you have named as agent to make sure that they understand your wishes and is willing to take the responsibility.
+
+        You have the right to revoke this advance health care directive or replace this form at any time.
+      `
+    },
+    {
+      name: 'page_break',
+      content: 'PAGE_BREAK'
+    },
+    {
       name: 'header',
       content: `
         I, {{principalName}}, being of sound mind and at least 18 years of age, 
