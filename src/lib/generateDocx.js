@@ -665,8 +665,6 @@ export const formatFormData = (formData, documentType) => {
 Trustor, ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${formData.secondTrustorCounty}, California ("Trustor") establish
 this Revocable Living Trust Agreement this ___day of _______, 20__.`
         
-        formatted.trustorMayServeNote = 'The Trustors may also serve as the initial Trustees.'
-        
         // Update trust name to include both trustors
         const firstTrustorLastName = formData.trustorName.split(' ').pop()
         const secondTrustorLastName = formData.secondTrustorName.split(' ').pop()
@@ -674,7 +672,6 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
       } else {
         formatted.trustorInfo = `Trustor, ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor") establish
 this Revocable Living Trust Agreement this ___day of _______, 20__.`
-        formatted.trustorMayServeNote = 'The Trustor may also serve as the initial Trustee.'
       }
       
       // Format successor trustee information

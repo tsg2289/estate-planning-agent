@@ -116,13 +116,7 @@ export const trustTemplate = {
       name: 'article_1',
       content: `ARTICLE I – IDENTIFICATION OF PARTIES
 
-This Revocable Living Trust Agreement ("Trust Agreement") is made this ___ day of ________, 20__, by and between:
-
-{{trustorInfo}}
-
-Trustee: {{trusteeName}}, of {{trusteeCity}}, {{trusteeCounty}}, California ("Trustee").
-
-{{trustorMayServeNote}}`
+{{trustorInfo}}`
     },
     {
       name: 'article_2',
