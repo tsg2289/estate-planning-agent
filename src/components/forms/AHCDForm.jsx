@@ -103,19 +103,6 @@ const AHCDForm = ({ onSubmit }) => {
     }))
   }
 
-  const addWitness = () => {
-    setFormData(prev => ({
-      ...prev,
-      witnesses: [...prev.witnesses, { name: '', address: '', phone: '' }]
-    }))
-  }
-
-  const removeWitness = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      witnesses: prev.witnesses.filter((_, i) => i !== index)
-    }))
-  }
 
   const handleAlternateHealthCareAgentChange = (index, field, value) => {
     const newAlternateAgents = [...formData.alternateHealthCareAgents]
@@ -1154,61 +1141,6 @@ const AHCDForm = ({ onSubmit }) => {
           </div>
         </div>
 
-        {/* Witnesses */}
-        <div className="form-section">
-          <h3>Witnesses</h3>
-          {formData.witnesses.map((witness, index) => (
-            <div key={index} className="witness-item">
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-label">Witness Name</label>
-                  <input
-                    type="text"
-                    value={witness.name}
-                    onChange={(e) => handleWitnessChange(index, 'name', e.target.value)}
-                    className="form-input"
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Witness Phone</label>
-                  <input
-                    type="tel"
-                    value={witness.phone}
-                    onChange={(e) => handleWitnessChange(index, 'phone', e.target.value)}
-                    className="form-input"
-                    required
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">Witness Address</label>
-                <input
-                  type="text"
-                  value={witness.address}
-                  onChange={(e) => handleWitnessChange(index, 'address', e.target.value)}
-                  className="form-input"
-                  required
-                />
-              </div>
-              
-              {formData.witnesses.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeWitness(index)}
-                  className="remove-button"
-                >
-                  Remove Witness
-                </button>
-              )}
-            </div>
-          ))}
-          
-          <button type="button" onClick={addWitness} className="add-button">
-            Add Witness
-          </button>
-        </div>
 
         <button type="submit" className="form-button">
           Complete Advance Health Care Directive
