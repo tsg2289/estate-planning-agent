@@ -33,6 +33,7 @@ const AHCDForm = ({ onSubmit }) => {
     autopsy: 'no-preference',
     funeralWishes: '',
     additionalInstructions: '',
+    immediateAuthorityEffective: false,
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -397,6 +398,31 @@ const AHCDForm = ({ onSubmit }) => {
             <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>+</span>
             Add Another Alternate Agent
           </button>
+        </div>
+
+        {/* Agent Authority Effectiveness */}
+        <div className="form-section">
+          <h3>When Agent's Authority Becomes Effective</h3>
+          <div className="form-group">
+            <p className="form-help-text">
+              By default, your agent's authority becomes effective when your primary physician determines that you are unable to make your own health care decisions.
+            </p>
+            <label className="form-checkbox-label">
+              <input
+                type="checkbox"
+                name="immediateAuthorityEffective"
+                checked={formData.immediateAuthorityEffective}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  immediateAuthorityEffective: e.target.checked
+                }))}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                My agent's authority to make health care decisions for me takes effect immediately
+              </span>
+            </label>
+          </div>
         </div>
 
         {/* End of Life Wishes */}

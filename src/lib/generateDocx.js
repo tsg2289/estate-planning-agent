@@ -1024,6 +1024,9 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         formatted.healthCareAgent = primaryAgentText
       }
       
+      // Format authority effectiveness checkbox
+      formatted.authorityEffectivenessCheckbox = formData.immediateAuthorityEffective ? '☑' : '☐'
+      
       break
       
     case 'poa':
