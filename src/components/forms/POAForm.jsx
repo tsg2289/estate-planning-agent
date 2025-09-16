@@ -29,6 +29,7 @@ const POAForm = ({ onSubmit }) => {
     terminationDate: '',
     specificPowers: [],
     allPowersSelected: false,
+    incapacitationChoice: 'durable', // 'durable' or 'non-durable'
     limitations: '',
     compensation: '',
     additionalProvisions: ''
@@ -422,6 +423,44 @@ const POAForm = ({ onSubmit }) => {
               className="form-input"
               placeholder="Leave blank if no termination date"
             />
+          </div>
+        </div>
+
+        {/* Incapacitation Choice */}
+        <div className="form-section">
+          <h3>Power of Attorney Durability</h3>
+          <p className="form-help-text">
+            Choose whether this power of attorney should continue if you become incapacitated:
+          </p>
+          
+          <div className="incapacitation-options">
+            <label className="incapacitation-option">
+              <input
+                type="radio"
+                name="incapacitationChoice"
+                value="durable"
+                checked={formData.incapacitationChoice === 'durable'}
+                onChange={handleInputChange}
+              />
+              <div className="option-content">
+                <strong>Durable Power of Attorney</strong>
+                <p>This power of attorney will continue to be effective even though I become incapacitated.</p>
+              </div>
+            </label>
+            
+            <label className="incapacitation-option">
+              <input
+                type="radio"
+                name="incapacitationChoice"
+                value="non-durable"
+                checked={formData.incapacitationChoice === 'non-durable'}
+                onChange={handleInputChange}
+              />
+              <div className="option-content">
+                <strong>Non-Durable Power of Attorney</strong>
+                <p>This power of attorney will cease to continue if I become incapacitated.</p>
+              </div>
+            </label>
           </div>
         </div>
 

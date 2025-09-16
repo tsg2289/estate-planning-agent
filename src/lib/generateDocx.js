@@ -806,6 +806,14 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
       }
       
       formatted.specialInstructionsContent = formattedInstructions
+      
+      // Set incapacitation text based on user choice
+      if (formData.incapacitationChoice === 'non-durable') {
+        formatted.incapacitationText = 'This power of attorney will cease to continue if I become incapacitated.'
+      } else {
+        // Default to durable
+        formatted.incapacitationText = 'This power of attorney will continue to be effective even though I become incapacitated.'
+      }
       break
   }
   

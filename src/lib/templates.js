@@ -296,7 +296,7 @@ export const poaTemplate = {
         UNLESS YOU DIRECT OTHERWISE ABOVE, THIS POWER OF ATTORNEY IS EFFECTIVE
         IMMEDIATELY AND WILL CONTINUE UNTIL IT IS REVOKED.
         
-        This power of attorney will continue to be effective even though I become incapacitated
+        {{incapacitationText}}
       `
     },
   ]
