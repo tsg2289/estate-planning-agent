@@ -93,6 +93,7 @@ const TrustForm = ({ onSubmit }) => {
     alternateTrustees: [{ name: '', address: '', city: '', county: '', state: 'California', zip: '', phone: '', email: '' }],
     trustType: 'revocable',
     trustName: '',
+    trustDate: '',
     children: [{ name: '', relationship: '', percentage: '' }],
     otherBeneficiaries: [{ name: '', relationship: '', percentage: '' }],
     specificGifts: [{ beneficiary: '', gift: '' }],
@@ -753,6 +754,20 @@ const TrustForm = ({ onSubmit }) => {
                 required
               />
             </div>
+            <div className="form-group">
+              <label className="form-label">Trust Date</label>
+              <input
+                type="date"
+                name="trustDate"
+                value={formData.trustDate}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+              />
+            </div>
+          </div>
+          
+          <div className="form-row">
             <div className="form-group">
               <label className="form-label">Trust Type</label>
               <select

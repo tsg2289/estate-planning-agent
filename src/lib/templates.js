@@ -122,7 +122,7 @@ export const trustTemplate = {
       name: 'article_2',
       content: `ARTICLE II – NAME OF TRUST
 
-This Trust shall be known as the {{trustName}}, dated __________, 20__.`
+This Trust shall be known as the {{trustName}}, dated {{trustDateFormatted}}.`
     },
     {
       name: 'article_3',

@@ -659,6 +659,18 @@ export const formatFormData = (formData, documentType) => {
       formatted.trusteeCity = formData.trusteeCity || formData.trustorCity || 'City'
       formatted.trusteeCounty = formData.trusteeCounty || formatted.trustorCounty
       
+      // Format trust date for display
+      if (formData.trustDate) {
+        const trustDate = new Date(formData.trustDate)
+        formatted.trustDateFormatted = trustDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
+      } else {
+        formatted.trustDateFormatted = '__________, 20__'
+      }
+      
       // Handle multiple trustors
       if (formData.hasSecondTrustor && formData.secondTrustorName) {
         formatted.trustorInfo = `Trustor, ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor") and
