@@ -1172,6 +1172,9 @@ ________________________________________________________________________________
         formatted.alternatePrimaryPhysicianPhone = '___________________________________________________________________________________________________'
       }
       
+      // Part 5 - Signature section (document only, no form fields needed)
+      // This section is static text that appears in all AHCD documents
+      
       break
       
     case 'poa':

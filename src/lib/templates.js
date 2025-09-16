@@ -567,6 +567,18 @@ export const ahcdTemplate = {
 
         (phone)
       `
+    },
+    {
+      name: 'part5_title',
+      content: `
+        PART 5
+      `
+    },
+    {
+      name: 'signature_section',
+      content: `
+        (5.1) EFFECT OF COPY: A copy of this form has the same effect as the original.
+      `
     }
   ]
 }
