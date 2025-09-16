@@ -312,28 +312,60 @@ const createDocumentSections = async (template, formData) => {
           })
         }
       } else {
-        // Handle other document types (will, poa, etc.) - simplified logic
-        const lines = section.content.trim().split('\n')
-        lines.forEach((line, index) => {
-          if (line.trim()) {
-            children.push(
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: line.trim(),
-                    size: 24,
-                    bold: line.includes('ARTICLE') || line.includes('WITNESS'),
-                  }),
-                ],
-                alignment: AlignmentType.JUSTIFIED,
-                spacing: {
-                  before: index === 0 ? 200 : 0,
-                  after: index === lines.length - 1 ? 200 : 0,
-                },
-              })
-            )
-          }
-        })
+        // Handle other document types (will, poa, etc.)
+        if (section.name === 'statutory_notice') {
+          // Special formatting for POA statutory notice
+          const content = section.content.trim()
+          const lines = content.split('\n').filter(line => line.trim())
+          
+          lines.forEach((line, index) => {
+            const trimmedLine = line.trim()
+            if (trimmedLine) {
+              // Check if line contains "NOTICE:" to make it bold
+              const isNoticeLine = trimmedLine.includes('NOTICE:')
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: trimmedLine,
+                      size: 24,
+                      bold: isNoticeLine,
+                    }),
+                  ],
+                  alignment: AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: index === 0 ? 200 : 120,
+                    after: index === lines.length - 1 ? 200 : 120,
+                  },
+                })
+              )
+            }
+          })
+        } else {
+          // Handle other sections with standard formatting
+          const lines = section.content.trim().split('\n')
+          lines.forEach((line, index) => {
+            if (line.trim()) {
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: line.trim(),
+                      size: 24,
+                      bold: line.includes('ARTICLE') || line.includes('WITNESS'),
+                    }),
+                  ],
+                  alignment: AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: index === 0 ? 200 : 0,
+                    after: index === lines.length - 1 ? 200 : 0,
+                  },
+                })
+              )
+            }
+          })
+        }
       }
     }
   }
