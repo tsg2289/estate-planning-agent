@@ -54,7 +54,10 @@ const AHCDForm = ({ onSubmit }) => {
     // Part 5.2 - Signature fields
     signatureDate: '',
     signatureImage: null, // For uploaded signature
-    witnesses: [{ name: '', address: '', phone: '' }]
+    witnesses: [
+      { name: '', address: '', city: '', state: '', phone: '', signatureDate: '' },
+      { name: '', address: '', city: '', state: '', phone: '', signatureDate: '' }
+    ]
   }
 
   const {
@@ -995,6 +998,159 @@ const AHCDForm = ({ onSubmit }) => {
                 This is automatically filled from your address entered in the first section.
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Part 5.3 - Statement of Witnesses */}
+        <div className="form-section">
+          <h3>Statement of Witnesses</h3>
+          
+          <div className="form-group">
+            <label className="form-label">
+              (5.3) STATEMENT OF WITNESSES: I declare under penalty of perjury under the laws of California (1) that the individual who signed or acknowledged this advance health care directive is personally known to me, or that the individual's identity was proven to me by convincing evidence, (2) that the individual signed or acknowledged this advance directive in my presence, (3) that the individual appears to be of sound mind and under no duress, fraud, or undue influence, (4) that I am not a person appointed as agent by this advance directive, and (5) that I am not the individual's health care provider, an employee of the individual's health care provider, the operator of a community care facility, an employee of an operator of a community care facility, the operator of a residential care facility for the elderly, nor an employee of an operator of a residential care facility for the elderly.
+            </label>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '1.5rem' }}>
+              <div>
+                <h4 style={{ margin: '0 0 1rem 0', textAlign: 'center' }}>First Witness</h4>
+                
+                <div className="form-group">
+                  <label className="form-label">Print Name</label>
+                  <input
+                    type="text"
+                    value={formData.witnesses[0]?.name || ''}
+                    onChange={(e) => handleWitnessChange(0, 'name', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Address</label>
+                  <input
+                    type="text"
+                    value={formData.witnesses[0]?.address || ''}
+                    onChange={(e) => handleWitnessChange(0, 'address', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">City</label>
+                    <input
+                      type="text"
+                      value={formData.witnesses[0]?.city || ''}
+                      onChange={(e) => handleWitnessChange(0, 'city', e.target.value)}
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">State</label>
+                    <input
+                      type="text"
+                      value={formData.witnesses[0]?.state || ''}
+                      onChange={(e) => handleWitnessChange(0, 'state', e.target.value)}
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Signature Date</label>
+                  <input
+                    type="date"
+                    value={formData.witnesses[0]?.signatureDate || ''}
+                    onChange={(e) => handleWitnessChange(0, 'signatureDate', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Phone (for contact)</label>
+                  <input
+                    type="tel"
+                    value={formData.witnesses[0]?.phone || ''}
+                    onChange={(e) => handleWitnessChange(0, 'phone', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+              </div>
+              
+              <div>
+                <h4 style={{ margin: '0 0 1rem 0', textAlign: 'center' }}>Second Witness</h4>
+                
+                <div className="form-group">
+                  <label className="form-label">Print Name</label>
+                  <input
+                    type="text"
+                    value={formData.witnesses[1]?.name || ''}
+                    onChange={(e) => handleWitnessChange(1, 'name', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Address</label>
+                  <input
+                    type="text"
+                    value={formData.witnesses[1]?.address || ''}
+                    onChange={(e) => handleWitnessChange(1, 'address', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+                
+                <div className="form-row">
+                  <div className="form-group">
+                    <label className="form-label">City</label>
+                    <input
+                      type="text"
+                      value={formData.witnesses[1]?.city || ''}
+                      onChange={(e) => handleWitnessChange(1, 'city', e.target.value)}
+                      className="form-input"
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">State</label>
+                    <input
+                      type="text"
+                      value={formData.witnesses[1]?.state || ''}
+                      onChange={(e) => handleWitnessChange(1, 'state', e.target.value)}
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Signature Date</label>
+                  <input
+                    type="date"
+                    value={formData.witnesses[1]?.signatureDate || ''}
+                    onChange={(e) => handleWitnessChange(1, 'signatureDate', e.target.value)}
+                    className="form-input"
+                  />
+                </div>
+                
+                <div className="form-group">
+                  <label className="form-label">Phone (for contact)</label>
+                  <input
+                    type="tel"
+                    value={formData.witnesses[1]?.phone || ''}
+                    onChange={(e) => handleWitnessChange(1, 'phone', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <p className="form-help-text" style={{ marginTop: '1rem', fontStyle: 'italic' }}>
+              Note: Witnesses will need to sign the physical document after printing. The signature lines will appear in the downloaded document.
+            </p>
           </div>
         </div>
 

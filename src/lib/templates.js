@@ -610,6 +610,40 @@ export const ahcdTemplate = {
         _________________________________________________
 
         (city)                    (state)
+
+        (5.3) STATEMENT OF WITNESSES: I declare under penalty of perjury under the laws of California (1) that the individual who signed or acknowledged this advance health care directive is personally known to me, or that the individual's identity was proven to me by convincing evidence, (2) that the individual signed or acknowledged this advance directive in my presence, (3) that the individual appears to be of sound mind and under no duress, fraud, or undue influence, (4) that I am not a person appointed as agent by this advance directive, and (5) that I am not the individual's health care provider, an employee of the individual's health care provider, the operator of a community care facility, an employee of an operator of a community care facility, the operator of a residential care facility for the elderly, nor an employee of an operator of a residential care facility for the elderly.
+
+        First witness                              Second witness
+
+        {{witness1Name}}                          {{witness2Name}}
+
+        _________________________________________________    _________________________________________________
+
+        (print name)                              (print name)
+
+        {{witness1Address}}                       {{witness2Address}}
+
+        _________________________________________________    _________________________________________________
+
+        (address)                                 (address)
+
+        {{witness1CityState}}                     {{witness2CityState}}
+
+        _________________________________________________    _________________________________________________
+
+        (city)        (state)                    (city)        (state)
+
+        {{witness1Signature}}                     {{witness2Signature}}
+
+        _________________________________________________    _________________________________________________
+
+        (signature of witness)                    (signature of witness)
+
+        {{witness1Date}}                          {{witness2Date}}
+
+        _________________________________________________    _________________________________________________
+
+        (date)                                    (date)
       `
     }
   ]

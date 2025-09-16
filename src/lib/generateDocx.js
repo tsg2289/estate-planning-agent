@@ -1231,6 +1231,51 @@ ________________________________________________________________________________
         formatted.signatureCityStateZip = '_________________________________________________'
       }
       
+      // Format witness information for Part 5.3
+      const formatWitness = (witness, index) => {
+        const witnessNum = index + 1
+        const result = {}
+        
+        result[`witness${witnessNum}Name`] = witness?.name?.trim() || '_________________________________________________'
+        result[`witness${witnessNum}Address`] = witness?.address?.trim() || '_________________________________________________'
+        
+        const city = witness?.city?.trim() || ''
+        const state = witness?.state?.trim() || ''
+        if (city && state) {
+          result[`witness${witnessNum}CityState`] = `${city}, ${state}`
+        } else if (city || state) {
+          result[`witness${witnessNum}CityState`] = `${city}${state}`.trim()
+        } else {
+          result[`witness${witnessNum}CityState`] = '_________________________________________________'
+        }
+        
+        if (witness?.signatureDate?.trim()) {
+          const date = new Date(witness.signatureDate)
+          result[`witness${witnessNum}Date`] = date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })
+        } else {
+          result[`witness${witnessNum}Date`] = '_________________________________________________'
+        }
+        
+        // Signature line is always blank for witnesses to sign physically
+        result[`witness${witnessNum}Signature`] = '_________________________________________________'
+        
+        return result
+      }
+      
+      // Format both witnesses
+      if (formData.witnesses && formData.witnesses.length >= 2) {
+        Object.assign(formatted, formatWitness(formData.witnesses[0], 0))
+        Object.assign(formatted, formatWitness(formData.witnesses[1], 1))
+      } else {
+        // Provide blank witness information if not enough witnesses
+        Object.assign(formatted, formatWitness({}, 0))
+        Object.assign(formatted, formatWitness({}, 1))
+      }
+      
       break
       
     case 'poa':
