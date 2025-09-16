@@ -661,9 +661,9 @@ export const formatFormData = (formData, documentType) => {
       
       // Handle multiple trustors
       if (formData.hasSecondTrustor && formData.secondTrustorName) {
-        formatted.trustorInfo = `Trustor/Grantor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("First Trustor" or "Grantor"); and
+        formatted.trustorInfo = `Trustor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("First Trustor"); and
 
-Trustor/Grantor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${formData.secondTrustorCounty}, California ("Second Trustor" or "Grantor"); and`
+Trustor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}, ${formData.secondTrustorCounty}, California ("Second Trustor"); and`
         
         formatted.trustorMayServeNote = 'The Trustors may also serve as the initial Trustees.'
         
@@ -672,7 +672,7 @@ Trustor/Grantor: ${formData.secondTrustorName}, of ${formData.secondTrustorCity}
         const secondTrustorLastName = formData.secondTrustorName.split(' ').pop()
         formatted.trustorName = `${firstTrustorLastName} and ${secondTrustorLastName} Family`
       } else {
-        formatted.trustorInfo = `Trustor/Grantor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor" or "Grantor"); and`
+        formatted.trustorInfo = `Trustor: ${formData.trustorName}, of ${formData.trustorCity}, ${formData.trustorCounty}, California ("Trustor"); and`
         formatted.trustorMayServeNote = 'The Trustor may also serve as the initial Trustee.'
       }
       

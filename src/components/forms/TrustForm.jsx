@@ -622,7 +622,7 @@ const TrustForm = ({ onSubmit }) => {
           </div>
           
           {/* Alternate Trustees */}
-          <h4>Alternate Trustees - {formData.hasSecondTrustor && formData.secondTrustorRelationship ? `${formData.secondTrustorRelationship.charAt(0).toUpperCase() + formData.secondTrustorRelationship.slice(1)} ` : ''}Download</h4>
+          <h4>Alternate Trustees - Download</h4>
           {(formData.alternateTrustees || []).map((trustee, index) => (
             <div key={index} className="trustee-item">
               <div className="form-row">
