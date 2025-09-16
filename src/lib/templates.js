@@ -429,6 +429,12 @@ export const ahcdTemplate = {
       `
     },
     {
+      name: 'agent_postdeath_authority',
+      content: `
+        (1.5) AGENT'S POSTDEATH AUTHORITY: My agent is authorized to {{agentPostdeathAuthorities}}, except as I state here or in Part 3 of this form:
+      `
+    },
+    {
       name: 'conservator_nomination',
       content: `
         (1.6) NOMINATION OF CONSERVATOR: If a conservator of my person needs to be appointed for me by a court, I nominate the agent designated in this form. If that agent is not willing, able, or reasonably available to act as conservator, I nominate the alternate agents whom I have named, in the order designated.
@@ -456,18 +462,6 @@ export const ahcdTemplate = {
       name: 'end_of_life_wishes',
       content: `
         My specific wishes for end-of-life care include: {{endOfLifeWishes}}
-      `
-    },
-    {
-      name: 'organ_donation',
-      content: `
-        Regarding organ and tissue donation: {{organDonation}}
-      `
-    },
-    {
-      name: 'autopsy',
-      content: `
-        Regarding autopsy: {{autopsy}}
       `
     },
     {

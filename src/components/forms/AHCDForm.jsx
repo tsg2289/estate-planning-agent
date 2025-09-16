@@ -29,8 +29,9 @@ const AHCDForm = ({ onSubmit }) => {
     artificialNutrition: 'default',
     artificialHydration: 'default',
     painManagement: 'aggressive',
-    organDonation: 'no-preference',
-    autopsy: 'no-preference',
+    agentCanDonateOrgans: false,
+    agentCanAuthorizeAutopsy: false,
+    agentCanDirectDisposition: false,
     funeralWishes: '',
     additionalInstructions: '',
     agentAuthorityExceptions: '',
@@ -532,40 +533,61 @@ const AHCDForm = ({ onSubmit }) => {
           </div>
         </div>
 
-        {/* Organ Donation and Autopsy */}
+        {/* Agent's Postdeath Authority */}
         <div className="form-section">
-          <h3>Organ Donation and Autopsy</h3>
-          
+          <h3>Agent's Postdeath Authority</h3>
           <div className="form-group">
-            <label className="form-label">Organ Donation</label>
-            <select
-              name="organDonation"
-              value={formData.organDonation}
-              onChange={handleInputChange}
-              className="form-input"
-              required
-            >
-              <option value="no-preference">No preference</option>
-              <option value="yes">Yes, donate my organs</option>
-              <option value="no">No, do not donate my organs</option>
-              <option value="specific">Specific organs only</option>
-            </select>
-          </div>
-          
-          <div className="form-group">
-            <label className="form-label">Autopsy</label>
-            <select
-              name="autopsy"
-              value={formData.autopsy}
-              onChange={handleInputChange}
-              className="form-input"
-              required
-            >
-              <option value="no-preference">No preference</option>
-              <option value="yes">Yes, allow autopsy</option>
-              <option value="no">No, do not allow autopsy</option>
-              <option value="circumstances">Allow under certain circumstances</option>
-            </select>
+            <p className="form-help-text">
+              My agent is authorized to donate:
+            </p>
+            
+            <label className="form-checkbox-label">
+              <input
+                type="checkbox"
+                name="agentCanDonateOrgans"
+                checked={formData.agentCanDonateOrgans}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  agentCanDonateOrgans: e.target.checked
+                }))}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                My organs, tissues, and parts
+              </span>
+            </label>
+            
+            <label className="form-checkbox-label">
+              <input
+                type="checkbox"
+                name="agentCanAuthorizeAutopsy"
+                checked={formData.agentCanAuthorizeAutopsy}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  agentCanAuthorizeAutopsy: e.target.checked
+                }))}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                Authorize an autopsy
+              </span>
+            </label>
+            
+            <label className="form-checkbox-label">
+              <input
+                type="checkbox"
+                name="agentCanDirectDisposition"
+                checked={formData.agentCanDirectDisposition}
+                onChange={(e) => setFormData(prev => ({
+                  ...prev,
+                  agentCanDirectDisposition: e.target.checked
+                }))}
+                className="form-checkbox"
+              />
+              <span className="form-checkbox-text">
+                Direct disposition of my remains
+              </span>
+            </label>
           </div>
         </div>
 

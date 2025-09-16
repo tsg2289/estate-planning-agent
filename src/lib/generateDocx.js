@@ -1039,6 +1039,30 @@ ________________________________________________________________________________
       // Format authority effectiveness checkbox
       formatted.authorityEffectivenessCheckbox = formData.immediateAuthorityEffective ? '☑' : '☐'
       
+      // Format agent postdeath authorities
+      const authorities = []
+      if (formData.agentCanDonateOrgans) {
+        authorities.push('donate my organs, tissues, and parts')
+      }
+      if (formData.agentCanAuthorizeAutopsy) {
+        authorities.push('authorize an autopsy')
+      }
+      if (formData.agentCanDirectDisposition) {
+        authorities.push('direct disposition of my remains')
+      }
+      
+      if (authorities.length > 0) {
+        if (authorities.length === 1) {
+          formatted.agentPostdeathAuthorities = authorities[0]
+        } else if (authorities.length === 2) {
+          formatted.agentPostdeathAuthorities = authorities.join(' and ')
+        } else {
+          formatted.agentPostdeathAuthorities = authorities.slice(0, -1).join(', ') + ', and ' + authorities[authorities.length - 1]
+        }
+      } else {
+        formatted.agentPostdeathAuthorities = '[No postdeath authorities selected]'
+      }
+      
       break
       
     case 'poa':
