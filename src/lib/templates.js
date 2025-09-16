@@ -278,57 +278,11 @@ export const poaTemplate = {
       `
     },
     {
-      name: 'header',
-      content: `
-        I, {{principalName}}, hereby appoint {{agentName}} as my Attorney-in-Fact 
-        (hereinafter referred to as my "Agent") pursuant to the laws of {{principalState}}.
-      `
-    },
-    {
-      name: 'scope',
-      content: `
-        This is a {{scope}} Power of Attorney, which means {{scopeDescription}}.
-      `
-    },
-    {
-      name: 'effective_date',
-      content: `
-        This Power of Attorney shall become effective on {{effectiveDate}}.
-      `
-    },
-    {
-      name: 'termination',
-      content: `
-        This Power of Attorney shall terminate on {{terminationDate}} or upon my death, 
-        whichever occurs first.
-      `
-    },
-    {
       name: 'statutory_powers',
       content: `
         {{statutoryPowersList}}
       `
     },
-    {
-      name: 'limitations',
-      content: `
-        The following limitations apply to my Agent's authority:
-        {{limitations}}
-      `
-    },
-    {
-      name: 'compensation',
-      content: `
-        My Agent shall be compensated as follows: {{compensation}}
-      `
-    },
-    {
-      name: 'alternate_agent',
-      content: `
-        If {{agentName}} is unable or unwilling to serve as my Agent, 
-        I appoint {{alternateAgentName}} as my Alternate Agent.
-      `
-    }
   ]
 }
 
