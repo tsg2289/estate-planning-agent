@@ -113,6 +113,13 @@ export const trustTemplate = {
 (of {{trustorName}})`
     },
     {
+      name: 'trust_information',
+      content: `Trust Information
+
+Trust Name: {{trustName}}
+Trust Date: {{trustDateFormatted}}`
+    },
+    {
       name: 'article_1',
       content: `ARTICLE I – IDENTIFICATION OF PARTIES
 
