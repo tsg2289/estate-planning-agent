@@ -35,6 +35,7 @@ const AHCDForm = ({ onSubmit }) => {
     agentAuthorityExceptions: '',
     immediateAuthorityEffective: false,
     endOfLifeChoice: '', // 'not-prolong' or 'prolong'
+    painReliefExceptions: '',
     witnesses: [{ name: '', address: '', phone: '' }]
   }
 
@@ -627,6 +628,27 @@ const AHCDForm = ({ onSubmit }) => {
                 I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.
               </span>
             </label>
+          </div>
+        </div>
+
+        {/* Pain Relief */}
+        <div className="form-section">
+          <h3>(2.2) Relief from Pain</h3>
+          <div className="form-group">
+            <label className="form-label">
+              Except as I state in the following space, I direct that treatment for alleviation of pain or discomfort be provided at all times, even if it hastens my death:
+            </label>
+            <textarea
+              name="painReliefExceptions"
+              value={formData.painReliefExceptions}
+              onChange={handleInputChange}
+              className="form-textarea"
+              placeholder="Enter any specific exceptions or limitations to pain relief treatment..."
+              rows="4"
+            />
+            <p className="form-help-text">
+              Leave blank if you want pain relief treatment to be provided at all times without exceptions.
+            </p>
           </div>
         </div>
 

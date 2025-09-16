@@ -465,6 +465,14 @@ export const ahcdTemplate = {
       `
     },
     {
+      name: 'relief_from_pain',
+      content: `
+        (2.2) RELIEF FROM PAIN: Except as I state in the following space, I direct that treatment for alleviation of pain or discomfort be provided at all times, even if it hastens my death:
+
+        {{painReliefExceptions}}
+      `
+    },
+    {
       name: 'life_sustaining_treatment',
       content: `
         Regarding life-sustaining treatment, my wishes are: {{lifeSustainingTreatment}}

@@ -1083,6 +1083,16 @@ ________________________________________________________________________________
         I want my life to be prolonged as long as possible within the limits of generally accepted health care standards.`
       }
       
+      // Format pain relief exceptions
+      if (formData.painReliefExceptions && formData.painReliefExceptions.trim()) {
+        formatted.painReliefExceptions = formData.painReliefExceptions.trim()
+      } else {
+        // Show blank lines if no exceptions specified
+        formatted.painReliefExceptions = `___________________________________________________________________________________________________
+
+___________________________________________________________________________________________________`
+      }
+      
       break
       
     case 'poa':
