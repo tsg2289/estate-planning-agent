@@ -419,7 +419,7 @@ export const ahcdTemplate = {
     {
       name: 'authority_effectiveness',
       content: `
-        WHEN AGENT'S AUTHORITY BECOMES EFFECTIVE: My agent's authority becomes effective when my primary physician determines that I am unable to make my own health care decisions unless I mark the following box. If I mark this box {{authorityEffectivenessCheckbox}}, my agent's authority to make health care decisions for me takes effect immediately.
+        (1.3) WHEN AGENT'S AUTHORITY BECOMES EFFECTIVE: My agent's authority becomes effective when my primary physician determines that I am unable to make my own health care decisions unless I mark the following box. If I mark this box {{authorityEffectivenessCheckbox}}, my agent's authority to make health care decisions for me takes effect immediately.
       `
     },
     {
