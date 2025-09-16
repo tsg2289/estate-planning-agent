@@ -159,6 +159,85 @@ export const useFormProgress = (formType, initialData = {}) => {
                   delete migratedData.alternateGuardianPhone;
                 }
 
+                // Convert old POA alternate agent format to new array format if needed
+                if (formType === 'poa' && !Array.isArray(migratedData.alternateAgents)) {
+                  const alternateAgents = [];
+                  
+                  // Check if old alternate agent data exists
+                  if (migratedData.alternateAgentName || migratedData.alternateAgentAddress || 
+                      migratedData.alternateAgentCity || migratedData.alternateAgentState || 
+                      migratedData.alternateAgentZip || migratedData.alternateAgentPhone || 
+                      migratedData.alternateAgentEmail) {
+                    alternateAgents.push({
+                      name: migratedData.alternateAgentName || '',
+                      address: migratedData.alternateAgentAddress || '',
+                      city: migratedData.alternateAgentCity || '',
+                      state: migratedData.alternateAgentState || '',
+                      zip: migratedData.alternateAgentZip || '',
+                      phone: migratedData.alternateAgentPhone || '',
+                      email: migratedData.alternateAgentEmail || ''
+                    });
+                  }
+                  
+                  // Ensure at least one empty alternate agent if no data
+                  if (alternateAgents.length === 0) {
+                    alternateAgents.push({
+                      name: '',
+                      address: '',
+                      city: '',
+                      state: '',
+                      zip: '',
+                      phone: '',
+                      email: ''
+                    });
+                  }
+                  
+                  migratedData.alternateAgents = alternateAgents;
+                  
+                  // Clean up old alternate agent fields
+                  delete migratedData.alternateAgentName;
+                  delete migratedData.alternateAgentAddress;
+                  delete migratedData.alternateAgentCity;
+                  delete migratedData.alternateAgentState;
+                  delete migratedData.alternateAgentZip;
+                  delete migratedData.alternateAgentPhone;
+                  delete migratedData.alternateAgentEmail;
+                }
+
+                // Convert old AHCD alternate agent format to new array format if needed
+                if (formType === 'ahcd' && !Array.isArray(migratedData.alternateHealthCareAgents)) {
+                  const alternateHealthCareAgents = [];
+                  
+                  // Check if old alternate health care agent data exists
+                  if (migratedData.alternateHealthCareAgent || migratedData.alternateHealthCareAgentAddress || 
+                      migratedData.alternateHealthCareAgentPhone || migratedData.alternateHealthCareAgentEmail) {
+                    alternateHealthCareAgents.push({
+                      name: migratedData.alternateHealthCareAgent || '',
+                      address: migratedData.alternateHealthCareAgentAddress || '',
+                      phone: migratedData.alternateHealthCareAgentPhone || '',
+                      email: migratedData.alternateHealthCareAgentEmail || ''
+                    });
+                  }
+                  
+                  // Ensure at least one empty alternate agent if no data
+                  if (alternateHealthCareAgents.length === 0) {
+                    alternateHealthCareAgents.push({
+                      name: '',
+                      address: '',
+                      phone: '',
+                      email: ''
+                    });
+                  }
+                  
+                  migratedData.alternateHealthCareAgents = alternateHealthCareAgents;
+                  
+                  // Clean up old alternate health care agent fields
+                  delete migratedData.alternateHealthCareAgent;
+                  delete migratedData.alternateHealthCareAgentAddress;
+                  delete migratedData.alternateHealthCareAgentPhone;
+                  delete migratedData.alternateHealthCareAgentEmail;
+                }
+
                 // Convert old specificBequests format to new array format if needed
                 if (formType === 'will' && !Array.isArray(migratedData.specificBequests)) {
                   // If hasSpecialBequests doesn't exist, determine it from old specificBequests content
