@@ -370,6 +370,22 @@ export const ahcdTemplate = {
       `
     },
     {
+      name: 'agent_authority',
+      content: `
+        AGENT'S AUTHORITY: My agent is authorized to make all physical and mental health care decisions for me, including decisions to provide, withhold, or withdraw artificial nutrition and hydration and all other forms of health care to keep me alive, except as I state here:
+        
+        _____________________________________________________________________________
+        
+        _____________________________________________________________________________
+        
+        _____________________________________________________________________________
+        
+        _____________________________________________________________________________
+        
+        _____________________________________________________________________________
+      `
+    },
+    {
       name: 'life_sustaining_treatment',
       content: `
         Regarding life-sustaining treatment, my wishes are: {{lifeSustainingTreatment}}
