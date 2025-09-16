@@ -644,6 +644,16 @@ export const ahcdTemplate = {
         _________________________________________________    _________________________________________________
 
         (date)                                    (date)
+
+        (5.4) ADDITIONAL STATEMENT OF WITNESSES: At least one of the above witnesses must also sign the following declaration:
+
+        I further declare under penalty of perjury under the laws of California that I am not related to the individual executing this advance health care directive by blood, marriage, or adoption, and, to the best of my knowledge, I am not entitled to any part of the individual's estate upon their death under a will now existing or by operation of law.
+
+        {{additionalWitnessSignature}}
+
+        _________________________________________________
+
+        (signature of witness)
       `
     }
   ]

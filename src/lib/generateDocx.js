@@ -1276,6 +1276,10 @@ ________________________________________________________________________________
         Object.assign(formatted, formatWitness({}, 1))
       }
       
+      // Part 5.4 - Additional Statement of Witnesses (document only, no form fields needed)
+      // This section provides blank signature lines for witnesses to sign physically
+      formatted.additionalWitnessSignature = '_________________________________________________'
+      
       break
       
     case 'poa':
