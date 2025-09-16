@@ -28,6 +28,7 @@ const POAForm = ({ onSubmit }) => {
     effectiveDate: '',
     terminationDate: '',
     specificPowers: [],
+    allPowersSelected: false,
     limitations: '',
     compensation: '',
     additionalProvisions: ''
@@ -45,17 +46,20 @@ const POAForm = ({ onSubmit }) => {
     getSaveStatusColor
   } = useFormProgress('poa', initialData)
 
-  const [specificPowers] = useState([
-    'Real Estate Transactions',
-    'Banking and Financial Transactions',
-    'Tax Matters',
-    'Insurance Matters',
-    'Business Operations',
-    'Legal Proceedings',
-    'Healthcare Decisions',
-    'Retirement Accounts',
-    'Digital Assets',
-    'Personal Property'
+  const [statutoryPowers] = useState([
+    { code: 'A', description: 'Real property transactions.' },
+    { code: 'B', description: 'Tangible personal property transactions.' },
+    { code: 'C', description: 'Stock and bond transactions.' },
+    { code: 'D', description: 'Commodity and option transactions.' },
+    { code: 'E', description: 'Banking and other financial institution transactions.' },
+    { code: 'F', description: 'Business operating transactions.' },
+    { code: 'G', description: 'Insurance and annuity transactions.' },
+    { code: 'H', description: 'Estate, trust, and other beneficiary transactions.' },
+    { code: 'I', description: 'Claims and litigation.' },
+    { code: 'J', description: 'Personal and family maintenance.' },
+    { code: 'K', description: 'Benefits from social security, medicare, medicaid, or other governmental programs, or civil or military service.' },
+    { code: 'L', description: 'Retirement plan transactions.' },
+    { code: 'M', description: 'Tax matters.' }
   ])
 
   const handleInputChange = (e) => {
@@ -66,12 +70,20 @@ const POAForm = ({ onSubmit }) => {
     }))
   }
 
-  const handlePowerToggle = (power) => {
+  const handlePowerToggle = (powerCode) => {
     setFormData(prev => ({
       ...prev,
-      specificPowers: prev.specificPowers.includes(power)
-        ? prev.specificPowers.filter(p => p !== power)
-        : [...prev.specificPowers, power]
+      specificPowers: prev.specificPowers.includes(powerCode)
+        ? prev.specificPowers.filter(p => p !== powerCode)
+        : [...prev.specificPowers, powerCode]
+    }))
+  }
+
+  const handleAllPowersToggle = () => {
+    setFormData(prev => ({
+      ...prev,
+      allPowersSelected: !prev.allPowersSelected,
+      specificPowers: !prev.allPowersSelected ? [] : prev.specificPowers
     }))
   }
 
@@ -416,19 +428,38 @@ const POAForm = ({ onSubmit }) => {
         {/* Specific Powers */}
         <div className="form-section">
           <h3>Specific Powers Granted</h3>
-          <p className="form-help-text">Select the specific powers you want to grant to your agent:</p>
+          <p className="form-help-text">
+            TO GRANT ALL OF THE FOLLOWING POWERS, INITIAL THE LINE IN FRONT OF (N) AND IGNORE
+            THE LINES IN FRONT OF THE OTHER POWERS.<br/>
+            TO GRANT ONE OR MORE, BUT FEWER THAN ALL, OF THE FOLLOWING POWERS, INITIAL THE
+            LINE IN FRONT OF EACH POWER YOU ARE GRANTING.<br/>
+            TO WITHHOLD A POWER, DO NOT INITIAL THE LINE IN FRONT OF IT.
+          </p>
           
-          <div className="powers-grid">
-            {specificPowers.map((power) => (
-              <label key={power} className="power-checkbox">
+          <div className="statutory-powers">
+            {statutoryPowers.map((power) => (
+              <label key={power.code} className="statutory-power-checkbox">
                 <input
                   type="checkbox"
-                  checked={formData.specificPowers.includes(power)}
-                  onChange={() => handlePowerToggle(power)}
+                  checked={formData.specificPowers.includes(power.code)}
+                  onChange={() => handlePowerToggle(power.code)}
+                  disabled={formData.allPowersSelected}
                 />
-                <span className="power-label">{power}</span>
+                <span className="power-code">({power.code})</span>
+                <span className="power-description">{power.description}</span>
               </label>
             ))}
+            
+            {/* ALL POWERS option */}
+            <label className="statutory-power-checkbox all-powers">
+              <input
+                type="checkbox"
+                checked={formData.allPowersSelected}
+                onChange={handleAllPowersToggle}
+              />
+              <span className="power-code">(N)</span>
+              <span className="power-description"><strong>ALL OF THE POWERS LISTED ABOVE</strong></span>
+            </label>
           </div>
         </div>
 

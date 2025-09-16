@@ -725,6 +725,43 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         'springing': 'the agent\'s authority only takes effect under specific conditions'
       }
       formatted.scopeDescription = scopeDescriptions[formData.scope] || ''
+      
+      // Format statutory powers list
+      const statutoryPowers = [
+        { code: 'A', description: 'Real property transactions.' },
+        { code: 'B', description: 'Tangible personal property transactions.' },
+        { code: 'C', description: 'Stock and bond transactions.' },
+        { code: 'D', description: 'Commodity and option transactions.' },
+        { code: 'E', description: 'Banking and other financial institution transactions.' },
+        { code: 'F', description: 'Business operating transactions.' },
+        { code: 'G', description: 'Insurance and annuity transactions.' },
+        { code: 'H', description: 'Estate, trust, and other beneficiary transactions.' },
+        { code: 'I', description: 'Claims and litigation.' },
+        { code: 'J', description: 'Personal and family maintenance.' },
+        { code: 'K', description: 'Benefits from social security, medicare, medicaid, or other governmental programs, or civil or military service.' },
+        { code: 'L', description: 'Retirement plan transactions.' },
+        { code: 'M', description: 'Tax matters.' }
+      ]
+      
+      let powersList = ''
+      
+      if (formData.allPowersSelected) {
+        // If all powers selected, show all with checkmarks and highlight (N)
+        statutoryPowers.forEach(power => {
+          powersList += `__X__ (${power.code}) ${power.description}\n`
+        })
+        powersList += `__X__ (N) ALL OF THE POWERS LISTED ABOVE\n`
+      } else {
+        // Show individual selections
+        statutoryPowers.forEach(power => {
+          const isSelected = formData.specificPowers && formData.specificPowers.includes(power.code)
+          const mark = isSelected ? '__X__' : '______'
+          powersList += `${mark} (${power.code}) ${power.description}\n`
+        })
+        powersList += `______ (N) ALL OF THE POWERS LISTED ABOVE\n`
+      }
+      
+      formatted.statutoryPowersList = powersList
       break
   }
   

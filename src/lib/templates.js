@@ -304,10 +304,9 @@ export const poaTemplate = {
       `
     },
     {
-      name: 'specific_powers',
+      name: 'statutory_powers',
       content: `
-        My Agent shall have the following specific powers:
-        {{specificPowersList}}
+        {{statutoryPowersList}}
       `
     },
     {
