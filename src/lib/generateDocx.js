@@ -998,6 +998,32 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
         formatted.alternateHealthCareAgent = ''
         formatted.alternateHealthCareAgentDetails = ''
       }
+      
+      // Format primary health care agent with address
+      if (formData.healthCareAgent && formData.healthCareAgent.trim()) {
+        let primaryAgentText = formData.healthCareAgent
+        
+        // Add address if provided
+        if (formData.healthCareAgentAddress && formData.healthCareAgentAddress.trim()) {
+          primaryAgentText += `, ${formData.healthCareAgentAddress}`
+        }
+        
+        // Add contact information if available
+        const contactInfo = []
+        if (formData.healthCareAgentPhone && formData.healthCareAgentPhone.trim()) {
+          contactInfo.push(`Phone: ${formData.healthCareAgentPhone}`)
+        }
+        if (formData.healthCareAgentEmail && formData.healthCareAgentEmail.trim()) {
+          contactInfo.push(`Email: ${formData.healthCareAgentEmail}`)
+        }
+        
+        if (contactInfo.length > 0) {
+          primaryAgentText += ` (${contactInfo.join(', ')})`
+        }
+        
+        formatted.healthCareAgent = primaryAgentText
+      }
+      
       break
       
     case 'poa':
