@@ -285,6 +285,18 @@ export const poaTemplate = {
         YOU NEED NOT INITIAL ANY OTHER LINES IF YOU INITIAL LINE (N)
       `
     },
+    {
+      name: 'special_instructions',
+      content: `
+        _______________
+        SPECIAL INSTRUCTIONS:
+        ON THE FOLLOWING LINES YOU MAY GIVE SPECIAL INSTRUCTIONS LIMITING OR EXTENDING THE
+        POWERS GRANTED TO YOUR AGENT.
+        {{specialInstructionsContent}}
+        UNLESS YOU DIRECT OTHERWISE ABOVE, THIS POWER OF ATTORNEY IS EFFECTIVE
+        IMMEDIATELY AND WILL CONTINUE UNTIL IT IS REVOKED.
+      `
+    },
   ]
 }
 

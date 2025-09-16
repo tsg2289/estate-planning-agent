@@ -762,6 +762,50 @@ this Revocable Living Trust Agreement this ___day of _______, 20__.`
       }
       
       formatted.statutoryPowersList = powersList
+      
+      // Format special instructions content from UI fields
+      let specialInstructions = ''
+      
+      // Add limitations if provided
+      if (formData.limitations && formData.limitations.trim()) {
+        specialInstructions += `${formData.limitations.trim()}\n`
+      }
+      
+      // Add compensation if provided
+      if (formData.compensation && formData.compensation.trim()) {
+        specialInstructions += `Agent Compensation: ${formData.compensation.trim()}\n`
+      }
+      
+      // Add additional provisions if provided
+      if (formData.additionalProvisions && formData.additionalProvisions.trim()) {
+        specialInstructions += `${formData.additionalProvisions.trim()}\n`
+      }
+      
+      // Add alternate agent if provided
+      if (formData.alternateAgentName && formData.alternateAgentName.trim()) {
+        specialInstructions += `If ${formData.agentName} is unable or unwilling to serve as my Agent, I appoint ${formData.alternateAgentName} as my Alternate Agent.`
+        if (formData.alternateAgentAddress && formData.alternateAgentAddress.trim()) {
+          specialInstructions += ` Address: ${formData.alternateAgentAddress}`
+          if (formData.alternateAgentPhone) {
+            specialInstructions += `, Phone: ${formData.alternateAgentPhone}`
+          }
+        }
+        specialInstructions += '\n'
+      }
+      
+      // Format with blank lines structure
+      const lines = specialInstructions.split('\n').filter(line => line.trim())
+      let formattedInstructions = ''
+      
+      // Add up to 5 lines of content, then fill remaining with blank lines
+      for (let i = 0; i < 5; i++) {
+        if (i < lines.length) {
+          formattedInstructions += `${lines[i]}\n`
+        }
+        formattedInstructions += '__________________________________________________________________________________________\n'
+      }
+      
+      formatted.specialInstructionsContent = formattedInstructions
       break
   }
   
