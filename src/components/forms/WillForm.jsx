@@ -437,8 +437,8 @@ const WillForm = ({ onSubmit }) => {
           <h3>Family Information</h3>
           
           {/* Marriage Status */}
-          <div className="form-group">
-            <label className="form-label">Marital Status</label>
+          <div className="form-group marital-status-section">
+            <label className="form-label marital-status-label">Marital Status</label>
             <div className="radio-group">
               <label className="radio-label">
                 <input
