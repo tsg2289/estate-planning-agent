@@ -184,18 +184,32 @@ const createDocumentSections = async (template, formData) => {
             }
           })
         } else if (section.name && section.name.startsWith('article_')) {
-          // Article sections - parse the content to separate header from body
-          const lines = section.content.trim().split('\n').filter(line => line.trim())
-          
-          if (lines.length > 0) {
-            // First line is the article header
-            const articleHeader = lines[0]
+          // Article headers - combine with next section content
+          const nextSection = template.sections[i + 1]
+          if (nextSection && nextSection.content) {
+            // Split the next section content to get the heading
+            const lines = nextSection.content.trim().split('\n')
+            const heading = lines[0]
+            const remainingContent = lines.slice(1).join('\n')
             
+            // Create combined article header with heading on same line
             children.push(
               new Paragraph({
                 children: [
                   new TextRun({
-                    text: articleHeader,
+                    text: section.content.trim(), // ARTICLE I, II, III, etc.
+                    bold: true,
+                    size: 28,
+                    underline: {},
+                  }),
+                  new TextRun({
+                    text: ': ',
+                    bold: true,
+                    size: 28,
+                    underline: {},
+                  }),
+                  new TextRun({
+                    text: heading, // The heading text
                     bold: true,
                     size: 28,
                     underline: {},
@@ -208,43 +222,32 @@ const createDocumentSections = async (template, formData) => {
               })
             )
             
-            // Add blank line after header
-            children.push(
-              new Paragraph({
-                children: [
-                  new TextRun({
-                    text: '',
-                    size: 12,
-                  }),
-                ],
-                spacing: {
-                  before: 0,
-                  after: 100,
-                },
+            // Add remaining content if any
+            if (remainingContent.trim()) {
+              const contentLines = remainingContent.trim().split('\n')
+              contentLines.forEach((line, index) => {
+                if (line.trim()) {
+                  children.push(
+                    new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: line.trim(),
+                          size: 24,
+                        }),
+                      ],
+                      alignment: AlignmentType.JUSTIFIED,
+                      spacing: {
+                        before: index === 0 ? 200 : 0,
+                        after: 100,
+                      },
+                    })
+                  )
+                }
               })
-            )
+            }
             
-            // Remaining lines are the content
-            const contentLines = lines.slice(1)
-            contentLines.forEach((line, index) => {
-              if (line.trim()) {
-                children.push(
-                  new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: line.trim(),
-                        size: 24,
-                      }),
-                    ],
-                    alignment: AlignmentType.JUSTIFIED,
-                    spacing: {
-                      before: 0,
-                      after: line.trim() === '' ? 0 : 100,
-                    },
-                  })
-                )
-              }
-            })
+            // Skip the next section since we've processed it
+            i++
           }
         } else if (section.name === 'notary_acknowledgment') {
           // Notary section - bold header
