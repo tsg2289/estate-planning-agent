@@ -24,8 +24,7 @@ const POAForm = ({ onSubmit }) => {
     principalZip: '',
     principalPhone: '',
     principalEmail: '',
-    principalDOB: '',
-    agentName: '',
+    agentName: ''
     agentAddress: '',
     agentCity: '',
     agentState: '',
@@ -183,17 +182,6 @@ const POAForm = ({ onSubmit }) => {
                 type="text"
                 name="principalName"
                 value={formData.principalName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Date of Birth</label>
-              <input
-                type="date"
-                name="principalDOB"
-                value={formData.principalDOB}
                 onChange={handleInputChange}
                 className="form-input"
                 required

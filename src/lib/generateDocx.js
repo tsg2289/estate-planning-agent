@@ -693,13 +693,6 @@ export const formatFormData = (formData, documentType) => {
   // Document-specific formatting
   switch (documentType) {
     case 'will':
-      // Calculate age if DOB is provided
-      if (formData.testatorDOB) {
-        const birthDate = new Date(formData.testatorDOB)
-        const today = new Date()
-        formatted.testatorAge = today.getFullYear() - birthDate.getFullYear()
-      }
-      
       // Format family status based on marriage choice
       if (formData.isMarried === 'married' && formData.spouseName) {
         formatted.familyStatus = `I am married to ${formData.spouseName}.`

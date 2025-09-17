@@ -24,8 +24,7 @@ const AHCDForm = ({ onSubmit }) => {
     principalZip: '',
     principalPhone: '',
     principalEmail: '',
-    principalDOB: '',
-    healthCareAgent: '',
+    healthCareAgent: ''
     healthCareAgentAddress: '',
     healthCareAgentPhone: '',
     healthCareAgentEmail: '',
@@ -205,17 +204,6 @@ const AHCDForm = ({ onSubmit }) => {
                 type="text"
                 name="principalName"
                 value={formData.principalName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Date of Birth</label>
-              <input
-                type="date"
-                name="principalDOB"
-                value={formData.principalDOB}
                 onChange={handleInputChange}
                 className="form-input"
                 required

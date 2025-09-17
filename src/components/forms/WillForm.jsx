@@ -38,8 +38,7 @@ const WillForm = ({ onSubmit }) => {
     testatorZip: '',
     testatorPhone: '',
     testatorEmail: '',
-    testatorDOB: '',
-    isMarried: '',
+    isMarried: ''
     spouseName: '',
     hasChildren: '',
     childrenNames: [''],
@@ -336,17 +335,6 @@ const WillForm = ({ onSubmit }) => {
                 type="text"
                 name="testatorName"
                 value={formData.testatorName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Date of Birth</label>
-              <input
-                type="date"
-                name="testatorDOB"
-                value={formData.testatorDOB}
                 onChange={handleInputChange}
                 className="form-input"
                 required
