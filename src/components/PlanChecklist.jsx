@@ -4,12 +4,12 @@ const PlanChecklist = ({ onFormSelect, completedForms }) => {
   const checklistItems = [
     {
       id: 'will',
-      title: 'Last Will & Testament',
+      title: 'Will',
       icon: '📜'
     },
     {
       id: 'trust',
-      title: 'Living Trust',
+      title: 'Trust',
       icon: '🏛️'
     },
     {
