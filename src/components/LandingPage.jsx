@@ -45,28 +45,22 @@ const LandingPage = () => {
           </div>
           <div className="nav-actions">
             <button 
-              className="nav-button secondary"
+              className="nav-button admin"
               onClick={() => navigate('/blog')}
             >
               Blog
             </button>
             <button 
-              className="nav-button secondary"
+              className="nav-button admin"
               onClick={() => navigate('/login')}
             >
               Sign In
             </button>
             <button 
-              className="nav-button secondary"
+              className="nav-button admin"
               onClick={() => navigate('/register')}
             >
               Sign Up
-            </button>
-            <button 
-              className="nav-button primary"
-              onClick={handleGetStarted}
-            >
-              Get Started
             </button>
             <button 
               className="nav-button admin"
