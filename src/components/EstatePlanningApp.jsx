@@ -200,8 +200,7 @@ function EstatePlanningApp() {
             ) : (
               <div className="welcome-message">
                 <h2>Welcome to Estate Planning</h2>
-                <p>Select a document type from the checklist to get started.</p>
-                <p>Complete each form to build your comprehensive estate plan.</p>
+                <p>Select a document type from the checklist to build your comprehensive estate plan.</p>
                 
                 {/* Progress Summary */}
                 <div className="progress-summary">
