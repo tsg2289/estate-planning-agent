@@ -282,47 +282,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="features-section">
-        <div className="features-container">
-          <div className="section-header">
-            <h2>Why Choose EstatePlan Pro?</h2>
-            <p>Professional-grade estate planning with enterprise security</p>
-          </div>
-          
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">⚡</div>
-              <h3>Quick & Easy</h3>
-              <p>Complete your estate plan in as little as 15 minutes with our guided, step-by-step process. No legal jargon, just clear questions.</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">📋</div>
-              <h3>Comprehensive Documents</h3>
-              <p>Generate legally-sound wills, trusts, power of attorney, and healthcare directives. All documents are state-specific and up-to-date.</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">💼</div>
-              <h3>Professional Quality</h3>
-              <p>Created by legal experts and reviewed by attorneys. Your documents meet the same standards as those prepared by law firms.</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">📱</div>
-              <h3>Always Accessible</h3>
-              <p>Access your estate plan from any device, anywhere. Your documents are securely stored and available 24/7.</p>
-            </div>
-            
-            <div className="feature-card">
-              <div className="feature-icon">🔄</div>
-              <h3>Easy Updates</h3>
-              <p>Life changes? Update your estate plan anytime. No need to start over - just modify what needs to change.</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
       <section className="faq-section">
