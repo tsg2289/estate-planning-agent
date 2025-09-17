@@ -741,10 +741,38 @@ export const populateTemplate = (template, data) => {
   
   populatedTemplate.sections = sectionsToInclude.map(section => ({
     ...section,
-    content: section.content.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-      return data[key] || match
-    })
+    content: processConditionalContent(section.content, data)
   }))
   
   return populatedTemplate
+}
+
+// Helper function to process conditional content based on data availability
+const processConditionalContent = (content, data) => {
+  // Handle personal representative section conditionally
+  if (content.includes('{{alternateExecutorName}}')) {
+    // Check if alternate executor data is provided
+    const hasAlternateExecutor = data.alternateExecutorName && data.alternateExecutorName.trim() !== ''
+    
+    if (!hasAlternateExecutor) {
+      // Remove the alternate executor sentence entirely
+      content = content.replace(/If that person fails or ceases to serve, I nominate \{\{alternateExecutorName\}\}, residing at \{\{alternateExecutorAddress\}\}, \{\{alternateExecutorCity\}\}, \{\{alternateExecutorState\}\} \{\{alternateExecutorZip\}\}, as successor Executor\.\n/, '')
+    }
+  }
+  
+  // Handle guardian section conditionally  
+  if (content.includes('{{alternateGuardianName}}')) {
+    // Check if alternate guardian data is provided
+    const hasAlternateGuardian = data.alternateGuardianName && data.alternateGuardianName.trim() !== ''
+    
+    if (!hasAlternateGuardian) {
+      // Remove the alternate guardian sentence entirely
+      content = content.replace(/ If that person fails or ceases to serve, I nominate \{\{alternateGuardianName\}\}\./, '')
+    }
+  }
+  
+  // Replace remaining placeholders with data
+  return content.replace(/\{\{(\w+)\}\}/g, (match, key) => {
+    return data[key] || match
+  })
 }
