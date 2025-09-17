@@ -28,8 +28,8 @@ function EstatePlanningApp() {
       const status = progressStorage.getCompletionStatus()
       setProgressStatus(status)
       
-      // Update completed forms based on progress
-      const completed = Object.keys(status).filter(formType => status[formType].isCompleted)
+      // Update completed forms based on progress (remove duplicates with Set)
+      const completed = [...new Set(Object.keys(status).filter(formType => status[formType].isCompleted))]
       setCompletedForms(completed)
       
       // Load saved form data
@@ -57,7 +57,10 @@ function EstatePlanningApp() {
       await progressStorage.markCompleted(formType)
       
       setFormData(prev => ({ ...prev, [formType]: data }))
-      setCompletedForms(prev => [...prev, formType])
+      setCompletedForms(prev => {
+        // Only add formType if it's not already in the array to prevent duplicates
+        return prev.includes(formType) ? prev : [...prev, formType]
+      })
       setActiveForm(null)
       
       // Update progress status

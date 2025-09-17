@@ -132,7 +132,7 @@ const ReviewPane = ({ formData, completedForms }) => {
         </div>
       ) : (
         <>
-          {completedForms.map((formType) => {
+          {[...new Set(completedForms)].map((formType) => {
             const summary = getFormSummary(formType, formData[formType])
             if (!summary) return null
             
