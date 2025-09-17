@@ -24,7 +24,7 @@ const POAForm = ({ onSubmit }) => {
     principalZip: '',
     principalPhone: '',
     principalEmail: '',
-    agentName: ''
+    agentName: '',
     agentAddress: '',
     agentCity: '',
     agentState: '',

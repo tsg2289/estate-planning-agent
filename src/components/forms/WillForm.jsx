@@ -38,7 +38,7 @@ const WillForm = ({ onSubmit }) => {
     testatorZip: '',
     testatorPhone: '',
     testatorEmail: '',
-    isMarried: ''
+    isMarried: '',
     spouseName: '',
     hasChildren: '',
     childrenNames: [''],
