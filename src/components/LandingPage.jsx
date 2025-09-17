@@ -485,51 +485,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="landing-footer">
-        <div className="footer-container">
-          <div className="footer-content">
-            <div className="footer-section">
-              <h4>EstatePlan Pro</h4>
-              <p>Professional estate planning made simple and secure.</p>
-            </div>
-            
-            <div className="footer-section">
-              <h4>Security</h4>
-              <ul>
-                <li>256-bit Encryption</li>
-                <li>SSL/TLS Protection</li>
-                <li>Two-Factor Auth</li>
-                <li>Regular Audits</li>
-              </ul>
-            </div>
-            
-            <div className="footer-section">
-              <h4>Support</h4>
-              <ul>
-                <li>Help Center</li>
-                <li>Contact Support</li>
-                <li>Documentation</li>
-                <li>FAQ</li>
-              </ul>
-            </div>
-            
-            <div className="footer-section">
-              <h4>Legal</h4>
-              <ul>
-                <li>Privacy Policy</li>
-                <li>Terms of Service</li>
-                <li>Security Policy</li>
-                <li>GDPR Compliance</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="footer-bottom">
-            <p>&copy; 2024 EstatePlan Pro. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
