@@ -80,13 +80,6 @@ const WillForm = ({ onSubmit }) => {
       phone: '',
       email: ''
     }],
-    assets: [{ description: '', value: '', beneficiary: '' }],
-    hasSpecialBequests: '',
-    specificBequests: [{
-      name: '',
-      relation: '',
-      property: ''
-    }],
     funeralWishes: '',
     additionalInstructions: '',
     attestationDate: ''
@@ -104,7 +97,7 @@ const WillForm = ({ onSubmit }) => {
     getSaveStatusColor
   } = useFormProgress('will', initialData)
 
-  // Ensure childrenNames, executors, guardians, and specificBequests are always arrays (safety check)
+  // Ensure childrenNames, executors, guardians, and witnesses are always arrays (safety check)
   const safeFormData = {
     ...formData,
     childrenNames: Array.isArray(formData.childrenNames) ? formData.childrenNames : [''],
@@ -125,11 +118,6 @@ const WillForm = ({ onSubmit }) => {
       zip: '',
       phone: '',
       email: ''
-    }],
-    specificBequests: Array.isArray(formData.specificBequests) ? formData.specificBequests : [{
-      name: '',
-      relation: '',
-      property: ''
     }],
     witnesses: Array.isArray(formData.witnesses) ? formData.witnesses : [{
       name: '',
@@ -160,28 +148,6 @@ const WillForm = ({ onSubmit }) => {
     }))
   }
 
-  const handleAssetChange = (index, field, value) => {
-    const newAssets = [...formData.assets]
-    newAssets[index][field] = value
-    setFormData(prev => ({
-      ...prev,
-      assets: newAssets
-    }))
-  }
-
-  const addAsset = () => {
-    setFormData(prev => ({
-      ...prev,
-      assets: [...prev.assets, { description: '', value: '', beneficiary: '' }]
-    }))
-  }
-
-  const removeAsset = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      assets: prev.assets.filter((_, i) => i !== index)
-    }))
-  }
 
   const handleChildNameChange = (index, value) => {
     const newChildrenNames = [...safeFormData.childrenNames]
@@ -286,15 +252,6 @@ const WillForm = ({ onSubmit }) => {
     }
   }
 
-  // Handle specific bequest changes
-  const handleBequestChange = (index, field, value) => {
-    const newBequests = [...safeFormData.specificBequests]
-    newBequests[index] = { ...newBequests[index], [field]: value }
-    setFormData(prev => ({
-      ...prev,
-      specificBequests: newBequests
-    }))
-  }
 
   const handleWitnessChange = (index, field, value) => {
     const newWitnesses = [...safeFormData.witnesses]
@@ -305,29 +262,6 @@ const WillForm = ({ onSubmit }) => {
     }))
   }
 
-  // Add new specific bequest
-  const addBequest = () => {
-    if (safeFormData.specificBequests.length < 15) {
-      setFormData(prev => ({
-        ...prev,
-        specificBequests: [...(Array.isArray(prev.specificBequests) ? prev.specificBequests : [{ name: '', relation: '', property: '' }]), {
-          name: '',
-          relation: '',
-          property: ''
-        }]
-      }))
-    }
-  }
-
-  // Remove specific bequest
-  const removeBequest = (index) => {
-    if (safeFormData.specificBequests.length > 1) {
-      setFormData(prev => ({
-        ...prev,
-        specificBequests: (Array.isArray(prev.specificBequests) ? prev.specificBequests : [{ name: '', relation: '', property: '' }]).filter((_, i) => i !== index)
-      }))
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -884,102 +818,21 @@ const WillForm = ({ onSubmit }) => {
         <div className="form-section">
           <h3>Assets and Bequests</h3>
           
-          <div className="form-group">
-            <label className="form-label">Special Bequests</label>
-            <div className="radio-group">
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="hasSpecialBequests"
-                  value="no"
-                  checked={formData.hasSpecialBequests === 'no'}
-                  onChange={handleInputChange}
-                />
-                <span className="radio-text">No Special Bequests</span>
-              </label>
-              <label className="radio-label">
-                <input
-                  type="radio"
-                  name="hasSpecialBequests"
-                  value="yes"
-                  checked={formData.hasSpecialBequests === 'yes'}
-                  onChange={handleInputChange}
-                />
-                <span className="radio-text">Special Bequests</span>
-              </label>
+          <div className="pour-over-explanation">
+            <div className="info-box">
+              <h4>🔒 Pour-Over Will Protection</h4>
+              <p>
+                All bequests will be poured over into your trust because wills are made public documents. 
+                This protects your privacy by keeping the details of your estate distribution confidential 
+                within your trust documents.
+              </p>
+              <p>
+                Your will serves as a safety net to ensure any assets not already in your trust are 
+                automatically transferred to your trust upon your death, where they will be distributed 
+                according to your trust's private instructions.
+              </p>
             </div>
           </div>
-
-          {formData.hasSpecialBequests === 'yes' && (
-            <div className="form-group">
-              <label className="form-label">Special Bequests Details</label>
-              {safeFormData.specificBequests.map((bequest, index) => (
-                <div key={index} className="bequest-input-group">
-                  <div className="bequest-header">
-                    <h4>Bequest {index + 1}</h4>
-                    {safeFormData.specificBequests.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeBequest(index)}
-                        className="remove-bequest-button"
-                        aria-label="Remove bequest"
-                      >
-                        ×
-                      </button>
-                    )}
-                  </div>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label className="form-label">Beneficiary Name</label>
-                      <input
-                        type="text"
-                        value={bequest.name}
-                        onChange={(e) => handleBequestChange(index, 'name', e.target.value)}
-                        className="form-input"
-                        required
-                        placeholder="Full name of beneficiary"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Relation to You</label>
-                      <input
-                        type="text"
-                        value={bequest.relation}
-                        onChange={(e) => handleBequestChange(index, 'relation', e.target.value)}
-                        className="form-input"
-                        required
-                        placeholder="e.g., son, daughter, friend"
-                      />
-                    </div>
-                  </div>
-                  
-                  <div className="form-group">
-                    <label className="form-label">Property/Item Given</label>
-                    <textarea
-                      value={bequest.property}
-                      onChange={(e) => handleBequestChange(index, 'property', e.target.value)}
-                      className="form-textarea"
-                      required
-                      placeholder="Describe the specific property, item, or amount being given..."
-                      rows="3"
-                    />
-                  </div>
-                </div>
-              ))}
-              
-              {safeFormData.specificBequests.length < 15 && (
-                <button
-                  type="button"
-                  onClick={addBequest}
-                  className="add-bequest-button"
-                >
-                  + Add Another Bequest
-                </button>
-              )}
-            </div>
-          )}
-          
         </div>
 
         {/* Additional Instructions */}
