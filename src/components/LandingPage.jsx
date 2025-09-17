@@ -88,8 +88,7 @@ const LandingPage = () => {
               <span className="title-accent"> Made Simple</span>
             </h1>
             <p className="hero-description">
-              Create comprehensive estate plans, wills, trusts, and power of attorney documents 
-              with bank-level security. Your sensitive information is protected with enterprise-grade encryption.
+              Create comprehensive estate plans, wills, trusts, and power of attorney documents.
             </p>
             <div className="hero-actions">
               <button 
