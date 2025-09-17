@@ -85,16 +85,16 @@
 }
 
 .nav-button.admin {
-  background: #805ad5;
+  background: linear-gradient(135deg, #9f7aea 0%, #805ad5 50%, #6b46c1 100%);
   color: white;
-  border: 2px solid #805ad5;
+  border: 2px solid transparent;
 }
 
 .nav-button.admin:hover {
-  background: #6b46c1;
-  border-color: #6b46c1;
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
+  border-color: transparent;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(128, 90, 213, 0.3);
+  box-shadow: 0 8px 25px rgba(128, 90, 213, 0.4);
 }
 
 /* Hero Section */
