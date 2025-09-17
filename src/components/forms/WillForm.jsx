@@ -320,18 +320,16 @@ const WillForm = ({ onSubmit }) => {
         {/* Testator Information */}
         <div className="form-section">
           <h3>Your Information</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Full Legal Name</label>
-              <input
-                type="text"
-                name="testatorName"
-                value={formData.testatorName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">Full Legal Name</label>
+            <input
+              type="text"
+              name="testatorName"
+              value={formData.testatorName}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+            />
           </div>
           
           <div className="form-group">
