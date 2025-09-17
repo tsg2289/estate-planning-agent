@@ -787,22 +787,26 @@ body {
 }
 
 .review-item .status {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background-color: #48bb78;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 600;
-  margin-top: 0.5rem;
   min-width: 100px;
   text-align: center;
+  height: 36px;
+  box-sizing: border-box;
 }
 
 .review-item-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-top: 1rem;
   padding-top: 0.75rem;
   border-top: 1px solid #e2e8f0;
@@ -819,6 +823,11 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 100px;
+  height: 36px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .download-button:hover {
