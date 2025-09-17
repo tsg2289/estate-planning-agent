@@ -87,7 +87,6 @@ const WillForm = ({ onSubmit }) => {
       relation: '',
       property: ''
     }],
-    residualBeneficiaries: '',
     funeralWishes: '',
     additionalInstructions: '',
     attestationDate: ''
@@ -981,17 +980,6 @@ const WillForm = ({ onSubmit }) => {
             </div>
           )}
           
-          <div className="form-group">
-            <label className="form-label">Residual Beneficiaries</label>
-            <textarea
-              name="residualBeneficiaries"
-              value={formData.residualBeneficiaries}
-              onChange={handleInputChange}
-              className="form-textarea"
-              placeholder="Who should receive the remainder of your estate after specific bequests..."
-              required
-            />
-          </div>
         </div>
 
         {/* Additional Instructions */}
