@@ -24,7 +24,7 @@ const AHCDForm = ({ onSubmit }) => {
     principalZip: '',
     principalPhone: '',
     principalEmail: '',
-    healthCareAgent: ''
+    healthCareAgent: '',
     healthCareAgentAddress: '',
     healthCareAgentPhone: '',
     healthCareAgentEmail: '',
