@@ -57,8 +57,11 @@
   padding: 2rem;
   border-bottom: 1px solid #e2e8f0;
   position: sticky;
+  position: -webkit-sticky; /* Safari support */
   top: 80px;
-  z-index: 100;
+  z-index: 1000; /* Higher z-index to ensure it stays on top */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add subtle shadow for better visual separation */
+  backdrop-filter: blur(10px); /* Add backdrop blur for modern look */
 }
 
 .search-container {
