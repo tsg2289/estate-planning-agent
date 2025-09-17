@@ -52,7 +52,7 @@ const PlanChecklist = ({ onFormSelect, completedForms, activeForm, progressStatu
             </div>
             <div className="checklist-progress-info">
               {hasProgress && (
-                <span className="progress-percentage">{progressPercentage}% filled</span>
+                <span className="progress-percentage">{progressPercentage}%</span>
               )}
             </div>
           </div>
