@@ -95,8 +95,18 @@ body {
   border-color: #68d391;
 }
 
+.checklist-item.active {
+  background-color: #f0fdf4;
+  border-color: #4ade80;
+}
+
 .checklist-item.completed .checklist-icon {
   background-color: #48bb78;
+  color: white;
+}
+
+.checklist-item.active .checklist-icon {
+  background-color: #4ade80;
   color: white;
 }
 

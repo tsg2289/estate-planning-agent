@@ -182,6 +182,7 @@ function EstatePlanningApp() {
             onFormSelect={handleFormSelect}
             completedForms={completedForms}
             progressStatus={progressStatus}
+            activeForm={activeForm}
           />
           
           <div className="forms-section">

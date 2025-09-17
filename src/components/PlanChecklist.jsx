@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PlanChecklist = ({ onFormSelect, completedForms }) => {
+const PlanChecklist = ({ onFormSelect, completedForms, activeForm }) => {
   const checklistItems = [
     {
       id: 'will',
@@ -33,10 +33,11 @@ const PlanChecklist = ({ onFormSelect, completedForms }) => {
       <h2>Estate Planning Checklist</h2>
       {checklistItems.map((item) => {
         const isCompleted = completedForms.includes(item.id)
+        const isActive = activeForm === item.id
         return (
           <div
             key={item.id}
-            className={`checklist-item ${isCompleted ? 'completed' : ''}`}
+            className={`checklist-item ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''}`}
             onClick={() => handleItemClick(item.id)}
           >
             <div className="checklist-icon">
