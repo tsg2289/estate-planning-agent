@@ -30,7 +30,7 @@ export const willTemplate = {
     },
     {
       name: 'disposition_property',
-      content: 'Disposition of Property\nI give, devise, and bequeath all of the rest, residue, and remainder of my estate, both real and personal, of whatever kind and wherever located, to the Trustee of the {{trustName}}, dated {{trustDate}}, to be held, administered, and distributed in accordance with the terms of that trust, including any amendments made before my death.'
+      content: 'Disposition of Property\nI give, devise, and bequeath all of the rest, residue, and remainder of my estate, both real and personal, of whatever kind and wherever located, to the Trustee of the {{trustName}}, to be held, administered, and distributed in accordance with the terms of that trust, including any amendments made before my death.'
     },
     {
       name: 'article_4',

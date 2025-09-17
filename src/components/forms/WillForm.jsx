@@ -42,7 +42,6 @@ const WillForm = ({ onSubmit }) => {
     hasChildren: '',
     childrenNames: [''],
     trustName: '',
-    trustDate: '',
     executors: [{
       name: '',
       address: '',
@@ -557,17 +556,6 @@ const WillForm = ({ onSubmit }) => {
                 type="text"
                 name="trustName"
                 value={formData.trustName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Trust Date</label>
-              <input
-                type="date"
-                name="trustDate"
-                value={formData.trustDate}
                 onChange={handleInputChange}
                 className="form-input"
                 required
