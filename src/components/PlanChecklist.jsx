@@ -5,25 +5,21 @@ const PlanChecklist = ({ onFormSelect, completedForms }) => {
     {
       id: 'will',
       title: 'Last Will & Testament',
-      description: 'Distribute your assets and name guardians',
       icon: '📜'
     },
     {
       id: 'trust',
       title: 'Living Trust',
-      description: 'Avoid probate and manage assets',
       icon: '🏛️'
     },
     {
       id: 'poa',
       title: 'Power of Attorney',
-      description: 'Financial and legal decision making',
       icon: '⚖️'
     },
     {
       id: 'ahcd',
       title: 'Advance Health Care Directive',
-      description: 'Medical decisions and end-of-life care',
       icon: '🏥'
     }
   ]
@@ -48,7 +44,6 @@ const PlanChecklist = ({ onFormSelect, completedForms }) => {
             </div>
             <div className="checklist-text">
               <h3>{item.title}</h3>
-              <p>{item.description}</p>
             </div>
           </div>
         )
