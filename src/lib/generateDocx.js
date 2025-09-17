@@ -206,13 +206,11 @@ const createDocumentSections = async (template, formData) => {
                     text: ': ',
                     bold: true,
                     size: 28,
-                    underline: {},
                   }),
                   new TextRun({
-                    text: heading, // The heading text
+                    text: heading + '.',
                     bold: true,
                     size: 28,
-                    underline: {},
                   }),
                 ],
                 spacing: {
