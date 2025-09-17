@@ -220,28 +220,28 @@ const createDocumentSections = async (template, formData) => {
               })
             )
             
-            // Add remaining content if any
+            // Add remaining content if any - combine all lines into single paragraph
             if (remainingContent.trim()) {
-              const contentLines = remainingContent.trim().split('\n')
-              contentLines.forEach((line, index) => {
-                if (line.trim()) {
-                  children.push(
-                    new Paragraph({
-                      children: [
-                        new TextRun({
-                          text: line.trim(),
-                          size: 24,
-                        }),
-                      ],
-                      alignment: AlignmentType.JUSTIFIED,
-                      spacing: {
-                        before: index === 0 ? 200 : 0,
-                        after: 100,
-                      },
-                    })
-                  )
-                }
-              })
+              const contentLines = remainingContent.trim().split('\n').filter(line => line.trim())
+              const combinedText = contentLines.join(' ')
+              
+              if (combinedText) {
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: combinedText,
+                        size: 24,
+                      }),
+                    ],
+                    alignment: AlignmentType.JUSTIFIED,
+                    spacing: {
+                      before: 200,
+                      after: 100,
+                    },
+                  })
+                )
+              }
             }
             
             // Skip the next section since we've processed it
@@ -358,28 +358,28 @@ const createDocumentSections = async (template, formData) => {
               })
             )
             
-            // Add remaining content if any
+            // Add remaining content if any - combine all lines into single paragraph
             if (remainingContent.trim()) {
-              const contentLines = remainingContent.trim().split('\n')
-              contentLines.forEach((line, index) => {
-                if (line.trim()) {
-                  children.push(
-                    new Paragraph({
-                      children: [
-                        new TextRun({
-                          text: line.trim(),
-                          size: 24,
-                        }),
-                      ],
-                      alignment: AlignmentType.JUSTIFIED,
-                      spacing: {
-                        before: index === 0 ? 200 : 0,
-                        after: 100,
-                      },
-                    })
-                  )
-                }
-              })
+              const contentLines = remainingContent.trim().split('\n').filter(line => line.trim())
+              const combinedText = contentLines.join(' ')
+              
+              if (combinedText) {
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: combinedText,
+                        size: 24,
+                      }),
+                    ],
+                    alignment: AlignmentType.JUSTIFIED,
+                    spacing: {
+                      before: 200,
+                      after: 100,
+                    },
+                  })
+                )
+              }
             }
             
             // Skip the next section since we've processed it
