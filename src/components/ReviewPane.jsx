@@ -139,10 +139,6 @@ const ReviewPane = ({ formData, completedForms }) => {
             return (
               <div key={formType} className="review-item">
                 <h4>{summary.title}</h4>
-                <p><strong>{summary.summary}</strong></p>
-                {summary.details.map((detail, index) => (
-                  <p key={index}>{detail}</p>
-                ))}
                 <div className="review-item-actions">
                   <span className="status">Completed</span>
                   <button 
