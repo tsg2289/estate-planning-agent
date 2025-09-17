@@ -716,13 +716,18 @@ const TrustForm = ({ onSubmit }) => {
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">State</label>
-                  <input
-                    type="text"
+                  <select
                     value={trustee.state || 'California'}
                     onChange={(e) => handleAlternateTrusteeChange(index, 'state', e.target.value)}
                     className="form-input"
-                    placeholder="California"
-                  />
+                  >
+                    <option value="">Select State</option>
+                    {US_STATES_AND_TERRITORIES.map((state, stateIndex) => (
+                      <option key={stateIndex} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
                 </div>
                 <div className="form-group">
                   <label className="form-label">ZIP Code</label>
