@@ -398,57 +398,6 @@ const LandingPage = () => {
 
 
 
-      {/* Security Section */}
-      <section className="security-section">
-        <div className="security-container">
-          <div className="security-content">
-            <h2>Your Security is Our Priority</h2>
-            <p>We understand that estate planning involves sensitive personal and financial information. That's why we've implemented enterprise-grade security measures to protect your data.</p>
-            
-            <div className="security-features">
-              <div className="security-feature">
-                <div className="security-icon">🔒</div>
-                <div>
-                  <h4>256-bit AES Encryption</h4>
-                  <p>All data is encrypted using military-grade encryption algorithms</p>
-                </div>
-              </div>
-              
-              <div className="security-feature">
-                <div className="security-icon">🌐</div>
-                <div>
-                  <h4>Secure HTTPS Connection</h4>
-                  <p>All communications are protected with SSL/TLS encryption</p>
-                </div>
-              </div>
-              
-              <div className="security-feature">
-                <div className="security-icon">🔐</div>
-                <div>
-                  <h4>Two-Factor Authentication</h4>
-                  <p>Optional 2FA for additional account security</p>
-                </div>
-              </div>
-              
-              <div className="security-feature">
-                <div className="security-icon">📊</div>
-                <div>
-                  <h4>Regular Security Audits</h4>
-                  <p>Continuous monitoring and third-party security assessments</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div className="security-visual">
-            <div className="security-shield">
-              <div className="shield-icon">🛡️</div>
-              <div className="shield-text">Enterprise Security</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="cta-section">
         <div className="cta-container">
