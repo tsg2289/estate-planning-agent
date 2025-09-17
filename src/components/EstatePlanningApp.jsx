@@ -151,18 +151,10 @@ function EstatePlanningApp() {
           </div>
         </div>
         
-        {/* Overall Progress Bar */}
-        <div className="overall-progress">
-          <div className="progress-info">
-            <span className="progress-text">Overall Progress: {getOverallProgress()}%</span>
-            <span className="progress-count">{completedForms.length} of 4 forms completed</span>
-          </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill"
-              style={{ width: `${getOverallProgress()}%` }}
-            />
-          </div>
+        {/* Welcome Message */}
+        <div className="header-welcome">
+          <h2>Welcome to Estate Planning</h2>
+          <p>Select a document type from the checklist to build your comprehensive estate plan.</p>
         </div>
       </header>
       
@@ -199,8 +191,7 @@ function EstatePlanningApp() {
               </div>
             ) : (
               <div className="welcome-message">
-                <h2>Welcome to Estate Planning</h2>
-                <p>Select a document type from the checklist to build your comprehensive estate plan.</p>
+                <p>Select a document type from the checklist to get started.</p>
               </div>
             )}
           </div>
