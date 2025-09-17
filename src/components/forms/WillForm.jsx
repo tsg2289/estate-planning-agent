@@ -61,10 +61,25 @@ const WillForm = ({ onSubmit }) => {
       phone: '',
       email: ''
     }],
-    witness1Name: '',
-    witness1Address: '',
-    witness2Name: '',
-    witness2Address: '',
+    witnesses: [{
+      name: '',
+      address: '',
+      city: '',
+      county: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }, {
+      name: '',
+      address: '',
+      city: '',
+      county: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }],
     assets: [{ description: '', value: '', beneficiary: '' }],
     hasSpecialBequests: '',
     specificBequests: [{
@@ -116,6 +131,25 @@ const WillForm = ({ onSubmit }) => {
       name: '',
       relation: '',
       property: ''
+    }],
+    witnesses: Array.isArray(formData.witnesses) ? formData.witnesses : [{
+      name: '',
+      address: '',
+      city: '',
+      county: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
+    }, {
+      name: '',
+      address: '',
+      city: '',
+      county: '',
+      state: '',
+      zip: '',
+      phone: '',
+      email: ''
     }]
   }
 
@@ -260,6 +294,15 @@ const WillForm = ({ onSubmit }) => {
     setFormData(prev => ({
       ...prev,
       specificBequests: newBequests
+    }))
+  }
+
+  const handleWitnessChange = (index, field, value) => {
+    const newWitnesses = [...safeFormData.witnesses]
+    newWitnesses[index] = { ...newWitnesses[index], [field]: value }
+    setFormData(prev => ({
+      ...prev,
+      witnesses: newWitnesses
     }))
   }
 
@@ -981,55 +1024,116 @@ const WillForm = ({ onSubmit }) => {
         {/* Witnesses */}
         <div className="form-section">
           <h3>Witnesses</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Witness #1 Name</label>
-              <input
-                type="text"
-                name="witness1Name"
-                value={formData.witness1Name}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label className="form-label">Witness #1 Address</label>
-              <input
-                type="text"
-                name="witness1Address"
-                value={formData.witness1Address}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-          </div>
           
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Witness #2 Name</label>
-              <input
-                type="text"
-                name="witness2Name"
-                value={formData.witness2Name}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
+          {safeFormData.witnesses.map((witness, index) => (
+            <div key={index} className="witness-section">
+              <h4>Witness #{index + 1}</h4>
+              
+              {/* Name */}
+              <div className="form-group">
+                <label className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  value={witness.name || ''}
+                  onChange={(e) => handleWitnessChange(index, 'name', e.target.value)}
+                  className="form-input"
+                  required
+                />
+              </div>
+              
+              {/* Address */}
+              <div className="form-group">
+                <label className="form-label">Address</label>
+                <input
+                  type="text"
+                  value={witness.address || ''}
+                  onChange={(e) => handleWitnessChange(index, 'address', e.target.value)}
+                  className="form-input"
+                  required
+                />
+              </div>
+              
+              {/* City and County */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">City</label>
+                  <input
+                    type="text"
+                    value={witness.city || ''}
+                    onChange={(e) => handleWitnessChange(index, 'city', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">County</label>
+                  <select
+                    value={witness.county || ''}
+                    onChange={(e) => handleWitnessChange(index, 'county', e.target.value)}
+                    className="form-input"
+                    required
+                  >
+                    <option value="">Select County</option>
+                    {CALIFORNIA_COUNTIES.map(county => (
+                      <option key={county} value={county}>{county}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              {/* State and ZIP */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">State</label>
+                  <select
+                    value={witness.state || ''}
+                    onChange={(e) => handleWitnessChange(index, 'state', e.target.value)}
+                    className="form-input"
+                    required
+                  >
+                    <option value="">Select State</option>
+                    {US_STATES_AND_TERRITORIES.map(state => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label className="form-label">ZIP Code</label>
+                  <input
+                    type="text"
+                    value={witness.zip || ''}
+                    onChange={(e) => handleWitnessChange(index, 'zip', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+              </div>
+              
+              {/* Phone and Email */}
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Phone</label>
+                  <input
+                    type="tel"
+                    value={witness.phone || ''}
+                    onChange={(e) => handleWitnessChange(index, 'phone', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Email</label>
+                  <input
+                    type="email"
+                    value={witness.email || ''}
+                    onChange={(e) => handleWitnessChange(index, 'email', e.target.value)}
+                    className="form-input"
+                    required
+                  />
+                </div>
+              </div>
             </div>
-            <div className="form-group">
-              <label className="form-label">Witness #2 Address</label>
-              <input
-                type="text"
-                name="witness2Address"
-                value={formData.witness2Address}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
-          </div>
+          ))}
           
           <div className="form-group">
             <label className="form-label">Attestation Date</label>
