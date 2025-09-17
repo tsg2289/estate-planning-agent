@@ -152,7 +152,7 @@ const LandingPage = () => {
                 <h3>Do you have a Last Will and Testament?</h3>
               </div>
               <p className="question-description">
-                A will specifies how your assets should be distributed and who should care for minor children.
+                A will specifies how your assets should be distributed.
               </p>
               <div className="question-options">
                 <button 
