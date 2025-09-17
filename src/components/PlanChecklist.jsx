@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PlanChecklist = ({ onFormSelect, completedForms, activeForm }) => {
+const PlanChecklist = ({ onFormSelect, completedForms, activeForm, progressStatus }) => {
   const checklistItems = [
     {
       id: 'will',
@@ -34,6 +34,10 @@ const PlanChecklist = ({ onFormSelect, completedForms, activeForm }) => {
       {checklistItems.map((item) => {
         const isCompleted = completedForms.includes(item.id)
         const isActive = activeForm === item.id
+        const progress = progressStatus[item.id]
+        const progressPercentage = progress?.progressPercentage || 0
+        const hasProgress = progress?.hasProgress || false
+        
         return (
           <div
             key={item.id}
@@ -45,6 +49,11 @@ const PlanChecklist = ({ onFormSelect, completedForms, activeForm }) => {
             </div>
             <div className="checklist-text">
               <h3>{item.title}</h3>
+            </div>
+            <div className="checklist-progress-info">
+              {hasProgress && (
+                <span className="progress-percentage">{progressPercentage}% filled</span>
+              )}
             </div>
           </div>
         )

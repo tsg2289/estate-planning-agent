@@ -138,6 +138,21 @@ body {
   color: #718096;
 }
 
+.checklist-progress-info {
+  margin-left: auto;
+  padding-left: 1rem;
+}
+
+.progress-percentage {
+  font-size: 0.75rem;
+  color: #667eea;
+  font-weight: 600;
+  background-color: #f7fafc;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 .checklist-progress {
   margin-top: 1.5rem;
   padding-top: 1rem;
