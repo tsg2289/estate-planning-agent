@@ -180,13 +180,6 @@ function EstatePlanningApp() {
           <div className="forms-section">
             {activeForm ? (
               <div className="form-container">
-                <button 
-                  className="back-button"
-                  onClick={() => setActiveForm(null)}
-                  disabled={isSubmitting}
-                >
-                  ← Back to Checklist
-                </button>
                 {renderForm()}
               </div>
             ) : (
