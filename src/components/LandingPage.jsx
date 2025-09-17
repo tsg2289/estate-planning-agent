@@ -242,7 +242,7 @@ const LandingPage = () => {
                 <h3>Do you have an Advanced Healthcare Directive?</h3>
               </div>
               <p className="question-description">
-                An AHD (living will) specifies your medical treatment preferences if you can't communicate.
+                An AHD specifies your medical treatment preferences if you can't communicate.
               </p>
               <div className="question-options">
                 <button 
