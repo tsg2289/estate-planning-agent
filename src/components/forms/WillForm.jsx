@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
-import ProgressIndicator from '../ProgressIndicator'
 
 // California Counties List
 const CALIFORNIA_COUNTIES = [
@@ -315,14 +314,7 @@ const WillForm = ({ onSubmit }) => {
 
   return (
     <div className="will-form-container">
-      <ProgressIndicator
-        saveStatus={saveStatus}
-        progressPercentage={progressPercentage}
-        onSaveClick={saveProgress}
-        onClearClick={handleClearProgress}
-      />
-      
-              <form onSubmit={handleSubmit} className="will-form">
+      <form onSubmit={handleSubmit} className="will-form">
           <h2>{formData.testatorName ? `${formData.testatorName.toUpperCase()}'S POUR-OVER WILL` : 'Pour-Over Will'}</h2>
         
         {/* Testator Information */}

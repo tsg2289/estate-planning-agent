@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
-import ProgressIndicator from '../ProgressIndicator'
 
 // US States and Territories List
 const US_STATES_AND_TERRITORIES = [
@@ -184,13 +183,6 @@ const AHCDForm = ({ onSubmit }) => {
 
   return (
     <div className="ahcd-form-container">
-      <ProgressIndicator
-        saveStatus={saveStatus}
-        progressPercentage={progressPercentage}
-        onSaveClick={saveProgress}
-        onClearClick={handleClearProgress}
-      />
-      
       <form onSubmit={handleSubmit} className="ahcd-form">
         <h2>Advance Health Care Directive</h2>
         

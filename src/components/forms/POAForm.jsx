@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
-import ProgressIndicator from '../ProgressIndicator'
 
 // US States and Territories List
 const US_STATES_AND_TERRITORIES = [
@@ -162,13 +161,6 @@ const POAForm = ({ onSubmit }) => {
 
   return (
     <div className="poa-form-container">
-      <ProgressIndicator
-        saveStatus={saveStatus}
-        progressPercentage={progressPercentage}
-        onSaveClick={saveProgress}
-        onClearClick={handleClearProgress}
-      />
-      
       <form onSubmit={handleSubmit} className="poa-form">
         <h2>Power of Attorney</h2>
         

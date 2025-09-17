@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
-import ProgressIndicator from '../ProgressIndicator'
 
 // California Counties List
 const CALIFORNIA_COUNTIES = [
@@ -290,13 +289,6 @@ const TrustForm = ({ onSubmit }) => {
 
   return (
     <div className="trust-form-container">
-      <ProgressIndicator
-        saveStatus={saveStatus}
-        progressPercentage={progressPercentage}
-        onSaveClick={saveProgress}
-        onClearClick={handleClearProgress}
-      />
-      
       <form onSubmit={handleSubmit} className="trust-form">
         <h2>Living Trust</h2>
         
