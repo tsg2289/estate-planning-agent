@@ -100,6 +100,8 @@ const TrustForm = ({ onSubmit }) => {
     trusteeAddress: '',
     trusteeCity: '',
     trusteeCounty: '',
+    trusteeState: 'California',
+    trusteeZip: '',
     trusteePhone: '',
     trusteeEmail: '',
     alternateTrustees: [{ name: '', address: '', city: '', county: '', state: 'California', zip: '', phone: '', email: '' }],
@@ -560,7 +562,7 @@ const TrustForm = ({ onSubmit }) => {
         <div className="form-section">
           <h3>Trustee Information</h3>
           <div className="form-group">
-            <label className="form-label">Trustee Name</label>
+            <label className="form-label">Full Name</label>
             <input
               type="text"
               name="trusteeName"
@@ -568,11 +570,12 @@ const TrustForm = ({ onSubmit }) => {
               onChange={handleInputChange}
               className="form-input"
               required
+              placeholder="Christopher St Germain"
             />
           </div>
           
           <div className="form-group">
-            <label className="form-label">Trustee Address</label>
+            <label className="form-label">Address</label>
             <input
               type="text"
               name="trusteeAddress"
@@ -580,12 +583,13 @@ const TrustForm = ({ onSubmit }) => {
               onChange={handleInputChange}
               className="form-input"
               required
+              placeholder="1 Buckingham Palace"
             />
           </div>
           
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Trustee City</label>
+              <label className="form-label">City</label>
               <input
                 type="text"
                 name="trusteeCity"
@@ -593,21 +597,22 @@ const TrustForm = ({ onSubmit }) => {
                 onChange={handleInputChange}
                 className="form-input"
                 required
+                placeholder="London"
               />
             </div>
             <div className="form-group">
-              <label className="form-label">Trustee County</label>
+              <label className="form-label">State</label>
               <select
-                name="trusteeCounty"
-                value={formData.trusteeCounty}
+                name="trusteeState"
+                value={formData.trusteeState}
                 onChange={handleInputChange}
                 className="form-input"
                 required
               >
-                <option value="">Select County</option>
-                {CALIFORNIA_COUNTIES.map((county, index) => (
-                  <option key={index} value={county}>
-                    {county}
+                <option value="">Select State</option>
+                {US_STATES_AND_TERRITORIES.map((state, index) => (
+                  <option key={index} value={state}>
+                    {state}
                   </option>
                 ))}
               </select>
@@ -616,7 +621,19 @@ const TrustForm = ({ onSubmit }) => {
           
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label">Trustee Phone</label>
+              <label className="form-label">ZIP Code</label>
+              <input
+                type="text"
+                name="trusteeZip"
+                value={formData.trusteeZip}
+                onChange={handleInputChange}
+                className="form-input"
+                required
+                placeholder="92625"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Phone</label>
               <input
                 type="tel"
                 name="trusteePhone"
@@ -624,19 +641,22 @@ const TrustForm = ({ onSubmit }) => {
                 onChange={handleInputChange}
                 className="form-input"
                 required
+                placeholder="7146554895"
               />
             </div>
-            <div className="form-group">
-              <label className="form-label">Trustee Email</label>
-              <input
-                type="email"
-                name="trusteeEmail"
-                value={formData.trusteeEmail}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
+          </div>
+          
+          <div className="form-group">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              name="trusteeEmail"
+              value={formData.trusteeEmail}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+              placeholder="thomas.st.germain22@gmail.com"
+            />
           </div>
           
           {/* Successor Trustees */}
