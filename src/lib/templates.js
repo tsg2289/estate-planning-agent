@@ -78,7 +78,7 @@ export const willTemplate = {
     },
     {
       name: 'execution',
-      content: 'Execution\n\nI, {{testatorName}}, declare that I sign this instrument as my Last Will and Testament, that I understand and intend its contents, and that I sign it voluntarily on this ___ day of _______, 20__, at {{testatorCity}}, California.\n\n\n_________________________________\n{{testatorName}}, Testator'
+      content: 'Execution\n\nI, {{testatorName}}, declare that I sign this instrument as my Last Will and Testament, that I understand and intend its contents, and that I sign it voluntarily.\n\nSignature: _________________________\n\n{{testatorName}}, Testator'
     },
     {
       name: 'page_break',
