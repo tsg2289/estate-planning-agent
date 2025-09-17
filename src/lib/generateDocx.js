@@ -321,7 +321,71 @@ const createDocumentSections = async (template, formData) => {
         }
       } else {
         // Handle other document types (will, poa, etc.)
-        if (section.name === 'statutory_notice') {
+        if (section.name && section.name.startsWith('article_')) {
+          // Article headers - combine with next section content
+          const nextSection = template.sections[i + 1]
+          if (nextSection && nextSection.content) {
+            // Split the next section content to get the heading
+            const lines = nextSection.content.trim().split('\n')
+            const heading = lines[0]
+            const remainingContent = lines.slice(1).join('\n')
+            
+            // Create combined article header with heading on same line
+            children.push(
+              new Paragraph({
+                children: [
+                  new TextRun({
+                    text: section.content.trim(), // ARTICLE I, II, III, etc.
+                    bold: true,
+                    size: 28,
+                    underline: {},
+                  }),
+                  new TextRun({
+                    text: ': ',
+                    bold: true,
+                    size: 28,
+                  }),
+                  new TextRun({
+                    text: heading + '.',
+                    bold: true,
+                    size: 28,
+                  }),
+                ],
+                spacing: {
+                  before: 400,
+                  after: 200,
+                },
+              })
+            )
+            
+            // Add remaining content if any
+            if (remainingContent.trim()) {
+              const contentLines = remainingContent.trim().split('\n')
+              contentLines.forEach((line, index) => {
+                if (line.trim()) {
+                  children.push(
+                    new Paragraph({
+                      children: [
+                        new TextRun({
+                          text: line.trim(),
+                          size: 24,
+                        }),
+                      ],
+                      alignment: AlignmentType.JUSTIFIED,
+                      spacing: {
+                        before: index === 0 ? 200 : 0,
+                        after: 100,
+                      },
+                    })
+                  )
+                }
+              })
+            }
+            
+            // Skip the next section since we've processed it
+            i++
+          }
+        } else if (section.name === 'statutory_notice') {
           // Special formatting for POA statutory notice to match exact layout
           const content = section.content.trim()
           
