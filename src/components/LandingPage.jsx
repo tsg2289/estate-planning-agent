@@ -402,7 +402,6 @@ const LandingPage = () => {
       <section className="cta-section">
         <div className="cta-container">
           <h2>Ready to Secure Your Legacy?</h2>
-          <p>Join thousands of families who trust EstatePlan Pro with their estate planning needs.</p>
           <div className="cta-actions">
             <button 
               className="cta-button primary"
@@ -416,10 +415,6 @@ const LandingPage = () => {
             >
               Sign In to Existing Account
             </button>
-          </div>
-          <div className="cta-guarantee">
-            <span className="guarantee-icon">✅</span>
-            <span>30-day money-back guarantee • No hidden fees</span>
           </div>
         </div>
       </section>
