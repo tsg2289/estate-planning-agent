@@ -201,31 +201,6 @@ function EstatePlanningApp() {
               <div className="welcome-message">
                 <h2>Welcome to Estate Planning</h2>
                 <p>Select a document type from the checklist to build your comprehensive estate plan.</p>
-                
-                {/* Progress Summary */}
-                <div className="progress-summary">
-                  <h3>Your Progress</h3>
-                  <div className="progress-grid">
-                    {Object.entries(progressStatus).map(([formType, status]) => (
-                      <div key={formType} className={`progress-item ${status.isCompleted ? 'completed' : status.hasProgress ? 'in-progress' : 'not-started'}`}>
-                        <div className="progress-item-header">
-                          <span className="progress-item-icon">
-                            {status.isCompleted ? '✅' : status.hasProgress ? '📝' : '⭕'}
-                          </span>
-                          <span className="progress-item-name">{getFormDisplayName(formType)}</span>
-                        </div>
-                        <div className="progress-item-status">
-                          {status.isCompleted ? 'Completed' : status.hasProgress ? `${status.progressPercentage}% filled` : 'Not started'}
-                        </div>
-                        {status.lastSaved && (
-                          <div className="progress-item-date">
-                            Last saved: {new Date(status.lastSaved).toLocaleDateString()}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             )}
           </div>
