@@ -2,6 +2,19 @@ import React, { useState } from 'react'
 import { useFormProgress } from '../../hooks/useFormProgress'
 import ProgressIndicator from '../ProgressIndicator'
 
+// US States and Territories List
+const US_STATES_AND_TERRITORIES = [
+  'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
+  'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
+  'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
+  'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
+  'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
+  'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
+  'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+  'Wisconsin', 'Wyoming', 'American Samoa', 'District of Columbia', 'Guam', 'Northern Mariana Islands',
+  'Puerto Rico', 'U.S. Virgin Islands'
+]
+
 const AHCDForm = ({ onSubmit }) => {
   const initialData = {
     principalName: '',
@@ -236,14 +249,20 @@ const AHCDForm = ({ onSubmit }) => {
             </div>
             <div className="form-group">
               <label className="form-label">State</label>
-              <input
-                type="text"
+              <select
                 name="principalState"
                 value={formData.principalState}
                 onChange={handleInputChange}
                 className="form-input"
                 required
-              />
+              >
+                <option value="">Select State</option>
+                {US_STATES_AND_TERRITORIES.map((state, index) => (
+                  <option key={index} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
           
@@ -789,13 +808,19 @@ const AHCDForm = ({ onSubmit }) => {
               </div>
               <div className="form-group">
                 <label className="form-label">State</label>
-                <input
-                  type="text"
+                <select
                   name="primaryPhysicianState"
                   value={formData.primaryPhysicianState}
                   onChange={handleInputChange}
                   className="form-input"
-                />
+                >
+                  <option value="">Select State</option>
+                  {US_STATES_AND_TERRITORIES.map((state, index) => (
+                    <option key={index} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label className="form-label">ZIP Code</label>
@@ -864,13 +889,19 @@ const AHCDForm = ({ onSubmit }) => {
               </div>
               <div className="form-group">
                 <label className="form-label">State</label>
-                <input
-                  type="text"
+                <select
                   name="alternatePrimaryPhysicianState"
                   value={formData.alternatePrimaryPhysicianState}
                   onChange={handleInputChange}
                   className="form-input"
-                />
+                >
+                  <option value="">Select State</option>
+                  {US_STATES_AND_TERRITORIES.map((state, index) => (
+                    <option key={index} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label className="form-label">ZIP Code</label>
@@ -1115,12 +1146,18 @@ const AHCDForm = ({ onSubmit }) => {
                   </div>
                   <div className="form-group">
                     <label className="form-label">State</label>
-                    <input
-                      type="text"
+                    <select
                       value={formData.witnesses[0]?.state || ''}
                       onChange={(e) => handleWitnessChange(0, 'state', e.target.value)}
                       className="form-input"
-                    />
+                    >
+                      <option value="">Select State</option>
+                      {US_STATES_AND_TERRITORIES.map((state, index) => (
+                        <option key={index} value={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 
@@ -1183,12 +1220,18 @@ const AHCDForm = ({ onSubmit }) => {
                   </div>
                   <div className="form-group">
                     <label className="form-label">State</label>
-                    <input
-                      type="text"
+                    <select
                       value={formData.witnesses[1]?.state || ''}
                       onChange={(e) => handleWitnessChange(1, 'state', e.target.value)}
                       className="form-input"
-                    />
+                    >
+                      <option value="">Select State</option>
+                      {US_STATES_AND_TERRITORIES.map((state, index) => (
+                        <option key={index} value={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 
