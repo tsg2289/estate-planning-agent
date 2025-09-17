@@ -292,12 +292,6 @@ const LandingPage = () => {
           
           <div className="features-grid">
             <div className="feature-card">
-              <div className="feature-icon">🛡️</div>
-              <h3>Bank-Level Security</h3>
-              <p>Your data is encrypted with AES-256 encryption and stored securely. We use the same security standards as major financial institutions.</p>
-            </div>
-            
-            <div className="feature-card">
               <div className="feature-icon">⚡</div>
               <h3>Quick & Easy</h3>
               <p>Complete your estate plan in as little as 15 minutes with our guided, step-by-step process. No legal jargon, just clear questions.</p>
