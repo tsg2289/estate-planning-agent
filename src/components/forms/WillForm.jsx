@@ -863,7 +863,7 @@ const WillForm = ({ onSubmit }) => {
                   checked={formData.hasSpecialBequests === 'yes'}
                   onChange={handleInputChange}
                 />
-                <span className="radio-text">Have Special Bequests</span>
+                <span className="radio-text">Special Bequests</span>
               </label>
             </div>
           </div>
