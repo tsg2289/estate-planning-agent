@@ -509,6 +509,7 @@ const POAForm = ({ onSubmit }) => {
               value={formData.effectiveDate}
               onChange={handleInputChange}
               className="form-input"
+              min={new Date().toISOString().split('T')[0]}
               required
             />
           </div>
