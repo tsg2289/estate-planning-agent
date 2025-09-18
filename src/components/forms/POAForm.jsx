@@ -561,9 +561,9 @@ const POAForm = ({ onSubmit }) => {
           </div>
         </div>
 
-        {/* Limitations */}
+        {/* Special Instructions */}
         <div className="form-section">
-          <h3>Limitations and Restrictions</h3>
+          <h3>Special Instructions</h3>
           <div className="form-group">
             <label className="form-label">Limitations</label>
             <textarea
