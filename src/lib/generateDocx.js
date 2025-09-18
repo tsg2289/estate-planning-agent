@@ -1773,12 +1773,12 @@ ________________________________________________________________________________
         effectivenessText = 'This power of attorney is effective immediately and will continue until it is revoked.'
       }
       
-      // Combine effectiveness text with incapacitation text for single paragraph
+      // Add paragraph break between effectiveness text and incapacitation text
       const incapacitationText = formData.incapacitationChoice === 'non-durable' 
         ? 'This power of attorney will cease to continue if I become incapacitated.'
         : 'This power of attorney will continue to be effective even though I become incapacitated.'
       
-      formatted.effectivenessText = `${effectivenessText} ${incapacitationText}`
+      formatted.effectivenessText = `${effectivenessText}\n\n${incapacitationText}`
       
       // Create conditional appointment text
       const hasPrincipalInfo = formData.principalName && formData.principalName.trim()
