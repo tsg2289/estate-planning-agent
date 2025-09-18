@@ -284,12 +284,10 @@ export const poaTemplate = {
         
         ________________________________________
         (your signature)
-        
         State of ________________________, County of _________________________,
         
         BY ACCEPTING OR ACTING UNDER THE APPOINTMENT, THE AGENT ASSUMES THE FIDUCIARY
         AND OTHER LEGAL RESPONSIBILITIES OF AN AGENT.
-        
         {{agentSignatureSection}}
       `
     },
