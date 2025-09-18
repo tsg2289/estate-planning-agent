@@ -470,26 +470,32 @@ const POAForm = ({ onSubmit }) => {
             </div>
           ))}
           
-          <button
-            type="button"
-            onClick={addAlternateAgent}
-            className="add-button"
-            style={{
-              background: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              padding: '0.75rem 1.5rem',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem'
-            }}
-          >
-            <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>+</span>
-            Add Another Alternate Agent
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem' }}>
+            <button
+              type="button"
+              onClick={addAlternateAgent}
+              className="add-button"
+              style={{
+                background: '#2ed573',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '0.75rem 1rem',
+                cursor: 'pointer',
+                fontSize: '0.9rem',
+                fontWeight: '500',
+                transition: 'background-color 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem'
+              }}
+              onMouseEnter={(e) => e.target.style.background = '#26d065'}
+              onMouseLeave={(e) => e.target.style.background = '#2ed573'}
+            >
+              <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>+</span>
+              Add Another Alternate Agent
+            </button>
+          </div>
         </div>
 
         {/* Power of Attorney Details */}
