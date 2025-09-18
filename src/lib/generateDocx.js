@@ -1743,14 +1743,6 @@ ________________________________________________________________________________
         formatted.specialInstructionsContent = formattedInstructions
       }
       
-      // Set incapacitation text based on user choice
-      if (formData.incapacitationChoice === 'non-durable') {
-        formatted.incapacitationText = 'This power of attorney will cease to continue if I become incapacitated.'
-      } else {
-        // Default to durable
-        formatted.incapacitationText = 'This power of attorney will continue to be effective even though I become incapacitated.'
-      }
-      
       // Set effectiveness text based on effective date and termination date
       let effectivenessText = ''
       
@@ -1777,7 +1769,12 @@ ________________________________________________________________________________
         effectivenessText = 'This power of attorney is effective immediately and will continue until it is revoked.'
       }
       
-      formatted.effectivenessText = effectivenessText
+      // Combine effectiveness text with incapacitation text for single paragraph
+      const incapacitationText = formData.incapacitationChoice === 'non-durable' 
+        ? 'This power of attorney will cease to continue if I become incapacitated.'
+        : 'This power of attorney will continue to be effective even though I become incapacitated.'
+      
+      formatted.effectivenessText = `${effectivenessText} ${incapacitationText}`
       
       // Create conditional appointment text
       const hasPrincipalInfo = formData.principalName && formData.principalName.trim()

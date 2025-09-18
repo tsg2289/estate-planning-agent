@@ -270,8 +270,6 @@ export const poaTemplate = {
         SPECIAL INSTRUCTIONS:
         {{specialInstructionsContent}}
         {{effectivenessText}}
-        
-        {{incapacitationText}}
       `
     },
     {
