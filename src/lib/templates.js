@@ -278,10 +278,7 @@ export const poaTemplate = {
       name: 'signature_and_acceptance',
       content: `
         ____________
-        I agree that any third party who receives a copy of this document may act under it. Revocation of the power
-        of attorney is not effective as to a third party until the third party has actual knowledge of the revocation. I agree to
-        indemnify the third party for any claims that arise against the third party because of reliance on this power of
-        attorney.
+        I agree that any third party who receives a copy of this document may act under it. Revocation of the power of attorney is not effective as to a third party until the third party has actual knowledge of the revocation. I agree to indemnify the third party for any claims that arise against the third party because of reliance on this power of attorney.
         
         Signed this __________ day of _________________________, __________.
         
