@@ -54,7 +54,7 @@ export const willTemplate = {
     },
     {
       name: 'general_provisions',
-      content: 'General Provisions\n\nMy Executor shall have all powers granted under the California Probate Code.\n\nI direct that all estate, inheritance, and other death taxes shall be paid from the residue of my estate.\n\nThis Will is executed in conformity with the laws of the State of California.'
+      content: 'General Provisions\n\nMy Executor shall have all powers granted under the California Probate Code and have the power to sell and dispose of all property. I direct that all estate, inheritance, and other death taxes shall be paid from the residue of my estate. This Will is executed in conformity with the laws of the State of California.'
     },
     {
       name: 'article_7',
