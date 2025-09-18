@@ -304,9 +304,7 @@ export const poaTemplate = {
         
         County of __________
         
-        On__________________________________before me, ________________________________, personally appeared_____________________________, who proved to me on the basis of satisfactory evidence to be the person(s) whose name(s) is/are subscribed to the within instrument and acknowledged to me that he/she/they executed the same in his/her/their authorized capacity(ies), and that by his/her/their signature(s) on the instrument the person(s), or the entity upon behalf of which the person(s) acted, executed the instrument.
-        
-        I certify under PENALTY OF PERJURY under the laws of the State of California that the foregoing paragraph is true and correct.
+        On__________________________________before me, ________________________________, personally appeared_____________________________, who proved to me on the basis of satisfactory evidence to be the person(s) whose name(s) is/are subscribed to the within instrument and acknowledged to me that he/she/they executed the same in his/her/their authorized capacity(ies), and that by his/her/their signature(s) on the instrument the person(s), or the entity upon behalf of which the person(s) acted, executed the instrument. I certify under PENALTY OF PERJURY under the laws of the State of California that the foregoing paragraph is true and correct.
         
         WITNESS my hand and official seal.
         
