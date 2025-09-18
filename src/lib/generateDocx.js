@@ -1700,6 +1700,42 @@ ${actionText}`
         formatted.appointmentText = `I, _____________________________________________________________________________ (your name and address) appoint ________________________________________________________________________ __________________________________ (name and address of the person appointed, or of each person appointed if you want to designate more than one) as my agent (attorney-in-fact) to act for me in any lawful way with respect to the following initialed subjects:`
       }
       
+      // Generate agent signature section
+      let agentSignatureSection = ''
+      
+      if (formData.hasCoAgent && formData.coAgentName && formData.coAgentName.trim()) {
+        // Two agents - show both signature sections
+        agentSignatureSection = `
+        Date:__________
+        
+        ________________________________________
+        Agent's Name
+        
+        ________________________________________
+        Agent's signature
+        
+        
+        Date:__________
+        
+        ________________________________________
+        Agent's Name
+        
+        ________________________________________
+        Agent's signature`
+      } else {
+        // Single agent
+        agentSignatureSection = `
+        Date:__________
+        
+        ________________________________________
+        Agent's Name
+        
+        ________________________________________
+        Agent's signature`
+      }
+      
+      formatted.agentSignatureSection = agentSignatureSection
+      
       break
   }
   

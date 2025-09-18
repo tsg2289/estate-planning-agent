@@ -289,6 +289,8 @@ export const poaTemplate = {
         
         BY ACCEPTING OR ACTING UNDER THE APPOINTMENT, THE AGENT ASSUMES THE FIDUCIARY
         AND OTHER LEGAL RESPONSIBILITIES OF AN AGENT.
+        
+        {{agentSignatureSection}}
       `
     },
     {
