@@ -115,6 +115,14 @@ const POAForm = ({ onSubmit }) => {
     }))
   }
 
+  const handleAcknowledmentToggle = (e) => {
+    const { checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      thirdPartyAcknowledgment: checked
+    }))
+  }
+
   const handlePowerToggle = (powerCode) => {
     setFormData(prev => ({
       ...prev,
@@ -829,8 +837,7 @@ const POAForm = ({ onSubmit }) => {
                   type="checkbox"
                   name="thirdPartyAcknowledgment"
                   checked={formData.thirdPartyAcknowledgment}
-                  onChange={handleInputChange}
-                  required
+                  onChange={handleAcknowledmentToggle}
                   style={{ 
                     marginRight: '12px', 
                     marginTop: '2px',
