@@ -466,27 +466,31 @@ const createDocumentSections = async (template, formData) => {
         } else if (section.name === 'special_instructions') {
           // Special formatting for Special Instructions section
           const content = section.content.trim()
-          const lines = content.split('\n').filter(line => line.trim())
+          const lines = content.split('\n') // Don't filter empty lines to preserve spacing
           
           lines.forEach((line, index) => {
             const trimmedLine = line.trim()
-            if (trimmedLine) {
-              // Check if this is the "SPECIAL INSTRUCTIONS:" header
-              const isHeader = trimmedLine === 'SPECIAL INSTRUCTIONS:'
-              
+            
+            // Check if this is the "SPECIAL INSTRUCTIONS:" header
+            const isHeader = trimmedLine === 'SPECIAL INSTRUCTIONS:'
+            
+            // Check if this is an empty line (for spacing)
+            const isEmpty = !trimmedLine
+            
+            if (trimmedLine || isEmpty) {
               children.push(
                 new Paragraph({
                   children: [
                     new TextRun({
-                      text: trimmedLine,
+                      text: isEmpty ? '' : trimmedLine, // Empty text for spacing lines
                       size: 24,
                       bold: isHeader, // Make "SPECIAL INSTRUCTIONS:" bold
                     }),
                   ],
                   alignment: AlignmentType.JUSTIFIED,
                   spacing: {
-                    before: isHeader ? 200 : 0,
-                    after: isHeader ? 100 : 0,
+                    before: isHeader ? 200 : (isEmpty ? 100 : 0),
+                    after: isHeader ? 100 : (isEmpty ? 100 : 0),
                   },
                 })
               )
