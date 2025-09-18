@@ -459,6 +459,40 @@ const createDocumentSections = async (template, formData) => {
               )
             }
           })
+        } else if (section.name === 'execution') {
+          // Special handling for execution section with proper signature line formatting
+          const lines = section.content.trim().split('\n')
+          lines.forEach((line, index) => {
+            if (line.trim()) {
+              const isSignatureLine = line.includes('Signature:') && line.includes('_')
+              const isTestatorName = line.includes('Testator') && !line.includes('declare')
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: line.trim(),
+                      size: 24,
+                      bold: index === 0, // Make "Execution" title bold
+                    }),
+                  ],
+                  alignment: AlignmentType.LEFT,
+                  spacing: {
+                    before: index === 0 ? 400 : (isSignatureLine ? 240 : 120),
+                    after: isTestatorName ? 240 : 120,
+                  },
+                })
+              )
+            } else {
+              // Add empty line for spacing
+              children.push(
+                new Paragraph({
+                  children: [new TextRun({ text: '', size: 24 })],
+                  spacing: { before: 120, after: 120 },
+                })
+              )
+            }
+          })
         } else {
           // Handle other sections with standard formatting
           const lines = section.content.trim().split('\n')
