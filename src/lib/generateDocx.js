@@ -505,7 +505,7 @@ const createDocumentSections = async (template, formData) => {
               
               // Check if this is the notary signature table placeholder
               if (trimmedLine === 'NOTARY_SIGNATURE_TABLE') {
-                // Add extra spacing before the notary signature table
+                // Add extra spacing before the notary signature section
                 children.push(
                   new Paragraph({
                     children: [new TextRun({ text: '', size: 24 })],
@@ -513,88 +513,51 @@ const createDocumentSections = async (template, formData) => {
                   })
                 )
                 
-                // Create a table with two columns for notary seal and signature
+                // Create notary signature section without table to avoid any lines
                 children.push(
-                  new Table({
-                    rows: [
-                      new TableRow({
-                        children: [
-                          new TableCell({
-                            children: [
-                              new Paragraph({
-                                children: [
-                                  new TextRun({
-                                    text: '[Notary Seal, if any]:',
-                                    size: 24,
-                                  }),
-                                ],
-                                spacing: { before: 100, after: 100 },
-                              }),
-                            ],
-                            width: { size: 50, type: WidthType.PERCENTAGE },
-                            borders: {
-                              top: { style: BorderStyle.NONE, size: 0 },
-                              bottom: { style: BorderStyle.NONE, size: 0 },
-                              left: { style: BorderStyle.NONE, size: 0 },
-                              right: { style: BorderStyle.NONE, size: 0 },
-                            },
-                          }),
-                          new TableCell({
-                            children: [
-                              new Paragraph({
-                                children: [
-                                  new TextRun({
-                                    text: '_______________________________',
-                                    size: 24,
-                                  }),
-                                ],
-                                spacing: { after: 50 },
-                              }),
-                              new Paragraph({
-                                children: [
-                                  new TextRun({
-                                    text: '(Signature of Notarial Officer)',
-                                    size: 24,
-                                  }),
-                                ],
-                                spacing: { after: 50 },
-                              }),
-                              new Paragraph({
-                                children: [
-                                  new TextRun({
-                                    text: 'Notary Public for the State of California',
-                                    size: 24,
-                                  }),
-                                ],
-                                spacing: { after: 50 },
-                              }),
-                              new Paragraph({
-                                children: [
-                                  new TextRun({
-                                    text: 'My commission expires: ___________________',
-                                    size: 24,
-                                  }),
-                                ],
-                              }),
-                            ],
-                            width: { size: 50, type: WidthType.PERCENTAGE },
-                            borders: {
-                              top: { style: BorderStyle.NONE, size: 0 },
-                              bottom: { style: BorderStyle.NONE, size: 0 },
-                              left: { style: BorderStyle.NONE, size: 0 },
-                              right: { style: BorderStyle.NONE, size: 0 },
-                            },
-                          }),
-                        ],
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '[Notary Seal, if any]:                    _______________________________',
+                        size: 24,
                       }),
                     ],
-                    width: { size: 100, type: WidthType.PERCENTAGE },
-                    borders: {
-                      top: { style: BorderStyle.NONE, size: 0 },
-                      bottom: { style: BorderStyle.NONE, size: 0 },
-                      left: { style: BorderStyle.NONE, size: 0 },
-                      right: { style: BorderStyle.NONE, size: 0 },
-                    },
+                    spacing: { after: 100 },
+                  })
+                )
+                
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '                                          (Signature of Notarial Officer)',
+                        size: 24,
+                      }),
+                    ],
+                    spacing: { after: 50 },
+                  })
+                )
+                
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '                                          Notary Public for the State of California',
+                        size: 24,
+                      }),
+                    ],
+                    spacing: { after: 50 },
+                  })
+                )
+                
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: '                                          My commission expires: ___________________',
+                        size: 24,
+                      }),
+                    ],
                   })
                 )
               } else {
