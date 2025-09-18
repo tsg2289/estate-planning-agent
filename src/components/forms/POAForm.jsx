@@ -175,13 +175,6 @@ const POAForm = ({ onSubmit }) => {
               value={formData.principalName}
               onChange={handleInputChange}
               className="form-input"
-              style={{ 
-                minWidth: '100%',
-                maxWidth: '600px',
-                fontSize: '1.1rem',
-                padding: '1rem'
-              }}
-              placeholder="Enter your complete legal name as it appears on official documents"
               required
             />
           </div>
