@@ -530,11 +530,7 @@ const POAForm = ({ onSubmit }) => {
         <div className="form-section">
           <h3>Specific Powers Granted</h3>
           <p className="form-help-text">
-            TO GRANT ALL OF THE FOLLOWING POWERS, INITIAL THE LINE IN FRONT OF (N) AND IGNORE
-            THE LINES IN FRONT OF THE OTHER POWERS.<br/>
-            TO GRANT ONE OR MORE, BUT FEWER THAN ALL, OF THE FOLLOWING POWERS, INITIAL THE
-            LINE IN FRONT OF EACH POWER YOU ARE GRANTING.<br/>
-            TO WITHHOLD A POWER, DO NOT INITIAL THE LINE IN FRONT OF IT.
+            Click which powers you wish to grant the agent.
           </p>
           
           <div className="statutory-powers">
