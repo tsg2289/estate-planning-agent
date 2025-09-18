@@ -501,33 +501,16 @@ const POAForm = ({ onSubmit }) => {
         {/* Power of Attorney Details */}
         <div className="form-section">
           <h3>Power of Attorney Details</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Scope</label>
-              <select
-                name="scope"
-                value={formData.scope}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              >
-                <option value="general">General Power of Attorney</option>
-                <option value="limited">Limited Power of Attorney</option>
-                <option value="durable">Durable Power of Attorney</option>
-                <option value="springing">Springing Power of Attorney</option>
-              </select>
-            </div>
-            <div className="form-group">
-              <label className="form-label">Effective Date</label>
-              <input
-                type="date"
-                name="effectiveDate"
-                value={formData.effectiveDate}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">Effective Date</label>
+            <input
+              type="date"
+              name="effectiveDate"
+              value={formData.effectiveDate}
+              onChange={handleInputChange}
+              className="form-input"
+              required
+            />
           </div>
           
           <div className="form-group">
