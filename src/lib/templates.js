@@ -286,7 +286,6 @@ export const poaTemplate = {
         
         ________________________________________
         (your signature)
-        State of ________________________, County of _________________________,
         
         AGENT'S SIGNATURE
         
