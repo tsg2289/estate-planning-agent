@@ -461,36 +461,40 @@ const createDocumentSections = async (template, formData) => {
           })
         } else if (section.name === 'execution') {
           // Special handling for execution section with proper signature line formatting
-          const lines = section.content.trim().split('\n')
+          const lines = section.content.split('\n') // Don't trim to preserve empty lines
           lines.forEach((line, index) => {
-            if (line.trim()) {
-              const isSignatureLine = line.includes('Signature:') && line.includes('_')
-              const isTestatorName = line.includes('Testator') && !line.includes('declare')
+            const trimmedLine = line.trim()
+            
+            if (trimmedLine) {
+              const isSignatureLine = trimmedLine.includes('Signature:') && trimmedLine.includes('_')
+              const isTestatorName = trimmedLine.includes('Testator') && !trimmedLine.includes('declare')
               
               children.push(
                 new Paragraph({
                   children: [
                     new TextRun({
-                      text: line.trim(),
+                      text: trimmedLine,
                       size: 24,
                       bold: index === 0, // Make "Execution" title bold
                     }),
                   ],
                   alignment: AlignmentType.LEFT,
                   spacing: {
-                    before: index === 0 ? 400 : (isSignatureLine ? 240 : 120),
-                    after: isTestatorName ? 240 : 120,
+                    before: index === 0 ? 400 : (isSignatureLine ? 300 : 120),
+                    after: isTestatorName ? 300 : (isSignatureLine ? 200 : 120),
                   },
                 })
               )
             } else {
-              // Add empty line for spacing
-              children.push(
-                new Paragraph({
-                  children: [new TextRun({ text: '', size: 24 })],
-                  spacing: { before: 120, after: 120 },
-                })
-              )
+              // Add empty line for spacing - but only if it's not the first or last line
+              if (index > 0 && index < lines.length - 1) {
+                children.push(
+                  new Paragraph({
+                    children: [new TextRun({ text: '', size: 24 })],
+                    spacing: { before: 60, after: 60 },
+                  })
+                )
+              }
             }
           })
         } else {
