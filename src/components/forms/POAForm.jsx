@@ -96,6 +96,25 @@ const POAForm = ({ onSubmit }) => {
     }))
   }
 
+  const handleCoAgentToggle = (e) => {
+    const { checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      hasCoAgent: checked,
+      // Clear co-agent data when unchecked
+      ...(checked ? {} : {
+        coAgentName: '',
+        coAgentAddress: '',
+        coAgentCity: '',
+        coAgentState: '',
+        coAgentZip: '',
+        coAgentPhone: '',
+        coAgentEmail: '',
+        agentsActSeparately: false,
+      })
+    }))
+  }
+
   const handlePowerToggle = (powerCode) => {
     setFormData(prev => ({
       ...prev,
@@ -372,7 +391,7 @@ const POAForm = ({ onSubmit }) => {
                 type="checkbox"
                 name="hasCoAgent"
                 checked={formData.hasCoAgent}
-                onChange={handleInputChange}
+                onChange={handleCoAgentToggle}
               />
               <span className="radio-text">Add a Co-Agent (second agent to serve together)</span>
             </label>
