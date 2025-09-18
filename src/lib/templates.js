@@ -269,6 +269,7 @@ export const poaTemplate = {
       content: `
         SPECIAL INSTRUCTIONS:
         {{specialInstructionsContent}}
+        
         {{effectivenessText}}
       `
     },
