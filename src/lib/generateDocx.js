@@ -790,8 +790,9 @@ export const formatFormData = (formData, documentType) => {
       // Format executors for document
       if (Array.isArray(formData.executors) && formData.executors.length > 0) {
         const primaryExecutor = formData.executors[0]
+        const executorType = formData.executorType || 'single'
         
-        // Primary executor info
+        // Primary executor info (always needed)
         formatted.executorName = primaryExecutor.name || ''
         formatted.executorAddress = primaryExecutor.address || ''
         formatted.executorCity = primaryExecutor.city || ''
@@ -800,7 +801,56 @@ export const formatFormData = (formData, documentType) => {
         formatted.executorPhone = primaryExecutor.phone || ''
         formatted.executorEmail = primaryExecutor.email || ''
         
-        // Alternate executor info (second executor if exists)
+        // Handle co-executors vs single executor with successors
+        if (executorType === 'co-executors' && formData.executors.length >= 2) {
+          const coExecutor = formData.executors[1]
+          
+          // Co-executor content for template
+          formatted.executorContent = `I nominate ${primaryExecutor.name}, residing at ${primaryExecutor.address}, ${primaryExecutor.city}, ${primaryExecutor.state} ${primaryExecutor.zip}, and ${coExecutor.name}, residing at ${coExecutor.address}, ${coExecutor.city}, ${coExecutor.state} ${coExecutor.zip}, to serve together as Co-Executors of this Will with equal authority.`
+          
+          // Add successor executors if any
+          if (formData.executors.length > 2) {
+            const successors = formData.executors.slice(2).map(executor => 
+              `${executor.name}, residing at ${executor.address}, ${executor.city}, ${executor.state} ${executor.zip}`
+            ).join(', then ')
+            formatted.executorContent += ` If both Co-Executors fail or cease to serve, I nominate ${successors} as successor Executor(s).`
+          } else {
+            formatted.executorContent += ` If both Co-Executors fail or cease to serve, the surviving Co-Executor may serve alone.`
+          }
+          
+          // Template variables for co-executors
+          formatted.executorBondContent = 'My Co-Executors'
+          formatted.executorActionReference = 'the Co-Executors'
+          formatted.executorProhibitionVerb = 'are'
+          
+          // Store co-executor info
+          formatted.coExecutorName = coExecutor.name || ''
+          formatted.coExecutorAddress = coExecutor.address || ''
+          formatted.coExecutorCity = coExecutor.city || ''
+          formatted.coExecutorState = coExecutor.state || ''
+          formatted.coExecutorZip = coExecutor.zip || ''
+          formatted.coExecutorPhone = coExecutor.phone || ''
+          formatted.coExecutorEmail = coExecutor.email || ''
+          
+        } else {
+          // Single executor with successors (traditional approach)
+          formatted.executorContent = `I nominate ${primaryExecutor.name}, residing at ${primaryExecutor.address}, ${primaryExecutor.city}, ${primaryExecutor.state} ${primaryExecutor.zip}, to serve as Executor of this Will.`
+          
+          // Add successor executors
+          if (formData.executors.length > 1) {
+            const successors = formData.executors.slice(1).map(executor => 
+              `${executor.name}, residing at ${executor.address}, ${executor.city}, ${executor.state} ${executor.zip}`
+            ).join(', then ')
+            formatted.executorContent += ` If that person fails or ceases to serve, I nominate ${successors} as successor Executor(s).`
+          }
+          
+          // Template variables for single executor
+          formatted.executorBondContent = 'My Executor'
+          formatted.executorActionReference = 'the Executor'
+          formatted.executorProhibitionVerb = 'is'
+        }
+        
+        // Legacy support - keep alternate executor info for backward compatibility
         if (formData.executors.length > 1) {
           const alternateExecutor = formData.executors[1]
           formatted.alternateExecutorName = alternateExecutor.name || ''

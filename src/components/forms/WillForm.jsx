@@ -42,6 +42,7 @@ const WillForm = ({ onSubmit }) => {
     hasChildren: '',
     childrenNames: [''],
     trustName: '',
+    executorType: 'single', // 'single' or 'co-executors'
     executors: [{
       name: '',
       address: '',
@@ -567,11 +568,65 @@ const WillForm = ({ onSubmit }) => {
         {/* Executor Information */}
         <div className="form-section">
           <h3>Executors (Personal Representatives)</h3>
-          {safeFormData.executors.map((executor, index) => (
+          
+          {/* Executor Type Selection */}
+          <div className="form-group executor-type-section">
+            <label className="form-label">Executor Configuration</label>
+            <div className="radio-group">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="executorType"
+                  value="single"
+                  checked={formData.executorType === 'single'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Single Executor (with successor)</span>
+              </label>
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="executorType"
+                  value="co-executors"
+                  checked={formData.executorType === 'co-executors'}
+                  onChange={handleInputChange}
+                  required
+                />
+                <span className="radio-text">Co-Executors (serve together)</span>
+              </label>
+            </div>
+            <div className="executor-type-explanation">
+              {formData.executorType === 'single' && (
+                <p className="explanation-text">
+                  <strong>Single Executor:</strong> One person serves as the primary executor. If they cannot serve, the successor executor takes over.
+                </p>
+              )}
+              {formData.executorType === 'co-executors' && (
+                <p className="explanation-text">
+                  <strong>Co-Executors:</strong> Two people serve together as co-executors with equal authority. Both must agree on major decisions.
+                </p>
+              )}
+            </div>
+          </div>
+          {safeFormData.executors.map((executor, index) => {
+            let executorTitle = '';
+            if (formData.executorType === 'co-executors') {
+              if (index === 0) executorTitle = 'Co-Executor #1';
+              else if (index === 1) executorTitle = 'Co-Executor #2';
+              else executorTitle = `Successor Executor ${index - 1}`;
+            } else {
+              if (index === 0) executorTitle = 'Primary Executor';
+              else executorTitle = `Successor Executor ${index}`;
+            }
+            
+            return (
             <div key={index} className="executor-input-group">
               <div className="executor-header">
-                <h4>{index === 0 ? 'Primary Executor' : `Executor ${index + 1}`}</h4>
-                {safeFormData.executors.length > 1 && (
+                <h4>{executorTitle}</h4>
+                {/* Only show remove button for appropriate executors */}
+                {((formData.executorType === 'single' && safeFormData.executors.length > 1 && index > 0) ||
+                  (formData.executorType === 'co-executors' && safeFormData.executors.length > 2 && index > 1)) && (
                   <button
                     type="button"
                     onClick={() => removeExecutor(index)}
@@ -590,8 +645,8 @@ const WillForm = ({ onSubmit }) => {
                   value={executor.name}
                   onChange={(e) => handleExecutorChange(index, 'name', e.target.value)}
                   className="form-input"
-                  required={index === 0}
-                  placeholder={`${index === 0 ? 'Primary' : 'Alternate'} executor full name`}
+                  required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
+                  placeholder={`${executorTitle} full name`}
                 />
               </div>
               
@@ -602,7 +657,7 @@ const WillForm = ({ onSubmit }) => {
                   value={executor.address}
                   onChange={(e) => handleExecutorChange(index, 'address', e.target.value)}
                   className="form-input"
-                  required={index === 0}
+                  required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   placeholder="Street address"
                 />
               </div>
@@ -615,7 +670,7 @@ const WillForm = ({ onSubmit }) => {
                     value={executor.city}
                     onChange={(e) => handleExecutorChange(index, 'city', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   />
                 </div>
                 <div className="form-group">
@@ -624,7 +679,7 @@ const WillForm = ({ onSubmit }) => {
                     value={executor.state}
                     onChange={(e) => handleExecutorChange(index, 'state', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   >
                     <option value="">Select State</option>
                     {US_STATES_AND_TERRITORIES.map((state, stateIndex) => (
@@ -644,7 +699,7 @@ const WillForm = ({ onSubmit }) => {
                     value={executor.zip}
                     onChange={(e) => handleExecutorChange(index, 'zip', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   />
                 </div>
                 <div className="form-group">
@@ -654,7 +709,7 @@ const WillForm = ({ onSubmit }) => {
                     value={executor.phone}
                     onChange={(e) => handleExecutorChange(index, 'phone', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   />
                 </div>
               </div>
@@ -666,19 +721,36 @@ const WillForm = ({ onSubmit }) => {
                   value={executor.email}
                   onChange={(e) => handleExecutorChange(index, 'email', e.target.value)}
                   className="form-input"
-                  required={index === 0}
+                  required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                 />
               </div>
             </div>
-          ))}
+            );
+          })}
           
-          {safeFormData.executors.length < 5 && (
+          {/* Add Executor Button - conditional based on executor type */}
+          {((formData.executorType === 'single' && safeFormData.executors.length < 5) ||
+            (formData.executorType === 'co-executors' && safeFormData.executors.length === 1)) && (
             <button
               type="button"
               onClick={addExecutor}
               className="add-executor-button"
             >
-              + Add Another Executor
+              {formData.executorType === 'co-executors' && safeFormData.executors.length === 1
+                ? '+ Add Co-Executor #2 (Required)'
+                : '+ Add Successor Executor'
+              }
+            </button>
+          )}
+          
+          {/* Add successor executors for co-executor setup */}
+          {formData.executorType === 'co-executors' && safeFormData.executors.length >= 2 && safeFormData.executors.length < 5 && (
+            <button
+              type="button"
+              onClick={addExecutor}
+              className="add-executor-button"
+            >
+              + Add Successor Executor
             </button>
           )}
         </div>
@@ -709,7 +781,7 @@ const WillForm = ({ onSubmit }) => {
                   value={guardian.name}
                   onChange={(e) => handleGuardianChange(index, 'name', e.target.value)}
                   className="form-input"
-                  required={index === 0}
+                  required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   placeholder={`${index === 0 ? 'Primary' : 'Alternate'} guardian full name`}
                 />
               </div>
@@ -721,7 +793,7 @@ const WillForm = ({ onSubmit }) => {
                   value={guardian.address}
                   onChange={(e) => handleGuardianChange(index, 'address', e.target.value)}
                   className="form-input"
-                  required={index === 0}
+                  required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   placeholder="Street address"
                 />
               </div>
@@ -734,7 +806,7 @@ const WillForm = ({ onSubmit }) => {
                     value={guardian.city}
                     onChange={(e) => handleGuardianChange(index, 'city', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   />
                 </div>
                 <div className="form-group">
@@ -743,7 +815,7 @@ const WillForm = ({ onSubmit }) => {
                     value={guardian.state}
                     onChange={(e) => handleGuardianChange(index, 'state', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   >
                     <option value="">Select State</option>
                     {US_STATES_AND_TERRITORIES.map((state, stateIndex) => (
@@ -763,7 +835,7 @@ const WillForm = ({ onSubmit }) => {
                     value={guardian.zip}
                     onChange={(e) => handleGuardianChange(index, 'zip', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   />
                 </div>
                 <div className="form-group">
@@ -773,7 +845,7 @@ const WillForm = ({ onSubmit }) => {
                     value={guardian.phone}
                     onChange={(e) => handleGuardianChange(index, 'phone', e.target.value)}
                     className="form-input"
-                    required={index === 0}
+                    required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                   />
                 </div>
               </div>
@@ -785,7 +857,7 @@ const WillForm = ({ onSubmit }) => {
                   value={guardian.email}
                   onChange={(e) => handleGuardianChange(index, 'email', e.target.value)}
                   className="form-input"
-                  required={index === 0}
+                  required={formData.executorType === 'co-executors' ? index < 2 : index === 0}
                 />
               </div>
             </div>

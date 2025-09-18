@@ -280,6 +280,29 @@ body {
   margin-bottom: 1.5rem;
 }
 
+.executor-type-section {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  background-color: #f8f9fa;
+}
+
+.executor-type-explanation {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-left: 4px solid #667eea;
+  border-radius: 4px;
+}
+
+.explanation-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
 .witness-section {
   border: 1px solid #e2e8f0;
   border-radius: 8px;

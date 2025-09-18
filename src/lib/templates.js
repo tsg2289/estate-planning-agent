@@ -38,7 +38,7 @@ export const willTemplate = {
     },
     {
       name: 'personal_representative',
-      content: 'Personal Representative\nI nominate {{executorName}}, residing at {{executorAddress}}, {{executorCity}}, {{executorState}} {{executorZip}}, to serve as Executor of this Will.\nIf that person fails or ceases to serve, I nominate {{alternateExecutorName}}, residing at {{alternateExecutorAddress}}, {{alternateExecutorCity}}, {{alternateExecutorState}} {{alternateExecutorZip}}, as successor Executor.\n\nMy Executor shall serve without bond.\n\nEvery action by the Executor must be done in the best interest of the Estate. The Executor is prohibited from benefitting financially in any way, directly or indirectly.'
+      content: 'Personal Representative\n{{executorContent}}\n\n{{executorBondContent}} shall serve without bond.\n\nEvery action by {{executorActionReference}} must be done in the best interest of the Estate. {{executorActionReference}} {{executorProhibitionVerb}} prohibited from benefitting financially in any way, directly or indirectly.'
     },
     {
       name: 'article_5',
