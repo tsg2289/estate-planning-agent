@@ -505,6 +505,14 @@ const createDocumentSections = async (template, formData) => {
               
               // Check if this is the notary signature table placeholder
               if (trimmedLine === 'NOTARY_SIGNATURE_TABLE') {
+                // Add extra spacing before the notary signature table
+                children.push(
+                  new Paragraph({
+                    children: [new TextRun({ text: '', size: 24 })],
+                    spacing: { before: 400, after: 200 },
+                  })
+                )
+                
                 // Create a table with two columns for notary seal and signature
                 children.push(
                   new Table({
