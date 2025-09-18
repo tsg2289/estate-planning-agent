@@ -613,6 +613,36 @@ const createDocumentSections = async (template, formData) => {
               }
             }
           })
+        } else if (section.name === 'signature_and_acceptance') {
+          // Special formatting for signature and acceptance section
+          const content = section.content.trim()
+          const lines = content.split('\n').filter(line => line.trim())
+          
+          lines.forEach((line, index) => {
+            const trimmedLine = line.trim()
+            if (trimmedLine) {
+              // Check if this is a signature section title
+              const isSignatureTitle = trimmedLine === "PRINCIPAL'S SIGNATURE" || trimmedLine === "AGENT'S SIGNATURE"
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: trimmedLine,
+                      size: 24,
+                      bold: isSignatureTitle,
+                      underline: isSignatureTitle ? {} : undefined,
+                    }),
+                  ],
+                  alignment: isSignatureTitle ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: isSignatureTitle ? 300 : 0,
+                    after: isSignatureTitle ? 200 : 0,
+                  },
+                })
+              )
+            }
+          })
         } else if (section.name === 'execution') {
           // Special handling for execution section with proper signature line formatting
           const lines = section.content.split('\n') // Don't trim to preserve empty lines
