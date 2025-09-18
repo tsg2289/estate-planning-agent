@@ -309,10 +309,7 @@ export const poaTemplate = {
         WITNESS my hand and official seal.
         
         
-        [Notary Seal, if any]:                    _______________________________
-                                                  (Signature of Notarial Officer)
-                                                  Notary Public for the State of California
-                                                  My commission expires: ___________________
+        {{notarySignatureTable}}
       `
     },
   ]

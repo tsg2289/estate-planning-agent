@@ -4,7 +4,7 @@
 import { getTemplate, populateTemplate } from './templates.js'
 
 // Import docx library with error handling
-let Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Spacing, BorderStyle, Footer, PageNumber
+let Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Spacing, BorderStyle, Footer, PageNumber, Table, TableRow, TableCell, WidthType
 
 /**
  * Initialize the docx library
@@ -23,6 +23,10 @@ const initializeDocx = async () => {
     BorderStyle = docxModule.BorderStyle
     Footer = docxModule.Footer
     PageNumber = docxModule.PageNumber
+    Table = docxModule.Table
+    TableRow = docxModule.TableRow
+    TableCell = docxModule.TableCell
+    WidthType = docxModule.WidthType
     return true
   } catch (error) {
     console.warn('docx library not available:', error)
@@ -499,22 +503,104 @@ const createDocumentSections = async (template, formData) => {
               // Check if this is the "CERTIFICATE OF ACKNOWLEDGMENT OF NOTARY PUBLIC" header
               const isHeader = trimmedLine === 'CERTIFICATE OF ACKNOWLEDGMENT OF NOTARY PUBLIC'
               
-              children.push(
-                new Paragraph({
-                  children: [
-                    new TextRun({
-                      text: trimmedLine,
-                      size: 24,
-                      bold: isHeader, // Make the certificate header bold
-                    }),
-                  ],
-                  alignment: isHeader ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
-                  spacing: {
-                    before: isHeader ? 200 : 0,
-                    after: isHeader ? 100 : 0,
-                  },
-                })
-              )
+              // Check if this is the notary signature table placeholder
+              if (trimmedLine === 'NOTARY_SIGNATURE_TABLE') {
+                // Create a table with two columns for notary seal and signature
+                children.push(
+                  new Table({
+                    rows: [
+                      new TableRow({
+                        children: [
+                          new TableCell({
+                            children: [
+                              new Paragraph({
+                                children: [
+                                  new TextRun({
+                                    text: '[Notary Seal, if any]:',
+                                    size: 24,
+                                  }),
+                                ],
+                                spacing: { before: 100, after: 100 },
+                              }),
+                            ],
+                            width: { size: 50, type: WidthType.PERCENTAGE },
+                            borders: {
+                              top: { style: BorderStyle.NONE },
+                              bottom: { style: BorderStyle.NONE },
+                              left: { style: BorderStyle.NONE },
+                              right: { style: BorderStyle.NONE },
+                            },
+                          }),
+                          new TableCell({
+                            children: [
+                              new Paragraph({
+                                children: [
+                                  new TextRun({
+                                    text: '_______________________________',
+                                    size: 24,
+                                  }),
+                                ],
+                                spacing: { after: 50 },
+                              }),
+                              new Paragraph({
+                                children: [
+                                  new TextRun({
+                                    text: '(Signature of Notarial Officer)',
+                                    size: 24,
+                                  }),
+                                ],
+                                spacing: { after: 50 },
+                              }),
+                              new Paragraph({
+                                children: [
+                                  new TextRun({
+                                    text: 'Notary Public for the State of California',
+                                    size: 24,
+                                  }),
+                                ],
+                                spacing: { after: 50 },
+                              }),
+                              new Paragraph({
+                                children: [
+                                  new TextRun({
+                                    text: 'My commission expires: ___________________',
+                                    size: 24,
+                                  }),
+                                ],
+                              }),
+                            ],
+                            width: { size: 50, type: WidthType.PERCENTAGE },
+                            borders: {
+                              top: { style: BorderStyle.NONE },
+                              bottom: { style: BorderStyle.NONE },
+                              left: { style: BorderStyle.NONE },
+                              right: { style: BorderStyle.NONE },
+                            },
+                          }),
+                        ],
+                      }),
+                    ],
+                    width: { size: 100, type: WidthType.PERCENTAGE },
+                  })
+                )
+              } else {
+                children.push(
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: trimmedLine,
+                        size: 24,
+                        bold: isHeader, // Make the certificate header bold
+                      }),
+                    ],
+                    alignment: isHeader ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
+                    spacing: {
+                      before: isHeader ? 200 : 0,
+                      after: isHeader ? 100 : 0,
+                    },
+                  })
+                )
+              }
             }
           })
         } else if (section.name === 'execution') {
@@ -1764,6 +1850,9 @@ ${actionText}`
       }
       
       formatted.agentSignatureSection = agentSignatureSection
+      
+      // Generate notary signature table placeholder (will be handled specially in document generation)
+      formatted.notarySignatureTable = 'NOTARY_SIGNATURE_TABLE'
       
       break
   }
