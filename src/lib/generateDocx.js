@@ -600,12 +600,13 @@ const createDocumentSections = async (template, formData) => {
                         text: trimmedLine,
                         size: 24,
                         bold: isHeader || isSignatureTitle, // Make headers and signature titles bold
+                        underline: isSignatureTitle ? {} : undefined, // Underline signature titles
                       }),
                     ],
                     alignment: isHeader ? AlignmentType.CENTER : (isSignatureTitle ? AlignmentType.CENTER : AlignmentType.JUSTIFIED),
                     spacing: {
-                      before: (isHeader || isSignatureTitle) ? 200 : 0,
-                      after: (isHeader || isSignatureTitle) ? 100 : 0,
+                      before: (isHeader || isSignatureTitle) ? 300 : 0, // More space above
+                      after: (isHeader || isSignatureTitle) ? 200 : 0,  // More space below
                     },
                   })
                 )
