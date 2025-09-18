@@ -269,8 +269,7 @@ export const poaTemplate = {
       content: `
         SPECIAL INSTRUCTIONS:
         {{specialInstructionsContent}}
-        UNLESS YOU DIRECT OTHERWISE ABOVE, THIS POWER OF ATTORNEY IS EFFECTIVE
-        IMMEDIATELY AND WILL CONTINUE UNTIL IT IS REVOKED.
+        {{effectivenessText}}
         
         {{incapacitationText}}
       `

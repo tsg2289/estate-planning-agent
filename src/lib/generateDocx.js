@@ -1624,6 +1624,34 @@ ________________________________________________________________________________
         formatted.incapacitationText = 'This power of attorney will continue to be effective even though I become incapacitated.'
       }
       
+      // Set effectiveness text based on effective date and termination date
+      let effectivenessText = ''
+      
+      if (formData.effectiveDate && formData.effectiveDate.trim()) {
+        const effectiveDate = new Date(formData.effectiveDate)
+        const formattedEffectiveDate = effectiveDate.toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        })
+        
+        if (formData.terminationDate && formData.terminationDate.trim()) {
+          const terminationDate = new Date(formData.terminationDate)
+          const formattedTerminationDate = terminationDate.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          })
+          effectivenessText = `This power of attorney is effective ${formattedEffectiveDate} and will continue until ${formattedTerminationDate}.`
+        } else {
+          effectivenessText = `This power of attorney is effective ${formattedEffectiveDate} and will continue until it is revoked.`
+        }
+      } else {
+        effectivenessText = 'This power of attorney is effective immediately and will continue until it is revoked.'
+      }
+      
+      formatted.effectivenessText = effectivenessText
+      
       // Create conditional appointment text
       const hasPrincipalInfo = formData.principalName && formData.principalName.trim()
       const hasAgentInfo = formData.agentName && formData.agentName.trim()
