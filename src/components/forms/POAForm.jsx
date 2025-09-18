@@ -525,6 +525,41 @@ const POAForm = ({ onSubmit }) => {
               placeholder="Leave blank if no termination date"
             />
           </div>
+          
+          <div className="form-group">
+            <label className="form-label">Power of Attorney Durability</label>
+            <p className="form-help-text">
+              Choose whether this power of attorney should continue if you become incapacitated:
+            </p>
+            
+            <div className="radio-group">
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="incapacitationChoice"
+                  value="durable"
+                  checked={formData.incapacitationChoice === 'durable'}
+                  onChange={handleInputChange}
+                />
+                <span className="radio-text">
+                  <strong>Durable Power of Attorney</strong> - This power of attorney will continue to be effective even though I become incapacitated.
+                </span>
+              </label>
+              
+              <label className="radio-label">
+                <input
+                  type="radio"
+                  name="incapacitationChoice"
+                  value="non-durable"
+                  checked={formData.incapacitationChoice === 'non-durable'}
+                  onChange={handleInputChange}
+                />
+                <span className="radio-text">
+                  <strong>Non-Durable Power of Attorney</strong> - This power of attorney will cease to continue if I become incapacitated.
+                </span>
+              </label>
+            </div>
+          </div>
         </div>
 
         {/* Specific Powers */}
