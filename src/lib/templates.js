@@ -253,7 +253,6 @@ export const poaTemplate = {
     {
       name: 'appointment_form',
       content: `
-        ____________
         {{appointmentText}}
         TO GRANT ALL OF THE FOLLOWING POWERS, INITIAL THE LINE IN FRONT OF (N) AND IGNORE
         THE LINES IN FRONT OF THE OTHER POWERS.
