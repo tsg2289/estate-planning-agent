@@ -30,6 +30,15 @@ const POAForm = ({ onSubmit }) => {
     agentZip: '',
     agentPhone: '',
     agentEmail: '',
+    hasCoAgent: false,
+    coAgentName: '',
+    coAgentAddress: '',
+    coAgentCity: '',
+    coAgentState: '',
+    coAgentZip: '',
+    coAgentPhone: '',
+    coAgentEmail: '',
+    agentsActSeparately: false,
     alternateAgents: [
       {
         name: '',
@@ -354,6 +363,162 @@ const POAForm = ({ onSubmit }) => {
               required
             />
           </div>
+          
+          {/* Co-Agent Option */}
+          <div className="form-group">
+            <label className="radio-label">
+              <input
+                type="checkbox"
+                name="hasCoAgent"
+                checked={formData.hasCoAgent}
+                onChange={handleInputChange}
+              />
+              <span className="radio-text">Add a Co-Agent (second agent to serve together)</span>
+            </label>
+          </div>
+          
+          {/* Co-Agent Information - only show if hasCoAgent is true */}
+          {formData.hasCoAgent && (
+            <>
+              <div className="form-group">
+                <label className="form-label">Co-Agent Full Name</label>
+                <input
+                  type="text"
+                  name="coAgentName"
+                  value={formData.coAgentName}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasCoAgent}
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Co-Agent Address</label>
+                <input
+                  type="text"
+                  name="coAgentAddress"
+                  value={formData.coAgentAddress}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasCoAgent}
+                />
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Co-Agent City</label>
+                  <input
+                    type="text"
+                    name="coAgentCity"
+                    value={formData.coAgentCity}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required={formData.hasCoAgent}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Co-Agent State</label>
+                  <select
+                    name="coAgentState"
+                    value={formData.coAgentState}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required={formData.hasCoAgent}
+                  >
+                    <option value="">Select State</option>
+                    {US_STATES_AND_TERRITORIES.map((state, index) => (
+                      <option key={index} value={state}>
+                        {state}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Co-Agent ZIP Code</label>
+                  <input
+                    type="text"
+                    name="coAgentZip"
+                    value={formData.coAgentZip}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required={formData.hasCoAgent}
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Co-Agent Phone</label>
+                  <input
+                    type="tel"
+                    name="coAgentPhone"
+                    value={formData.coAgentPhone}
+                    onChange={handleInputChange}
+                    className="form-input"
+                    required={formData.hasCoAgent}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Co-Agent Email</label>
+                <input
+                  type="email"
+                  name="coAgentEmail"
+                  value={formData.coAgentEmail}
+                  onChange={handleInputChange}
+                  className="form-input"
+                  required={formData.hasCoAgent}
+                />
+              </div>
+              
+              {/* Joint vs Separate Action Option */}
+              <div className="form-group">
+                <label className="form-label">
+                  How should your agents act?
+                  <span 
+                    title="IF YOU APPOINTED MORE THAN ONE AGENT AND YOU WANT EACH AGENT TO BE ABLE TO ACT ALONE WITHOUT THE OTHER AGENT JOINING, WRITE THE WORD 'SEPARATELY' IN THE BLANK SPACE ABOVE. IF YOU DO NOT INSERT ANY WORD IN THE BLANK SPACE, OR IF YOU INSERT"
+                    style={{ 
+                      marginLeft: '8px',
+                      cursor: 'help',
+                      color: '#667eea',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    ℹ️
+                  </span>
+                </label>
+                
+                <div className="radio-group">
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="agentsActSeparately"
+                      value="false"
+                      checked={!formData.agentsActSeparately}
+                      onChange={(e) => setFormData(prev => ({...prev, agentsActSeparately: e.target.value === 'true'}))}
+                    />
+                    <span className="radio-text">
+                      <strong>Act Jointly</strong> - Both agents must agree and act together
+                    </span>
+                  </label>
+                  
+                  <label className="radio-label">
+                    <input
+                      type="radio"
+                      name="agentsActSeparately"
+                      value="true"
+                      checked={formData.agentsActSeparately}
+                      onChange={(e) => setFormData(prev => ({...prev, agentsActSeparately: e.target.value === 'true'}))}
+                    />
+                    <span className="radio-text">
+                      <strong>Act Separately</strong> - Each agent can act alone without the other
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Alternate Agent Information */}
