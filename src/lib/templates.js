@@ -268,9 +268,7 @@ export const poaTemplate = {
       name: 'special_instructions',
       content: `
         _______________
-        SPECIAL INSTRUCTIONS:
-        ON THE FOLLOWING LINES YOU MAY GIVE SPECIAL INSTRUCTIONS LIMITING OR EXTENDING THE
-        POWERS GRANTED TO YOUR AGENT.
+        **SPECIAL INSTRUCTIONS:**
         {{specialInstructionsContent}}
         UNLESS YOU DIRECT OTHERWISE ABOVE, THIS POWER OF ATTORNEY IS EFFECTIVE
         IMMEDIATELY AND WILL CONTINUE UNTIL IT IS REVOKED.
