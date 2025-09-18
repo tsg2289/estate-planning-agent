@@ -789,6 +789,7 @@ export const validateFormData = (formData, documentType) => {
     case 'poa':
       if (!formData.principalName) errors.push('Principal name is required')
       if (!formData.agentName) errors.push('Agent name is required')
+      if (formData.hasCoAgent && !formData.coAgentName) errors.push('Co-agent name is required when co-agent is selected')
       break
       
     case 'ahcd':
@@ -1672,7 +1673,28 @@ ________________________________________________________________________________
           formData.agentZip
         ].filter(item => item && item.trim()).join(', ')
         
-        formatted.appointmentText = `I, ${formData.principalName}, ${principalFullAddress} appoint ${formData.agentName}, ${agentFullAddress} as my agent (attorney-in-fact) to act for me in any lawful way with respect to the following initialed subjects:`
+        // Handle co-agent appointment text
+        if (formData.hasCoAgent && formData.coAgentName && formData.coAgentName.trim()) {
+          const coAgentFullAddress = [
+            formData.coAgentAddress,
+            formData.coAgentCity,
+            formData.coAgentState,
+            formData.coAgentZip
+          ].filter(item => item && item.trim()).join(', ')
+          
+          // Determine how agents should act
+          const actionType = formData.agentsActSeparately ? 'SEPARATELY' : 'jointly'
+          const actionText = formData.agentsActSeparately 
+            ? 'Each agent may act alone and without the consent of the other agent.'
+            : 'Both agents must act together and agree on all decisions.'
+          
+          formatted.appointmentText = `I, ${formData.principalName}, ${principalFullAddress} appoint ${formData.agentName}, ${agentFullAddress} and ${formData.coAgentName}, ${coAgentFullAddress} as my agents (attorneys-in-fact) to act ${actionType} for me in any lawful way with respect to the following initialed subjects:
+
+${actionText}`
+        } else {
+          // Single agent
+          formatted.appointmentText = `I, ${formData.principalName}, ${principalFullAddress} appoint ${formData.agentName}, ${agentFullAddress} as my agent (attorney-in-fact) to act for me in any lawful way with respect to the following initialed subjects:`
+        }
       } else {
         // Names not provided - show instructional text with blanks
         formatted.appointmentText = `I, _____________________________________________________________________________ (your name and address) appoint ________________________________________________________________________ __________________________________ (name and address of the person appointed, or of each person appointed if you want to designate more than one) as my agent (attorney-in-fact) to act for me in any lawful way with respect to the following initialed subjects:`
