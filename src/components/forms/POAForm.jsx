@@ -39,6 +39,7 @@ const POAForm = ({ onSubmit }) => {
     coAgentPhone: '',
     coAgentEmail: '',
     agentsActSeparately: false,
+    thirdPartyAcknowledgment: false,
     alternateAgents: [
       {
         name: '',
@@ -776,8 +777,68 @@ const POAForm = ({ onSubmit }) => {
           </div>
         </div>
 
+        {/* Third Party Acknowledgment */}
+        <div className="form-section">
+          <h3>Required Acknowledgment</h3>
+          <div className="form-group">
+            <div style={{ 
+              border: '1px solid #ddd', 
+              borderRadius: '8px', 
+              padding: '20px', 
+              backgroundColor: '#f9f9f9',
+              marginBottom: '20px'
+            }}>
+              <p style={{ 
+                fontSize: '14px', 
+                lineHeight: '1.6', 
+                margin: '0 0 15px 0',
+                color: '#333'
+              }}>
+                I agree that any third party who receives a copy of this document may act under it. Revocation 
+                of the power of attorney is not effective as to a third party until the third party has actual knowledge of the 
+                revocation. I agree to indemnify the third party for any claims that arise against the third party because of reliance 
+                on this power of attorney.
+              </p>
+              
+              <label className="radio-label" style={{ 
+                display: 'flex', 
+                alignItems: 'flex-start', 
+                marginTop: '15px',
+                cursor: 'pointer'
+              }}>
+                <input
+                  type="checkbox"
+                  name="thirdPartyAcknowledgment"
+                  checked={formData.thirdPartyAcknowledgment}
+                  onChange={handleInputChange}
+                  required
+                  style={{ 
+                    marginRight: '12px', 
+                    marginTop: '2px',
+                    transform: 'scale(1.2)'
+                  }}
+                />
+                <span style={{ 
+                  fontSize: '16px', 
+                  fontWeight: '600',
+                  color: '#333'
+                }}>
+                  I acknowledge and agree to the terms stated above regarding third party reliance on this Power of Attorney.
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
 
-        <button type="submit" className="form-button">
+        <button 
+          type="submit" 
+          className="form-button"
+          disabled={!formData.thirdPartyAcknowledgment}
+          style={{
+            opacity: formData.thirdPartyAcknowledgment ? 1 : 0.6,
+            cursor: formData.thirdPartyAcknowledgment ? 'pointer' : 'not-allowed'
+          }}
+        >
           Complete Power of Attorney
         </button>
       </form>
