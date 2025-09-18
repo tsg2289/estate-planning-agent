@@ -167,18 +167,23 @@ const POAForm = ({ onSubmit }) => {
         {/* Principal Information */}
         <div className="form-section">
           <h3>Principal Information (You)</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label className="form-label">Full Legal Name</label>
-              <input
-                type="text"
-                name="principalName"
-                value={formData.principalName}
-                onChange={handleInputChange}
-                className="form-input"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label className="form-label">Full Legal Name</label>
+            <input
+              type="text"
+              name="principalName"
+              value={formData.principalName}
+              onChange={handleInputChange}
+              className="form-input"
+              style={{ 
+                minWidth: '100%',
+                maxWidth: '600px',
+                fontSize: '1.1rem',
+                padding: '1rem'
+              }}
+              placeholder="Enter your complete legal name as it appears on official documents"
+              required
+            />
           </div>
           
           <div className="form-group">
