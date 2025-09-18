@@ -590,19 +590,22 @@ const createDocumentSections = async (template, formData) => {
                   })
                 )
               } else {
+                // Check if this is a signature section title
+                const isSignatureTitle = trimmedLine === "PRINCIPAL'S SIGNATURE" || trimmedLine === "AGENT'S SIGNATURE"
+                
                 children.push(
                   new Paragraph({
                     children: [
                       new TextRun({
                         text: trimmedLine,
                         size: 24,
-                        bold: isHeader, // Make the certificate header bold
+                        bold: isHeader || isSignatureTitle, // Make headers and signature titles bold
                       }),
                     ],
-                    alignment: isHeader ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
+                    alignment: isHeader ? AlignmentType.CENTER : (isSignatureTitle ? AlignmentType.CENTER : AlignmentType.JUSTIFIED),
                     spacing: {
-                      before: isHeader ? 200 : 0,
-                      after: isHeader ? 100 : 0,
+                      before: (isHeader || isSignatureTitle) ? 200 : 0,
+                      after: (isHeader || isSignatureTitle) ? 100 : 0,
                     },
                   })
                 )

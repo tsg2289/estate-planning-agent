@@ -280,11 +280,15 @@ export const poaTemplate = {
         ____________
         I agree that any third party who receives a copy of this document may act under it. Revocation of the power of attorney is not effective as to a third party until the third party has actual knowledge of the revocation. I agree to indemnify the third party for any claims that arise against the third party because of reliance on this power of attorney.
         
+        PRINCIPAL'S SIGNATURE
+        
         Date:__________
         
         ________________________________________
         (your signature)
         State of ________________________, County of _________________________,
+        
+        AGENT'S SIGNATURE
         
         BY ACCEPTING OR ACTING UNDER THE APPOINTMENT, THE AGENT ASSUMES THE FIDUCIARY
         AND OTHER LEGAL RESPONSIBILITIES OF AN AGENT.
