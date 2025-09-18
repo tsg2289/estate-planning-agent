@@ -366,7 +366,7 @@ const POAForm = ({ onSubmit }) => {
           {formData.alternateAgents.map((agent, index) => (
             <div key={index} className="alternate-agent-item">
               <div className="form-row" style={{ alignItems: 'center', marginBottom: '1rem' }}>
-                <h4 style={{ margin: 0, flex: 1 }}>
+                <h4 style={{ margin: 0, flex: 1, textAlign: 'center' }}>
                   Alternate Agent {index + 1}
                 </h4>
                 {formData.alternateAgents.length > 1 && (
