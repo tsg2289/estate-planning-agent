@@ -267,8 +267,7 @@ export const poaTemplate = {
     {
       name: 'special_instructions',
       content: `
-        _______________
-        **SPECIAL INSTRUCTIONS:**
+        SPECIAL INSTRUCTIONS:
         {{specialInstructionsContent}}
         UNLESS YOU DIRECT OTHERWISE ABOVE, THIS POWER OF ATTORNEY IS EFFECTIVE
         IMMEDIATELY AND WILL CONTINUE UNTIL IT IS REVOKED.

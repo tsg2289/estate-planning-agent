@@ -459,6 +459,35 @@ const createDocumentSections = async (template, formData) => {
               )
             }
           })
+        } else if (section.name === 'special_instructions') {
+          // Special formatting for Special Instructions section
+          const content = section.content.trim()
+          const lines = content.split('\n').filter(line => line.trim())
+          
+          lines.forEach((line, index) => {
+            const trimmedLine = line.trim()
+            if (trimmedLine) {
+              // Check if this is the "SPECIAL INSTRUCTIONS:" header
+              const isHeader = trimmedLine === 'SPECIAL INSTRUCTIONS:'
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: trimmedLine,
+                      size: 24,
+                      bold: isHeader, // Make "SPECIAL INSTRUCTIONS:" bold
+                    }),
+                  ],
+                  alignment: AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: isHeader ? 200 : 0,
+                    after: isHeader ? 100 : 0,
+                  },
+                })
+              )
+            }
+          })
         } else if (section.name === 'execution') {
           // Special handling for execution section with proper signature line formatting
           const lines = section.content.split('\n') // Don't trim to preserve empty lines
@@ -1574,19 +1603,18 @@ ________________________________________________________________________________
         specialInstructions += '\n'
       }
       
-      // Format with blank lines structure
-      const lines = specialInstructions.split('\n').filter(line => line.trim())
-      let formattedInstructions = ''
-      
-      // Add up to 5 lines of content, then fill remaining with blank lines
-      for (let i = 0; i < 5; i++) {
-        if (i < lines.length) {
-          formattedInstructions += `${lines[i]}\n`
+      // Format special instructions content
+      if (specialInstructions.trim()) {
+        // If there's content, just use the content without blank lines
+        formatted.specialInstructionsContent = specialInstructions.trim()
+      } else {
+        // If no content, provide blank lines for manual completion
+        let formattedInstructions = ''
+        for (let i = 0; i < 5; i++) {
+          formattedInstructions += '__________________________________________________________________________________________\n'
         }
-        formattedInstructions += '__________________________________________________________________________________________\n'
+        formatted.specialInstructionsContent = formattedInstructions
       }
-      
-      formatted.specialInstructionsContent = formattedInstructions
       
       // Set incapacitation text based on user choice
       if (formData.incapacitationChoice === 'non-durable') {
