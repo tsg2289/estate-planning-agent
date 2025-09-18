@@ -488,6 +488,35 @@ const createDocumentSections = async (template, formData) => {
               )
             }
           })
+        } else if (section.name === 'notary_certificate') {
+          // Special formatting for Notary Certificate section
+          const content = section.content.trim()
+          const lines = content.split('\n').filter(line => line.trim())
+          
+          lines.forEach((line, index) => {
+            const trimmedLine = line.trim()
+            if (trimmedLine) {
+              // Check if this is the "CERTIFICATE OF ACKNOWLEDGMENT OF NOTARY PUBLIC" header
+              const isHeader = trimmedLine === 'CERTIFICATE OF ACKNOWLEDGMENT OF NOTARY PUBLIC'
+              
+              children.push(
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: trimmedLine,
+                      size: 24,
+                      bold: isHeader, // Make the certificate header bold
+                    }),
+                  ],
+                  alignment: isHeader ? AlignmentType.CENTER : AlignmentType.JUSTIFIED,
+                  spacing: {
+                    before: isHeader ? 200 : 0,
+                    after: isHeader ? 100 : 0,
+                  },
+                })
+              )
+            }
+          })
         } else if (section.name === 'execution') {
           // Special handling for execution section with proper signature line formatting
           const lines = section.content.split('\n') // Don't trim to preserve empty lines
