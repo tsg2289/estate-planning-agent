@@ -525,10 +525,10 @@ const createDocumentSections = async (template, formData) => {
                             ],
                             width: { size: 50, type: WidthType.PERCENTAGE },
                             borders: {
-                              top: { style: BorderStyle.NONE },
-                              bottom: { style: BorderStyle.NONE },
-                              left: { style: BorderStyle.NONE },
-                              right: { style: BorderStyle.NONE },
+                              top: { style: BorderStyle.NONE, size: 0 },
+                              bottom: { style: BorderStyle.NONE, size: 0 },
+                              left: { style: BorderStyle.NONE, size: 0 },
+                              right: { style: BorderStyle.NONE, size: 0 },
                             },
                           }),
                           new TableCell({
@@ -571,16 +571,22 @@ const createDocumentSections = async (template, formData) => {
                             ],
                             width: { size: 50, type: WidthType.PERCENTAGE },
                             borders: {
-                              top: { style: BorderStyle.NONE },
-                              bottom: { style: BorderStyle.NONE },
-                              left: { style: BorderStyle.NONE },
-                              right: { style: BorderStyle.NONE },
+                              top: { style: BorderStyle.NONE, size: 0 },
+                              bottom: { style: BorderStyle.NONE, size: 0 },
+                              left: { style: BorderStyle.NONE, size: 0 },
+                              right: { style: BorderStyle.NONE, size: 0 },
                             },
                           }),
                         ],
                       }),
                     ],
                     width: { size: 100, type: WidthType.PERCENTAGE },
+                    borders: {
+                      top: { style: BorderStyle.NONE, size: 0 },
+                      bottom: { style: BorderStyle.NONE, size: 0 },
+                      left: { style: BorderStyle.NONE, size: 0 },
+                      right: { style: BorderStyle.NONE, size: 0 },
+                    },
                   })
                 )
               } else {
