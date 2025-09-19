@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSupabaseAuth } from '../contexts/SupabaseAuthContext'
 import PlanChecklist from './PlanChecklist.jsx'
 import ReviewPane from './ReviewPane.jsx'
@@ -17,9 +18,18 @@ function EstatePlanningApp() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [progressStatus, setProgressStatus] = useState({})
   const { user, signOut } = useSupabaseAuth()
+  const navigate = useNavigate()
 
   const logout = async () => {
-    await signOut()
+    try {
+      await signOut()
+      // Redirect to login page after successful logout
+      navigate('/login', { replace: true })
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Still redirect even if there was an error
+      navigate('/login', { replace: true })
+    }
   }
 
   // Load progress status on mount

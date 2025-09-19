@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSupabaseAuth } from '../../contexts/SupabaseAuthContext';
 import AdminDashboard from './AdminDashboard';
 import HomeLink from '../HomeLink.jsx';
@@ -7,6 +8,7 @@ import './AdminPage.css';
 const AdminPage = () => {
   const { user, loading, isAdmin, signOut } = useSupabaseAuth();
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log('🔧 AdminPage: Component mounted');
@@ -17,9 +19,13 @@ const AdminPage = () => {
     console.log('🔧 AdminPage: Logging out');
     try {
       await signOut();
+      // Redirect to login page after successful logout
+      navigate('/login', { replace: true });
     } catch (err) {
       console.error('❌ AdminPage: Logout error:', err);
       setError('Error logging out');
+      // Still redirect even if there was an error
+      navigate('/login', { replace: true });
     }
   };
 
