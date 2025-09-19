@@ -14,7 +14,7 @@ export const useFormProgress = (formType, initialData = {}) => {
     const loadProgress = async () => {
       setIsLoading(true);
       try {
-        const savedProgress = progressStorage.loadProgress(formType);
+        const savedProgress = await progressStorage.loadProgress(formType);
         if (savedProgress && savedProgress.data) {
           // Migrate old data format to new format
           let migratedData = { ...savedProgress.data };
@@ -432,16 +432,21 @@ export const useFormProgress = (formType, initialData = {}) => {
     const handleAutoSave = () => {
       if (Object.keys(formData).length > 0) {
         setSaveStatus('saving');
-        progressStorage.setupAutoSave(formType, formData, (data) => {
-          const success = progressStorage.saveProgress(formType, data);
-          if (success) {
-            setSaveStatus('saved');
-            setLastSaved(new Date().toISOString());
-            setProgressPercentage(progressStorage.calculateProgressPercentage({ data }));
-            
-            // Reset save status after 3 seconds
-            setTimeout(() => setSaveStatus('idle'), 3000);
-          } else {
+        progressStorage.setupAutoSave(formType, formData, async (data) => {
+          try {
+            const success = await progressStorage.saveProgress(formType, data);
+            if (success) {
+              setSaveStatus('saved');
+              setLastSaved(new Date().toISOString());
+              setProgressPercentage(progressStorage.calculateProgressPercentage({ data }));
+              
+              // Reset save status after 3 seconds
+              setTimeout(() => setSaveStatus('idle'), 3000);
+            } else {
+              setSaveStatus('error');
+            }
+          } catch (error) {
+            console.error('Error in auto-save:', error);
             setSaveStatus('error');
           }
         });
@@ -460,7 +465,7 @@ export const useFormProgress = (formType, initialData = {}) => {
   const saveProgress = useCallback(async () => {
     setSaveStatus('saving');
     try {
-      const success = progressStorage.saveProgress(formType, formData);
+      const success = await progressStorage.saveProgress(formType, formData);
       if (success) {
         setSaveStatus('saved');
         setLastSaved(new Date().toISOString());
@@ -491,7 +496,7 @@ export const useFormProgress = (formType, initialData = {}) => {
   // Mark form as completed
   const markCompleted = useCallback(async () => {
     try {
-      const success = progressStorage.markCompleted(formType);
+      const success = await progressStorage.markCompleted(formType);
       if (success) {
         setProgressPercentage(100);
         return true;
@@ -506,7 +511,7 @@ export const useFormProgress = (formType, initialData = {}) => {
   // Clear progress
   const clearProgress = useCallback(async () => {
     try {
-      const success = progressStorage.clearProgress(formType);
+      const success = await progressStorage.clearProgress(formType);
       if (success) {
         setFormData(initialData);
         setLastSaved(null);
