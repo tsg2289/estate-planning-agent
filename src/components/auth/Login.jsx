@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import TwoFactorAuth from './TwoFactorAuth'
+import HomeLink from '../HomeLink'
 import './Auth.css'
 
 const Login = ({ onSwitchToRegister }) => {
@@ -104,6 +105,7 @@ const Login = ({ onSwitchToRegister }) => {
 
   return (
     <div className="auth-container">
+      <HomeLink />
       <div className="auth-card">
         <div className="auth-header">
           <h2>Welcome Back</h2>

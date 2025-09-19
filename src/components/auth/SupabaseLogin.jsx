@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSupabaseAuth } from '../../contexts/SupabaseAuthContext'
+import HomeLink from '../HomeLink'
 import './Auth.css'
 
 const SupabaseLogin = () => {
@@ -94,6 +95,7 @@ const SupabaseLogin = () => {
 
   return (
     <div className="auth-container">
+      <HomeLink />
       <div className="auth-card">
         <h2>Sign In</h2>
         <form onSubmit={handleSubmit} className="auth-form">
