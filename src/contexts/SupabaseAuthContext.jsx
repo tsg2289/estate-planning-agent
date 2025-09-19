@@ -223,19 +223,14 @@ export const SupabaseAuthProvider = ({ children }) => {
   const signOut = async () => {
     try {
       setLoading(true)
-      const { error } = await supabase.auth.signOut()
+      console.log('🚪 Starting signOut process...')
       
-      if (error) {
-        throw error
-      }
-
-      // Clear all state
+      // Always clear local state first, even if Supabase call fails
       setUser(null)
       setSession(null)
       setProfile(null)
       
-      // Clear any localStorage data to ensure clean logout
-      // This prevents data from one account showing up for another
+      // Clear localStorage data
       try {
         localStorage.removeItem('estate_planning_progress')
         console.log('🧹 Cleared localStorage data on logout')
@@ -243,6 +238,21 @@ export const SupabaseAuthProvider = ({ children }) => {
         console.warn('Could not clear localStorage on logout:', localStorageError)
       }
       
+      // Try to sign out from Supabase, but don't fail if it errors
+      try {
+        const { error } = await supabase.auth.signOut()
+        if (error) {
+          console.warn('Supabase signOut warning:', error.message)
+          // Don't throw - we've already cleared local state
+        } else {
+          console.log('✅ Supabase signOut successful')
+        }
+      } catch (supabaseError) {
+        console.warn('Supabase signOut error (continuing anyway):', supabaseError.message)
+        // Don't throw - we've already cleared local state
+      }
+      
+      console.log('✅ SignOut completed successfully')
       return { error: null }
     } catch (error) {
       console.error('Sign out error:', error)

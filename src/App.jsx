@@ -19,6 +19,7 @@ function App() {
     <SupabaseAuthProvider>
       <Router>
         <div className="App">
+          <AuthDebug />
           <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
