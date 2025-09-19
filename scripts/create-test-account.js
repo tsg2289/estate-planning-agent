@@ -25,7 +25,7 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 async function createTestAccount() {
   const testEmail = 'MatthewTest@test.com'
   const testPassword = '123456'
-  const testName = 'Matthew Test'
+  const testName = '' // Blank name for testing
 
   try {
     console.log('🚀 Creating test account for:', testEmail)
@@ -53,7 +53,7 @@ async function createTestAccount() {
       password: testPassword,
       email_confirm: true, // This bypasses email verification!
       user_metadata: {
-        full_name: testName
+        full_name: '' // Blank for testing
       }
     })
     
@@ -83,7 +83,7 @@ async function createTestAccount() {
         .insert({
           id: authData.user.id,
           email: testEmail,
-          full_name: testName,
+          full_name: '', // Blank for testing
           email_verified: true,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
@@ -116,7 +116,7 @@ export function addTestAccountToLocal() {
   const testUser = {
     id: 'test-matthew-1',
     email: 'MatthewTest@test.com',
-    name: 'Matthew Test',
+    name: '', // Blank name for testing
     password: '$2a$12$LQv3c1yqBwlVHpPjrU3HSONhI1WdQzuUjChgBTz3YjVMIxfHurIrW', // bcrypt hash of '123456'
     createdAt: new Date().toISOString(),
     failedLoginAttempts: 0,

@@ -21,11 +21,11 @@ const initializeDemoUser = () => {
       passwordResetExpiry: null
     };
     
-    // Add MatthewTest account for testing
+    // Add MatthewTest account for testing (blank information)
     const matthewTestUser = {
       id: 'test-matthew-1',
       email: 'MatthewTest@test.com',
-      name: 'Matthew Test',
+      name: '', // Blank name for testing
       password: '$2a$12$LQv3c1yqBwlVHpPjrU3HSONhI1WdQzuUjChgBTz3YjVMIxfHurIrW', // bcrypt hash of '123456'
       createdAt: new Date().toISOString(),
       failedLoginAttempts: 0,
