@@ -229,9 +229,19 @@ export const SupabaseAuthProvider = ({ children }) => {
         throw error
       }
 
+      // Clear all state
       setUser(null)
       setSession(null)
       setProfile(null)
+      
+      // Clear any localStorage data to ensure clean logout
+      // This prevents data from one account showing up for another
+      try {
+        localStorage.removeItem('estate_planning_progress')
+        console.log('🧹 Cleared localStorage data on logout')
+      } catch (localStorageError) {
+        console.warn('Could not clear localStorage on logout:', localStorageError)
+      }
       
       return { error: null }
     } catch (error) {
