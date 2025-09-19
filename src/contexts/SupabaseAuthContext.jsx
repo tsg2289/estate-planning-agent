@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import { initializeTestAccount } from '../utils/testAccountUtils'
 
 const SupabaseAuthContext = createContext({})
 
@@ -51,6 +52,9 @@ export const SupabaseAuthProvider = ({ children }) => {
           setUser(session?.user ?? null)
           
           if (session?.user) {
+            // Initialize test account if needed (clears localStorage)
+            initializeTestAccount(session.user)
+            
             // Load profile in background, don't block authentication
             loadUserProfile(session.user.id).catch(error => {
               console.error('Error loading profile in initial session:', error)
@@ -83,6 +87,9 @@ export const SupabaseAuthProvider = ({ children }) => {
       setUser(session?.user ?? null)
       
       if (session?.user) {
+        // Initialize test account if needed (clears localStorage)
+        initializeTestAccount(session.user)
+        
         // Load profile in background, don't block auth state change
         loadUserProfile(session.user.id).catch(error => {
           console.error('Error loading profile in auth state change:', error)
