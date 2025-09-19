@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { initializeTestAccount } from '../utils/testAccountUtils'
+import userProgressStorage from '../lib/userProgressStorage'
 
 const SupabaseAuthContext = createContext({})
 
@@ -55,6 +56,14 @@ export const SupabaseAuthProvider = ({ children }) => {
             // Initialize test account if needed (clears localStorage)
             initializeTestAccount(session.user)
             
+            // Set up user-specific progress storage
+            userProgressStorage.setCurrentUser(session.user.id)
+            
+            // Migrate any guest progress to user account
+            userProgressStorage.migrateGuestProgress(session.user.id).catch(error => {
+              console.warn('Error migrating guest progress:', error)
+            })
+            
             // Load profile in background, don't block authentication
             loadUserProfile(session.user.id).catch(error => {
               console.error('Error loading profile in initial session:', error)
@@ -90,6 +99,14 @@ export const SupabaseAuthProvider = ({ children }) => {
         // Initialize test account if needed (clears localStorage)
         initializeTestAccount(session.user)
         
+        // Set up user-specific progress storage
+        userProgressStorage.setCurrentUser(session.user.id)
+        
+        // Migrate any guest progress to user account
+        userProgressStorage.migrateGuestProgress(session.user.id).catch(error => {
+          console.warn('Error migrating guest progress:', error)
+        })
+        
         // Load profile in background, don't block auth state change
         loadUserProfile(session.user.id).catch(error => {
           console.error('Error loading profile in auth state change:', error)
@@ -100,6 +117,8 @@ export const SupabaseAuthProvider = ({ children }) => {
           })
         })
       } else {
+        // Clear user-specific progress storage on logout
+        userProgressStorage.clearCurrentUser()
         setProfile(null)
       }
       
@@ -230,13 +249,23 @@ export const SupabaseAuthProvider = ({ children }) => {
       setSession(null)
       setProfile(null)
       
-      // Clear localStorage data
+      // Clear user-specific localStorage data securely
       try {
+        if (user?.id) {
+          // Clear only the current user's data, not all localStorage
+          const userStorageKey = `estate_planning_progress_${user.id}`
+          localStorage.removeItem(userStorageKey)
+          console.log(`🧹 Cleared user-specific localStorage data on logout for user: ${user.id}`)
+        }
+        // Also clear any remaining guest data
         localStorage.removeItem('estate_planning_progress')
-        console.log('🧹 Cleared localStorage data on logout')
+        console.log('🧹 Cleared guest localStorage data on logout')
       } catch (localStorageError) {
         console.warn('Could not clear localStorage on logout:', localStorageError)
       }
+      
+      // Clear user-specific progress storage
+      userProgressStorage.clearCurrentUser()
       
       // Try to sign out from Supabase, but don't fail if it errors
       try {

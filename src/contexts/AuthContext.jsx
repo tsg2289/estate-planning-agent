@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import API_CONFIG from '../config/api.js'
+import userProgressStorage from '../lib/userProgressStorage'
 
 const AuthContext = createContext()
 
@@ -43,6 +44,14 @@ export const AuthProvider = ({ children }) => {
     setToken(mockToken)
     setUser(mockUser)
     
+    // Set up user-specific progress storage
+    userProgressStorage.setCurrentUser(mockUser.id)
+    
+    // Migrate any guest progress to user account
+    userProgressStorage.migrateGuestProgress(mockUser.id).catch(error => {
+      console.warn('Error migrating guest progress:', error)
+    })
+    
     return { success: true }
   }
 
@@ -59,13 +68,31 @@ export const AuthProvider = ({ children }) => {
     setToken(mockToken)
     setUser(mockUser)
     
+    // Set up user-specific progress storage
+    userProgressStorage.setCurrentUser(mockUser.id)
+    
+    // Migrate any guest progress to user account
+    userProgressStorage.migrateGuestProgress(mockUser.id).catch(error => {
+      console.warn('Error migrating guest progress:', error)
+    })
+    
     return { success: true }
   }
 
   const logout = () => {
+    // Clear user-specific data securely
+    if (user?.id) {
+      const userStorageKey = `estate_planning_progress_${user.id}`
+      localStorage.removeItem(userStorageKey)
+      console.log(`🧹 Cleared user-specific data for user: ${user.id}`)
+    }
+    
     localStorage.removeItem('token')
     setToken(null)
     setUser(null)
+    
+    // Clear user-specific progress storage
+    userProgressStorage.clearCurrentUser()
   }
 
   const verify2FA = async (email, verificationCode, tempToken) => {
@@ -80,6 +107,14 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('token', mockToken)
     setToken(mockToken)
     setUser(mockUser)
+    
+    // Set up user-specific progress storage
+    userProgressStorage.setCurrentUser(mockUser.id)
+    
+    // Migrate any guest progress to user account
+    userProgressStorage.migrateGuestProgress(mockUser.id).catch(error => {
+      console.warn('Error migrating guest progress:', error)
+    })
     
     return { success: true }
   }
