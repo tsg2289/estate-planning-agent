@@ -11,16 +11,19 @@ import LandingPage from './components/LandingPage'
 import BlogPage from './components/blog/BlogPage'
 import EmailSignup from './components/EmailSignup'
 import AdminPage from './components/admin/AdminPage'
+import ErrorBoundary from './components/ErrorBoundary'
 import './App.css'
 
-// Main App component with Supabase authentication
+// Main App component with Supabase authentication  
 function App() {
+  console.log('🚀 App component rendering...')
+  
   return (
-    <SupabaseAuthProvider>
-      <Router>
-        <div className="App">
-          <AuthDebug />
-          <Routes>
+    <ErrorBoundary>
+      <SupabaseAuthProvider>
+        <Router>
+          <div className="App">
+            <Routes>
             {/* Public routes */}
             <Route path="/" element={<LandingPage />} />
             <Route path="/blog" element={<BlogPage />} />
@@ -58,6 +61,7 @@ function App() {
         </div>
       </Router>
     </SupabaseAuthProvider>
+    </ErrorBoundary>
   )
 }
 
@@ -65,12 +69,28 @@ function App() {
 function LoginPage() {
   const { isAuthenticated, loading } = useSupabaseAuth()
   
+  console.log('🔐 LoginPage - loading:', loading, 'isAuthenticated:', isAuthenticated())
+  
   if (loading) {
+    console.log('🔄 LoginPage showing loading spinner')
     return (
-      <div className="loading-container">
+      <div className="loading-container" style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        flexDirection: 'column'
+      }}>
         <div className="loading-spinner">
-          <div className="spinner"></div>
-          <p>Loading...</p>
+          <div className="spinner" style={{
+            border: '4px solid #f3f3f3',
+            borderTop: '4px solid #3498db',
+            borderRadius: '50%',
+            width: '40px',
+            height: '40px',
+            animation: 'spin 2s linear infinite'
+          }}></div>
+          <p>Loading authentication...</p>
         </div>
       </div>
     )
