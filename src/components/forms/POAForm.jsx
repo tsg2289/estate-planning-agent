@@ -856,17 +856,29 @@ const POAForm = ({ onSubmit }) => {
           </div>
         </div>
 
-        <button 
-          type="submit" 
-          className="form-button"
-          disabled={!formData.thirdPartyAcknowledgment}
-          style={{
-            opacity: formData.thirdPartyAcknowledgment ? 1 : 0.6,
-            cursor: formData.thirdPartyAcknowledgment ? 'pointer' : 'not-allowed'
-          }}
-        >
-          Complete Power of Attorney
-        </button>
+        {/* Save Progress Button */}
+        <div className="form-buttons">
+          <button 
+            type="button" 
+            onClick={saveProgress} 
+            className="form-button save-button"
+            disabled={saveStatus === 'saving'}
+          >
+            {saveStatus === 'saving' ? 'Saving...' : 'Save Progress'}
+          </button>
+          
+          <button 
+            type="submit" 
+            className="form-button"
+            disabled={!formData.thirdPartyAcknowledgment}
+            style={{
+              opacity: formData.thirdPartyAcknowledgment ? 1 : 0.6,
+              cursor: formData.thirdPartyAcknowledgment ? 'pointer' : 'not-allowed'
+            }}
+          >
+            Complete Power of Attorney
+          </button>
+        </div>
       </form>
     </div>
   )

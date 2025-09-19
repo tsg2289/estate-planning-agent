@@ -1245,9 +1245,21 @@ const AHCDForm = ({ onSubmit }) => {
         </div>
 
 
-        <button type="submit" className="form-button">
-          Complete Advance Health Care Directive
-        </button>
+        {/* Save Progress Button */}
+        <div className="form-buttons">
+          <button 
+            type="button" 
+            onClick={saveProgress} 
+            className="form-button save-button"
+            disabled={saveStatus === 'saving'}
+          >
+            {saveStatus === 'saving' ? 'Saving...' : 'Save Progress'}
+          </button>
+          
+          <button type="submit" className="form-button">
+            Complete Advance Health Care Directive
+          </button>
+        </div>
       </form>
     </div>
   )
