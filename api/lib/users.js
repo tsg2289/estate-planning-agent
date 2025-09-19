@@ -4,7 +4,7 @@
 
 let users = [];
 
-// Initialize with a demo user for testing
+// Initialize with demo users for testing
 const initializeDemoUser = () => {
   if (users.length === 0) {
     const demoUser = {
@@ -20,7 +20,24 @@ const initializeDemoUser = () => {
       passwordResetToken: null,
       passwordResetExpiry: null
     };
+    
+    // Add MatthewTest account for testing
+    const matthewTestUser = {
+      id: 'test-matthew-1',
+      email: 'MatthewTest@test.com',
+      name: 'Matthew Test',
+      password: '$2a$12$LQv3c1yqBwlVHpPjrU3HSONhI1WdQzuUjChgBTz3YjVMIxfHurIrW', // bcrypt hash of '123456'
+      createdAt: new Date().toISOString(),
+      failedLoginAttempts: 0,
+      accountLocked: false,
+      lockoutExpiry: null,
+      lastFailedAttempt: null,
+      passwordResetToken: null,
+      passwordResetExpiry: null
+    };
+    
     users.push(demoUser);
+    users.push(matthewTestUser);
   }
 };
 
