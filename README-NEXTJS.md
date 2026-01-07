@@ -333,4 +333,4 @@ The application has been completely modernized. Key changes:
 
 **Built with ❤️ for secure, professional estate planning**
 
-*This application meets the highest standards of security and compliance for handling sensitive legal and financial information.*
+*This application meets the highest standards of security and compliance for handling sensitive legal and financial information.*# Deployment trigger Wed Jan  7 14:09:31 PST 2026
