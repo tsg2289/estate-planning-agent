@@ -7,7 +7,7 @@ import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
 import { GlassInput } from '@/components/ui/glass-input'
 import { generateDocument, downloadDocument, generateFilename, DocumentType } from '@/lib/document-generation'
-import { ArrowLeftIcon, DocumentArrowDownIcon, HomeIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, DocumentArrowDownIcon, HomeIcon, BeakerIcon } from '@heroicons/react/24/outline'
 import toast from 'react-hot-toast'
 
 interface DocumentFormProps {
@@ -27,6 +27,57 @@ const documentTitles = {
   ahcd: 'Advance Healthcare Directive'
 }
 
+// Demo data for quick form filling during development/testing
+const DEMO_DATA: Record<DocumentType, FormData> = {
+  will: {
+    testatorName: 'John Michael Smith',
+    maritalStatus: 'Married',
+    testatorCity: 'San Francisco',
+    testatorState: 'California',
+    testatorZip: '94102',
+    spouseName: 'Sarah Elizabeth Smith',
+    children: 'Emily Smith, Michael Smith Jr., David Smith',
+    executorName: 'Robert James Johnson',
+    alternateExecutorName: 'Mary Ann Williams',
+    guardianName: 'David Richard Smith',
+    trustName: 'The Smith Family Trust',
+  },
+  trust: {
+    trustName: 'The Smith Family Revocable Living Trust',
+    trustorName: 'John Michael Smith',
+    trusteeName: 'John Michael Smith',
+    successorTrusteeName: 'Sarah Elizabeth Smith',
+    beneficiary1Name: 'Emily Grace Smith',
+    beneficiary1Share: '33.33%',
+    beneficiary2Name: 'Michael David Smith Jr.',
+    beneficiary2Share: '33.33%',
+  },
+  poa: {
+    principalName: 'John Michael Smith',
+    agentName: 'Sarah Elizabeth Smith',
+    principalCity: 'San Francisco',
+    principalState: 'California',
+    principalCounty: 'San Francisco County',
+    successorAgentName: 'Robert James Johnson',
+    generalPowers: true,
+    immediatelyEffective: true,
+    specificPowers: 'Banking and financial transactions, real estate management, tax matters, business operations, insurance claims, retirement accounts.',
+  },
+  ahcd: {
+    principalName: 'John Michael Smith',
+    healthCareAgent: 'Sarah Elizabeth Smith',
+    healthCareAgentPhone: '(415) 555-1234',
+    healthCareAgentAddress: '123 Main Street, San Francisco, CA 94102',
+    healthCareAgentEmail: 'sarah.smith@email.com',
+    endOfLifeWishes: 'If I am in an irreversible coma or persistent vegetative state with no reasonable chance of recovery, I do not wish to have my life artificially prolonged. I want to be kept comfortable and free of pain.',
+    lifeSustainingTreatment: 'not-prolong',
+    painManagement: 'aggressive',
+    personalOrganDonation: true,
+    primaryPhysicianName: 'Dr. Jennifer Martinez',
+    primaryPhysicianPhone: '(415) 555-9876',
+  },
+}
+
 export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormProps) {
   const [formData, setFormData] = useState<FormData>({})
   const [isGenerating, setIsGenerating] = useState(false)
@@ -37,6 +88,12 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
       ...prev,
       [field]: value
     }))
+  }
+
+  // Fill form with demo data for development/testing
+  const fillDemoData = () => {
+    setFormData(DEMO_DATA[documentType])
+    toast.success('Demo data filled! You can now generate a test document.')
   }
 
   const handleGenerateDocument = async () => {
@@ -472,13 +529,26 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
                 </div>
               </div>
               
-              {/* Home Button */}
-              <Link href="/">
-                <GlassButton variant="ghost" size="sm" className="flex items-center gap-2">
-                  <HomeIcon className="w-4 h-4" />
-                  Home
+              <div className="flex items-center gap-2">
+                {/* Demo Data Button - for development/testing */}
+                <GlassButton 
+                  onClick={fillDemoData}
+                  variant="secondary" 
+                  size="sm" 
+                  className="flex items-center gap-2 bg-amber-100 hover:bg-amber-200 border-amber-300"
+                >
+                  <BeakerIcon className="w-4 h-4 text-amber-600" />
+                  <span className="text-amber-700">Fill Demo Data</span>
                 </GlassButton>
-              </Link>
+                
+                {/* Home Button */}
+                <Link href="/">
+                  <GlassButton variant="ghost" size="sm" className="flex items-center gap-2">
+                    <HomeIcon className="w-4 h-4" />
+                    Home
+                  </GlassButton>
+                </Link>
+              </div>
             </div>
           </GlassCard>
         </motion.div>
