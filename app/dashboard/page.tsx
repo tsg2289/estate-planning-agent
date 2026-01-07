@@ -60,7 +60,7 @@ export default function DashboardPage() {
   const [completedDocuments, setCompletedDocuments] = useState<Set<DocumentType>>(new Set())
 
   const handleDocumentComplete = (documentType: DocumentType) => {
-    setCompletedDocuments(prev => new Set([...prev, documentType]))
+    setCompletedDocuments(prev => new Set(Array.from(prev).concat(documentType)))
     setActiveDocument(null)
   }
 

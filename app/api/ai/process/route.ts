@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   const requestId = nanoid()
 
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
     
     // Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
           has_document_data: !!documentData,
           request_id: requestId
         },
-        ip_address: request.ip || null,
+        ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || null,
         user_agent: request.headers.get('user-agent') || null,
       }])
 
@@ -143,7 +143,7 @@ ${anonymizedData.context && Object.keys(anonymizedData.context).length > 0
           processing_time_ms: processingTime,
           request_id: requestId
         },
-        ip_address: request.ip || null,
+        ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || null,
         user_agent: request.headers.get('user-agent') || null,
       }])
 
@@ -174,7 +174,7 @@ ${anonymizedData.context && Object.keys(anonymizedData.context).length > 0
           request_id: requestId,
           processing_time_ms: processingTime
         },
-        ip_address: request.ip || null,
+        ip_address: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || null,
         user_agent: request.headers.get('user-agent') || null,
       }])
 
