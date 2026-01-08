@@ -24,7 +24,7 @@ import {
   ChartBarIcon
 } from '@heroicons/react/24/outline'
 
-export type DocumentType = 'will' | 'trust' | 'poa' | 'ahcd'
+export type DocumentType = 'will' | 'trust' | 'poa' | 'ahcd' | 'pet_trust' | 'hipaa' | 'living_will' | 'beneficiary'
 
 interface DocumentTypeInfo {
   id: DocumentType
@@ -32,36 +32,75 @@ interface DocumentTypeInfo {
   description: string
   icon: React.ComponentType<any>
   color: string
+  category: 'core' | 'additional'
 }
 
 const documentTypes: DocumentTypeInfo[] = [
+  // Core Documents
   {
     id: 'will',
     title: 'Last Will & Testament',
     description: 'Distribute your assets and name guardians for minor children',
     icon: DocumentTextIcon,
-    color: 'from-blue-500 to-blue-600'
+    color: 'from-blue-500 to-blue-600',
+    category: 'core'
   },
   {
     id: 'trust',
     title: 'Living Trust',
     description: 'Avoid probate and manage assets during your lifetime',
     icon: ShieldCheckIcon,
-    color: 'from-indigo-500 to-indigo-600'
+    color: 'from-indigo-500 to-indigo-600',
+    category: 'core'
   },
   {
     id: 'poa',
     title: 'Power of Attorney',
     description: 'Authorize someone to handle your financial affairs',
     icon: ScaleIcon,
-    color: 'from-purple-500 to-purple-600'
+    color: 'from-purple-500 to-purple-600',
+    category: 'core'
   },
   {
     id: 'ahcd',
     title: 'Advance Healthcare Directive',
     description: 'Document your healthcare wishes and appoint a healthcare agent',
     icon: HeartIcon,
-    color: 'from-pink-500 to-pink-600'
+    color: 'from-pink-500 to-pink-600',
+    category: 'core'
+  },
+  // Additional Documents
+  {
+    id: 'living_will',
+    title: 'Living Will',
+    description: 'Declare your end-of-life treatment preferences',
+    icon: HeartIcon,
+    color: 'from-rose-500 to-rose-600',
+    category: 'additional'
+  },
+  {
+    id: 'pet_trust',
+    title: 'Pet Trust',
+    description: 'Ensure your pets are cared for after you pass',
+    icon: HeartIcon,
+    color: 'from-amber-500 to-amber-600',
+    category: 'additional'
+  },
+  {
+    id: 'hipaa',
+    title: 'HIPAA Authorization',
+    description: 'Allow trusted persons to access your medical records',
+    icon: ShieldCheckIcon,
+    color: 'from-teal-500 to-teal-600',
+    category: 'additional'
+  },
+  {
+    id: 'beneficiary',
+    title: 'Beneficiary Designation',
+    description: 'Designate beneficiaries for retirement accounts and insurance',
+    icon: DocumentTextIcon,
+    color: 'from-green-500 to-green-600',
+    category: 'additional'
   }
 ]
 
@@ -257,51 +296,118 @@ export default function DashboardPage() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                className="space-y-8"
               >
-                {documentTypes.map((docType, index) => {
-                  const Icon = docType.icon
-                  const isCompleted = completedDocuments.has(docType.id)
-                  
-                  return (
-                    <motion.div
-                      key={docType.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <GlassCard className="p-6 h-full hover:shadow-xl transition-all duration-300 group cursor-pointer" hover>
-                        <div className="flex flex-col h-full">
-                          <div className="flex items-start gap-4 mb-4">
-                            <div className={`p-3 rounded-xl bg-gradient-to-r ${docType.color} text-white group-hover:scale-110 transition-transform`}>
-                              <Icon className="w-6 h-6" />
+                {/* Core Documents */}
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <span className="p-1.5 bg-primary-100 dark:bg-primary-900/30 rounded-lg">
+                      <DocumentTextIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    </span>
+                    Core Estate Documents
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {documentTypes.filter(d => d.category === 'core').map((docType, index) => {
+                      const Icon = docType.icon
+                      const isCompleted = completedDocuments.has(docType.id)
+                      
+                      return (
+                        <motion.div
+                          key={docType.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <GlassCard className="p-6 h-full hover:shadow-xl transition-all duration-300 group cursor-pointer" hover>
+                            <div className="flex flex-col h-full">
+                              <div className="flex items-start gap-4 mb-4">
+                                <div className={`p-3 rounded-xl bg-gradient-to-r ${docType.color} text-white group-hover:scale-110 transition-transform`}>
+                                  <Icon className="w-6 h-6" />
+                                </div>
+                                {isCompleted && (
+                                  <span className="px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/30 rounded-full">
+                                    ✓ Done
+                                  </span>
+                                )}
+                              </div>
+                              
+                              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                                {docType.title}
+                              </h3>
+                              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+                                {docType.description}
+                              </p>
+                              
+                              <GlassButton
+                                onClick={() => setActiveDocument(docType.id)}
+                                variant={isCompleted ? "secondary" : "primary"}
+                                className="w-full"
+                              >
+                                {isCompleted ? 'Edit' : 'Create'}
+                              </GlassButton>
                             </div>
-                            {isCompleted && (
-                              <span className="px-2 py-1 text-xs font-medium text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/30 rounded-full">
-                                ✓ Done
-                              </span>
-                            )}
-                          </div>
-                          
-                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                            {docType.title}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
-                            {docType.description}
-                          </p>
-                          
-                          <GlassButton
-                            onClick={() => setActiveDocument(docType.id)}
-                            variant={isCompleted ? "secondary" : "primary"}
-                            className="w-full"
-                          >
-                            {isCompleted ? 'Edit' : 'Create'}
-                          </GlassButton>
-                        </div>
-                      </GlassCard>
-                    </motion.div>
-                  )
-                })}
+                          </GlassCard>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Additional Documents */}
+                <div>
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                    <span className="p-1.5 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg">
+                      <SparklesIcon className="w-5 h-5 text-secondary-600 dark:text-secondary-400" />
+                    </span>
+                    Additional Documents
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {documentTypes.filter(d => d.category === 'additional').map((docType, index) => {
+                      const Icon = docType.icon
+                      const isCompleted = completedDocuments.has(docType.id)
+                      
+                      return (
+                        <motion.div
+                          key={docType.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 + 0.4 }}
+                        >
+                          <GlassCard className="p-5 h-full hover:shadow-xl transition-all duration-300 group cursor-pointer" hover>
+                            <div className="flex flex-col h-full">
+                              <div className="flex items-start gap-3 mb-3">
+                                <div className={`p-2.5 rounded-lg bg-gradient-to-r ${docType.color} text-white group-hover:scale-110 transition-transform`}>
+                                  <Icon className="w-5 h-5" />
+                                </div>
+                                {isCompleted && (
+                                  <span className="px-2 py-0.5 text-xs font-medium text-green-700 dark:text-green-400 bg-green-100 dark:bg-green-900/30 rounded-full">
+                                    ✓ Done
+                                  </span>
+                                )}
+                              </div>
+                              
+                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1.5">
+                                {docType.title}
+                              </h3>
+                              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1">
+                                {docType.description}
+                              </p>
+                              
+                              <GlassButton
+                                onClick={() => setActiveDocument(docType.id)}
+                                variant={isCompleted ? "secondary" : "primary"}
+                                size="sm"
+                                className="w-full"
+                              >
+                                {isCompleted ? 'Edit' : 'Create'}
+                              </GlassButton>
+                            </div>
+                          </GlassCard>
+                        </motion.div>
+                      )
+                    })}
+                  </div>
+                </div>
               </motion.div>
             )}
 

@@ -14,7 +14,7 @@ import {
 interface DocumentPreviewProps {
   isOpen: boolean
   onClose: () => void
-  documentType: 'will' | 'trust' | 'poa' | 'ahcd'
+  documentType: 'will' | 'trust' | 'poa' | 'ahcd' | 'pet_trust' | 'hipaa' | 'living_will' | 'beneficiary'
   formData: Record<string, any>
   onDownload: () => void
 }

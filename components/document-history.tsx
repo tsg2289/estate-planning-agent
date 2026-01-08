@@ -15,7 +15,7 @@ import toast from 'react-hot-toast'
 
 export interface DocumentRecord {
   id: string
-  type: 'will' | 'trust' | 'poa' | 'ahcd'
+  type: 'will' | 'trust' | 'poa' | 'ahcd' | 'pet_trust' | 'hipaa' | 'living_will' | 'beneficiary'
   title: string
   formData: Record<string, any>
   createdAt: string

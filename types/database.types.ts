@@ -101,7 +101,7 @@ export interface Database {
           id: string
           user_id: string
           organization_id: string | null
-          document_type: 'will' | 'trust' | 'poa' | 'ahcd'
+          document_type: 'will' | 'trust' | 'poa' | 'ahcd' | 'pet_trust' | 'hipaa' | 'living_will' | 'beneficiary'
           title: string
           content_encrypted: string
           content_hash: string
@@ -121,7 +121,7 @@ export interface Database {
           id?: string
           user_id: string
           organization_id?: string | null
-          document_type: 'will' | 'trust' | 'poa' | 'ahcd'
+          document_type: 'will' | 'trust' | 'poa' | 'ahcd' | 'pet_trust' | 'hipaa' | 'living_will' | 'beneficiary'
           title: string
           content_encrypted: string
           content_hash: string
@@ -254,7 +254,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      document_type: 'will' | 'trust' | 'poa' | 'ahcd'
+      document_type: 'will' | 'trust' | 'poa' | 'ahcd' | 'pet_trust' | 'hipaa' | 'living_will' | 'beneficiary'
       document_status: 'draft' | 'in_progress' | 'completed' | 'archived'
       audit_action: 'login' | 'logout' | 'document_created' | 'document_updated' | 'document_deleted' | 'document_accessed' | 'ai_request_initiated' | 'ai_response_received' | 'ai_request_failed' | 'profile_updated' | 'password_changed' | 'failed_login'
     }

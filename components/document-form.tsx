@@ -7,7 +7,8 @@ import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
 import { GlassInput } from '@/components/ui/glass-input'
 import { generateDocument, downloadDocument, generateFilename, DocumentType } from '@/lib/document-generation'
-import { ArrowLeftIcon, DocumentArrowDownIcon, HomeIcon, BeakerIcon } from '@heroicons/react/24/outline'
+import { ArrowLeftIcon, DocumentArrowDownIcon, HomeIcon, BeakerIcon, EnvelopeIcon } from '@heroicons/react/24/outline'
+import { EmailDocumentModal } from '@/components/email-document'
 import toast from 'react-hot-toast'
 
 interface DocumentFormProps {
@@ -20,11 +21,15 @@ interface FormData {
   [key: string]: any
 }
 
-const documentTitles = {
+const documentTitles: Record<DocumentType, string> = {
   will: 'Last Will & Testament',
   trust: 'Living Trust',
   poa: 'Power of Attorney',
-  ahcd: 'Advance Healthcare Directive'
+  ahcd: 'Advance Healthcare Directive',
+  pet_trust: 'Pet Trust',
+  hipaa: 'HIPAA Authorization',
+  living_will: 'Living Will',
+  beneficiary: 'Beneficiary Designation'
 }
 
 // Demo data for quick form filling during development/testing
@@ -76,12 +81,80 @@ const DEMO_DATA: Record<DocumentType, FormData> = {
     primaryPhysicianName: 'Dr. Jennifer Martinez',
     primaryPhysicianPhone: '(415) 555-9876',
   },
+  pet_trust: {
+    trustorName: 'John Michael Smith',
+    petName: 'Max',
+    petBreed: 'Golden Retriever',
+    petAge: '5 years',
+    petDescription: 'Male, golden color, friendly disposition',
+    trusteeName: 'Sarah Elizabeth Smith',
+    successorTrusteeName: 'Robert James Johnson',
+    caregiverName: 'Emily Smith',
+    caregiverAddress: '456 Oak Street, San Francisco, CA 94103',
+    caregiverPhone: '(415) 555-2345',
+    alternateCaregiverName: 'Michael Smith Jr.',
+    trustAmount: '50,000',
+    careInstructions: 'Max requires daily walks, high-quality dog food, and annual veterinary checkups. He loves playing fetch and should have access to outdoor space.',
+    vetName: 'Dr. Sarah Wilson, DVM',
+    vetAddress: '789 Pet Care Lane, San Francisco, CA 94104',
+    vetPhone: '(415) 555-3456',
+    remainderBeneficiary: 'San Francisco SPCA',
+  },
+  hipaa: {
+    patientName: 'John Michael Smith',
+    dateOfBirth: '01/15/1975',
+    patientAddress: '123 Main Street, San Francisco, CA 94102',
+    patientPhone: '(415) 555-1234',
+    authorizedPerson1Name: 'Sarah Elizabeth Smith',
+    authorizedPerson1Relationship: 'Spouse',
+    authorizedPerson1Phone: '(415) 555-2345',
+    authorizedPerson2Name: 'Emily Smith',
+    authorizedPerson2Relationship: 'Daughter',
+    authorizedPerson2Phone: '(415) 555-3456',
+    allRecords: true,
+    purposeOfDisclosure: 'To allow my designated representatives to access my medical records for healthcare coordination and family planning purposes.',
+    expirationDate: '12/31/2030',
+  },
+  living_will: {
+    declarantName: 'John Michael Smith',
+    withdrawTreatment: true,
+    withdrawNutrition: true,
+    pregnancyException: false,
+    additionalInstructions: 'I wish to die peacefully and with dignity. Please ensure adequate pain management is provided.',
+    witness1Name: 'Robert James Johnson',
+    witness1Address: '789 Oak Street, San Francisco, CA 94105',
+    witness2Name: 'Mary Ann Williams',
+    witness2Address: '321 Pine Street, San Francisco, CA 94106',
+  },
+  beneficiary: {
+    accountHolder: 'John Michael Smith',
+    accountType: '401(k) Retirement Account',
+    accountNumber: 'XXXX-1234',
+    primaryBeneficiary1Name: 'Sarah Elizabeth Smith',
+    primaryBeneficiary1Relationship: 'Spouse',
+    primaryBeneficiary1DOB: '03/22/1977',
+    primaryBeneficiary1SSN: 'XXX-XX-5678',
+    primaryBeneficiary1Percentage: '100',
+    contingentBeneficiary1Name: 'Emily Smith',
+    contingentBeneficiary1Relationship: 'Daughter',
+    contingentBeneficiary1DOB: '06/15/2005',
+    contingentBeneficiary1SSN: 'XXX-XX-9012',
+    contingentBeneficiary1Percentage: '50',
+    contingentBeneficiary2Name: 'Michael Smith Jr.',
+    contingentBeneficiary2Relationship: 'Son',
+    contingentBeneficiary2DOB: '09/28/2007',
+    contingentBeneficiary2SSN: 'XXX-XX-3456',
+    contingentBeneficiary2Percentage: '50',
+    perStirpes: true,
+  },
 }
 
 export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormProps) {
   const [formData, setFormData] = useState<FormData>({})
   const [isGenerating, setIsGenerating] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
+  const [showEmailModal, setShowEmailModal] = useState(false)
+  const [generatedBlob, setGeneratedBlob] = useState<Blob | null>(null)
 
   const handleInputChange = (field: string, value: any) => {
     setFormData(prev => ({
@@ -112,6 +185,9 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
       // Generate the document
       const blob = await generateDocument(documentType, formData)
       
+      // Store the blob for potential email sharing
+      setGeneratedBlob(blob)
+      
       // Generate filename
       const personName = getPersonName(documentType, formData)
       const filename = generateFilename(documentType, personName)
@@ -135,10 +211,16 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
       case 'will':
         return data.testatorName || ''
       case 'trust':
+      case 'pet_trust':
         return data.trustorName || ''
       case 'poa':
       case 'ahcd':
-        return data.principalName || ''
+      case 'living_will':
+        return data.principalName || data.declarantName || ''
+      case 'hipaa':
+        return data.patientName || ''
+      case 'beneficiary':
+        return data.accountHolder || ''
       default:
         return ''
     }
@@ -154,6 +236,14 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
         return ['principalName', 'principalCity', 'principalState', 'agentName']
       case 'ahcd':
         return ['principalName', 'healthCareAgent']
+      case 'pet_trust':
+        return ['trustorName', 'petName', 'caregiverName', 'trusteeName']
+      case 'hipaa':
+        return ['patientName', 'authorizedPerson1Name']
+      case 'living_will':
+        return ['declarantName']
+      case 'beneficiary':
+        return ['accountHolder', 'accountType', 'primaryBeneficiary1Name']
       default:
         return []
     }
@@ -169,6 +259,14 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
         return renderPOAForm()
       case 'ahcd':
         return renderAHCDForm()
+      case 'pet_trust':
+        return renderPetTrustForm()
+      case 'hipaa':
+        return renderHIPAAForm()
+      case 'living_will':
+        return renderLivingWillForm()
+      case 'beneficiary':
+        return renderBeneficiaryForm()
       default:
         return null
     }
@@ -499,6 +597,510 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
     </div>
   )
 
+  // Pet Trust Form
+  const renderPetTrustForm = () => (
+    <div className="space-y-6">
+      <GlassInput
+        label="Trustor Name *"
+        value={formData.trustorName || ''}
+        onChange={(e) => handleInputChange('trustorName', e.target.value)}
+        placeholder="Your full legal name"
+      />
+
+      <div className="p-4 bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 rounded-xl border border-amber-200 dark:border-amber-700">
+        <h3 className="font-semibold text-amber-800 dark:text-amber-300 mb-4">🐾 Pet Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Pet Name *"
+            value={formData.petName || ''}
+            onChange={(e) => handleInputChange('petName', e.target.value)}
+            placeholder="Your pet's name"
+          />
+          <GlassInput
+            label="Species/Breed"
+            value={formData.petBreed || ''}
+            onChange={(e) => handleInputChange('petBreed', e.target.value)}
+            placeholder="e.g., Golden Retriever"
+          />
+          <GlassInput
+            label="Age"
+            value={formData.petAge || ''}
+            onChange={(e) => handleInputChange('petAge', e.target.value)}
+            placeholder="e.g., 5 years"
+          />
+          <GlassInput
+            label="Description"
+            value={formData.petDescription || ''}
+            onChange={(e) => handleInputChange('petDescription', e.target.value)}
+            placeholder="Color, markings, etc."
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <GlassInput
+          label="Trustee Name *"
+          value={formData.trusteeName || ''}
+          onChange={(e) => handleInputChange('trusteeName', e.target.value)}
+          placeholder="Person to manage trust funds"
+        />
+        <GlassInput
+          label="Successor Trustee"
+          value={formData.successorTrusteeName || ''}
+          onChange={(e) => handleInputChange('successorTrusteeName', e.target.value)}
+          placeholder="Backup trustee"
+        />
+      </div>
+
+      <div className="p-4 bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-xl border border-green-200 dark:border-green-700">
+        <h3 className="font-semibold text-green-800 dark:text-green-300 mb-4">👤 Primary Caregiver</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Caregiver Name *"
+            value={formData.caregiverName || ''}
+            onChange={(e) => handleInputChange('caregiverName', e.target.value)}
+            placeholder="Person to care for your pet"
+          />
+          <GlassInput
+            label="Caregiver Phone"
+            value={formData.caregiverPhone || ''}
+            onChange={(e) => handleInputChange('caregiverPhone', e.target.value)}
+            placeholder="Contact phone"
+          />
+          <GlassInput
+            label="Caregiver Address"
+            value={formData.caregiverAddress || ''}
+            onChange={(e) => handleInputChange('caregiverAddress', e.target.value)}
+            placeholder="Full address"
+            className="md:col-span-2"
+          />
+          <GlassInput
+            label="Alternate Caregiver"
+            value={formData.alternateCaregiverName || ''}
+            onChange={(e) => handleInputChange('alternateCaregiverName', e.target.value)}
+            placeholder="Backup caregiver"
+            className="md:col-span-2"
+          />
+        </div>
+      </div>
+
+      <GlassInput
+        label="Trust Funding Amount ($)"
+        value={formData.trustAmount || ''}
+        onChange={(e) => handleInputChange('trustAmount', e.target.value)}
+        placeholder="e.g., 50,000"
+      />
+
+      <GlassInput
+        label="Care Instructions"
+        value={formData.careInstructions || ''}
+        onChange={(e) => handleInputChange('careInstructions', e.target.value)}
+        placeholder="Diet, exercise, medical needs, preferences..."
+        className="min-h-[100px]"
+      />
+
+      <div className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
+        <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-4">🏥 Veterinarian</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Vet Name"
+            value={formData.vetName || ''}
+            onChange={(e) => handleInputChange('vetName', e.target.value)}
+            placeholder="Dr. Name, DVM"
+          />
+          <GlassInput
+            label="Vet Phone"
+            value={formData.vetPhone || ''}
+            onChange={(e) => handleInputChange('vetPhone', e.target.value)}
+            placeholder="Contact phone"
+          />
+          <GlassInput
+            label="Vet Address"
+            value={formData.vetAddress || ''}
+            onChange={(e) => handleInputChange('vetAddress', e.target.value)}
+            placeholder="Full address"
+            className="md:col-span-2"
+          />
+        </div>
+      </div>
+
+      <GlassInput
+        label="Remainder Beneficiary"
+        value={formData.remainderBeneficiary || ''}
+        onChange={(e) => handleInputChange('remainderBeneficiary', e.target.value)}
+        placeholder="Who receives remaining funds after pet passes"
+      />
+    </div>
+  )
+
+  // HIPAA Authorization Form
+  const renderHIPAAForm = () => (
+    <div className="space-y-6">
+      <div className="p-4 bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20 rounded-xl border border-red-200 dark:border-red-700">
+        <h3 className="font-semibold text-red-800 dark:text-red-300 mb-4">📋 Patient Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Patient Name *"
+            value={formData.patientName || ''}
+            onChange={(e) => handleInputChange('patientName', e.target.value)}
+            placeholder="Your full legal name"
+          />
+          <GlassInput
+            label="Date of Birth"
+            value={formData.dateOfBirth || ''}
+            onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+            placeholder="MM/DD/YYYY"
+          />
+          <GlassInput
+            label="Phone"
+            value={formData.patientPhone || ''}
+            onChange={(e) => handleInputChange('patientPhone', e.target.value)}
+            placeholder="Your phone number"
+          />
+          <GlassInput
+            label="Address"
+            value={formData.patientAddress || ''}
+            onChange={(e) => handleInputChange('patientAddress', e.target.value)}
+            placeholder="Your full address"
+          />
+        </div>
+      </div>
+
+      <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-700">
+        <h3 className="font-semibold text-green-800 dark:text-green-300 mb-4">👥 Authorized Person 1 *</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <GlassInput
+            label="Name *"
+            value={formData.authorizedPerson1Name || ''}
+            onChange={(e) => handleInputChange('authorizedPerson1Name', e.target.value)}
+            placeholder="Full name"
+          />
+          <GlassInput
+            label="Relationship"
+            value={formData.authorizedPerson1Relationship || ''}
+            onChange={(e) => handleInputChange('authorizedPerson1Relationship', e.target.value)}
+            placeholder="e.g., Spouse, Parent"
+          />
+          <GlassInput
+            label="Phone"
+            value={formData.authorizedPerson1Phone || ''}
+            onChange={(e) => handleInputChange('authorizedPerson1Phone', e.target.value)}
+            placeholder="Contact phone"
+          />
+        </div>
+      </div>
+
+      <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl border border-blue-200 dark:border-blue-700">
+        <h3 className="font-semibold text-blue-800 dark:text-blue-300 mb-4">👥 Authorized Person 2 (Optional)</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <GlassInput
+            label="Name"
+            value={formData.authorizedPerson2Name || ''}
+            onChange={(e) => handleInputChange('authorizedPerson2Name', e.target.value)}
+            placeholder="Full name"
+          />
+          <GlassInput
+            label="Relationship"
+            value={formData.authorizedPerson2Relationship || ''}
+            onChange={(e) => handleInputChange('authorizedPerson2Relationship', e.target.value)}
+            placeholder="e.g., Child, Sibling"
+          />
+          <GlassInput
+            label="Phone"
+            value={formData.authorizedPerson2Phone || ''}
+            onChange={(e) => handleInputChange('authorizedPerson2Phone', e.target.value)}
+            placeholder="Contact phone"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Records to Release</label>
+        <div className="space-y-2">
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={formData.allRecords || false}
+              onChange={(e) => handleInputChange('allRecords', e.target.checked)}
+              className="rounded border-gray-300"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">All medical records</span>
+          </label>
+        </div>
+        {!formData.allRecords && (
+          <GlassInput
+            label="Specific Records"
+            value={formData.specificRecords || ''}
+            onChange={(e) => handleInputChange('specificRecords', e.target.value)}
+            placeholder="Describe specific records to release"
+          />
+        )}
+      </div>
+
+      <GlassInput
+        label="Purpose of Disclosure"
+        value={formData.purposeOfDisclosure || ''}
+        onChange={(e) => handleInputChange('purposeOfDisclosure', e.target.value)}
+        placeholder="Why is this information being released?"
+        className="min-h-[80px]"
+      />
+
+      <GlassInput
+        label="Expiration Date"
+        value={formData.expirationDate || ''}
+        onChange={(e) => handleInputChange('expirationDate', e.target.value)}
+        placeholder="MM/DD/YYYY"
+      />
+    </div>
+  )
+
+  // Living Will Form
+  const renderLivingWillForm = () => (
+    <div className="space-y-6">
+      <GlassInput
+        label="Declarant Name *"
+        value={formData.declarantName || ''}
+        onChange={(e) => handleInputChange('declarantName', e.target.value)}
+        placeholder="Your full legal name"
+      />
+
+      <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl border border-purple-200 dark:border-purple-700">
+        <h3 className="font-semibold text-purple-800 dark:text-purple-300 mb-4">🏥 Treatment Preferences</h3>
+        <div className="space-y-4">
+          <label className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              checked={formData.withdrawTreatment || false}
+              onChange={(e) => handleInputChange('withdrawTreatment', e.target.checked)}
+              className="rounded border-gray-300 w-5 h-5"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Withhold or withdraw life-sustaining treatment if in terminal condition
+            </span>
+          </label>
+          <label className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              checked={formData.withdrawNutrition || false}
+              onChange={(e) => handleInputChange('withdrawNutrition', e.target.checked)}
+              className="rounded border-gray-300 w-5 h-5"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Withhold artificial nutrition and hydration
+            </span>
+          </label>
+          <label className="flex items-center space-x-3">
+            <input
+              type="checkbox"
+              checked={formData.pregnancyException || false}
+              onChange={(e) => handleInputChange('pregnancyException', e.target.checked)}
+              className="rounded border-gray-300 w-5 h-5"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Pregnancy exception (suspend directive during pregnancy)
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <GlassInput
+        label="Additional Instructions"
+        value={formData.additionalInstructions || ''}
+        onChange={(e) => handleInputChange('additionalInstructions', e.target.value)}
+        placeholder="Any other instructions for your care..."
+        className="min-h-[100px]"
+      />
+
+      <div className="p-4 bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-900/20 dark:to-slate-900/20 rounded-xl border border-gray-200 dark:border-gray-700">
+        <h3 className="font-semibold text-gray-800 dark:text-gray-300 mb-4">👥 Witnesses</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <GlassInput
+              label="Witness 1 Name"
+              value={formData.witness1Name || ''}
+              onChange={(e) => handleInputChange('witness1Name', e.target.value)}
+              placeholder="Full name"
+            />
+            <GlassInput
+              label="Witness 1 Address"
+              value={formData.witness1Address || ''}
+              onChange={(e) => handleInputChange('witness1Address', e.target.value)}
+              placeholder="Full address"
+            />
+          </div>
+          <div className="space-y-4">
+            <GlassInput
+              label="Witness 2 Name"
+              value={formData.witness2Name || ''}
+              onChange={(e) => handleInputChange('witness2Name', e.target.value)}
+              placeholder="Full name"
+            />
+            <GlassInput
+              label="Witness 2 Address"
+              value={formData.witness2Address || ''}
+              onChange={(e) => handleInputChange('witness2Address', e.target.value)}
+              placeholder="Full address"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
+  // Beneficiary Designation Form
+  const renderBeneficiaryForm = () => (
+    <div className="space-y-6">
+      <div className="p-4 bg-gradient-to-r from-indigo-50 to-violet-50 dark:from-indigo-900/20 dark:to-violet-900/20 rounded-xl border border-indigo-200 dark:border-indigo-700">
+        <h3 className="font-semibold text-indigo-800 dark:text-indigo-300 mb-4">📊 Account Information</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <GlassInput
+            label="Account Holder *"
+            value={formData.accountHolder || ''}
+            onChange={(e) => handleInputChange('accountHolder', e.target.value)}
+            placeholder="Your full legal name"
+          />
+          <GlassInput
+            label="Account Type *"
+            value={formData.accountType || ''}
+            onChange={(e) => handleInputChange('accountType', e.target.value)}
+            placeholder="e.g., 401(k), IRA, Life Insurance"
+          />
+          <GlassInput
+            label="Account Number"
+            value={formData.accountNumber || ''}
+            onChange={(e) => handleInputChange('accountNumber', e.target.value)}
+            placeholder="XXXX-1234 (partial for security)"
+          />
+        </div>
+      </div>
+
+      <div className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl border border-green-200 dark:border-green-700">
+        <h3 className="font-semibold text-green-800 dark:text-green-300 mb-4">🥇 Primary Beneficiary *</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Name *"
+            value={formData.primaryBeneficiary1Name || ''}
+            onChange={(e) => handleInputChange('primaryBeneficiary1Name', e.target.value)}
+            placeholder="Full legal name"
+          />
+          <GlassInput
+            label="Relationship"
+            value={formData.primaryBeneficiary1Relationship || ''}
+            onChange={(e) => handleInputChange('primaryBeneficiary1Relationship', e.target.value)}
+            placeholder="e.g., Spouse, Child"
+          />
+          <GlassInput
+            label="Date of Birth"
+            value={formData.primaryBeneficiary1DOB || ''}
+            onChange={(e) => handleInputChange('primaryBeneficiary1DOB', e.target.value)}
+            placeholder="MM/DD/YYYY"
+          />
+          <GlassInput
+            label="SSN (last 4)"
+            value={formData.primaryBeneficiary1SSN || ''}
+            onChange={(e) => handleInputChange('primaryBeneficiary1SSN', e.target.value)}
+            placeholder="XXX-XX-1234"
+          />
+          <GlassInput
+            label="Percentage"
+            value={formData.primaryBeneficiary1Percentage || ''}
+            onChange={(e) => handleInputChange('primaryBeneficiary1Percentage', e.target.value)}
+            placeholder="e.g., 100"
+            className="md:col-span-2"
+          />
+        </div>
+      </div>
+
+      <div className="p-4 bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20 rounded-xl border border-amber-200 dark:border-amber-700">
+        <h3 className="font-semibold text-amber-800 dark:text-amber-300 mb-4">🥈 Contingent Beneficiary 1</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Name"
+            value={formData.contingentBeneficiary1Name || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary1Name', e.target.value)}
+            placeholder="Full legal name"
+          />
+          <GlassInput
+            label="Relationship"
+            value={formData.contingentBeneficiary1Relationship || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary1Relationship', e.target.value)}
+            placeholder="e.g., Child, Sibling"
+          />
+          <GlassInput
+            label="Date of Birth"
+            value={formData.contingentBeneficiary1DOB || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary1DOB', e.target.value)}
+            placeholder="MM/DD/YYYY"
+          />
+          <GlassInput
+            label="SSN (last 4)"
+            value={formData.contingentBeneficiary1SSN || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary1SSN', e.target.value)}
+            placeholder="XXX-XX-1234"
+          />
+          <GlassInput
+            label="Percentage"
+            value={formData.contingentBeneficiary1Percentage || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary1Percentage', e.target.value)}
+            placeholder="e.g., 50"
+            className="md:col-span-2"
+          />
+        </div>
+      </div>
+
+      <div className="p-4 bg-gradient-to-r from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-xl border border-orange-200 dark:border-orange-700">
+        <h3 className="font-semibold text-orange-800 dark:text-orange-300 mb-4">🥈 Contingent Beneficiary 2</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassInput
+            label="Name"
+            value={formData.contingentBeneficiary2Name || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary2Name', e.target.value)}
+            placeholder="Full legal name"
+          />
+          <GlassInput
+            label="Relationship"
+            value={formData.contingentBeneficiary2Relationship || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary2Relationship', e.target.value)}
+            placeholder="e.g., Child, Sibling"
+          />
+          <GlassInput
+            label="Date of Birth"
+            value={formData.contingentBeneficiary2DOB || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary2DOB', e.target.value)}
+            placeholder="MM/DD/YYYY"
+          />
+          <GlassInput
+            label="SSN (last 4)"
+            value={formData.contingentBeneficiary2SSN || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary2SSN', e.target.value)}
+            placeholder="XXX-XX-1234"
+          />
+          <GlassInput
+            label="Percentage"
+            value={formData.contingentBeneficiary2Percentage || ''}
+            onChange={(e) => handleInputChange('contingentBeneficiary2Percentage', e.target.value)}
+            placeholder="e.g., 50"
+            className="md:col-span-2"
+          />
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="flex items-center space-x-3">
+          <input
+            type="checkbox"
+            checked={formData.perStirpes || false}
+            onChange={(e) => handleInputChange('perStirpes', e.target.checked)}
+            className="rounded border-gray-300 w-5 h-5"
+          />
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            <strong>Per Stirpes:</strong> If a beneficiary predeceases me, their share passes to their descendants
+          </span>
+        </label>
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-8">
       <div className="max-w-4xl mx-auto">
@@ -574,6 +1176,14 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
                   Cancel
                 </GlassButton>
                 <GlassButton
+                  onClick={() => setShowEmailModal(true)}
+                  variant="ghost"
+                  className="flex items-center gap-2"
+                >
+                  <EnvelopeIcon className="w-5 h-5" />
+                  Share
+                </GlassButton>
+                <GlassButton
                   onClick={handleGenerateDocument}
                   loading={isGenerating}
                   variant="primary"
@@ -586,6 +1196,14 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
             </div>
           </GlassCard>
         </motion.div>
+
+        {/* Email Share Modal */}
+        <EmailDocumentModal
+          isOpen={showEmailModal}
+          onClose={() => setShowEmailModal(false)}
+          documentType={documentType}
+          documentTitle={documentTitles[documentType]}
+        />
 
         {/* Disclaimer */}
         <motion.div
