@@ -93,7 +93,7 @@ const DEMO_DATA: Record<DocumentType, FormData> = {
     caregiverAddress: '456 Oak Street, San Francisco, CA 94103',
     caregiverPhone: '(415) 555-2345',
     alternateCaregiverName: 'Michael Smith Jr.',
-    trustAmount: '50,000',
+    trustAmountDollars: '$50,000',
     careInstructions: 'Max requires daily walks, high-quality dog food, and annual veterinary checkups. He loves playing fetch and should have access to outdoor space.',
     vetName: 'Dr. Sarah Wilson, DVM',
     vetAddress: '789 Pet Care Lane, San Francisco, CA 94104',
@@ -686,8 +686,8 @@ export function DocumentForm({ documentType, onComplete, onBack }: DocumentFormP
 
       <GlassInput
         label="Trust Funding Amount ($)"
-        value={formData.trustAmount || ''}
-        onChange={(e) => handleInputChange('trustAmount', e.target.value)}
+        value={formData.trustAmountDollars || ''}
+        onChange={(e) => handleInputChange('trustAmountDollars', e.target.value)}
         placeholder="e.g., 50,000"
       />
 

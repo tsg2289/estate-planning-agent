@@ -291,7 +291,7 @@ Phone: {{caregiverPhone}}
 If the primary caregiver is unable or unwilling to serve, I designate {{alternateCaregiverName}} as alternate caregiver.
 
 ARTICLE IV - TRUST FUNDING
-The initial funding of this trust shall be ${{trustAmount}}.
+The initial funding of this trust shall be {{trustAmountDollars}}.
 
 ARTICLE V - CARE INSTRUCTIONS
 {{careInstructions}}
