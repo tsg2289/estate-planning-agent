@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
@@ -13,7 +13,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
-export default function SignInPage() {
+// Inner component that uses useSearchParams
+function SignInContent() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -106,159 +107,197 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <Header variant="minimal" />
-      <div className="min-h-screen flex items-center justify-center px-4 py-12 pt-24">
-      <div className="w-full max-w-md">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* Logo */}
+    <div className="w-full max-w-md">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex items-center space-x-3">
+            <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+              <span className="text-white font-bold">EP</span>
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+              EstatePlan Pro
+            </span>
+          </Link>
+        </div>
+
+        <GlassCard className="p-8" variant="elevated">
           <div className="text-center mb-8">
-            <Link href="/" className="inline-flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
-                <span className="text-white font-bold">EP</span>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
-                EstatePlan Pro
-              </span>
-            </Link>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
+            <p className="text-gray-600">Sign in to your secure estate planning account</p>
           </div>
 
-          <GlassCard className="p-8" variant="elevated">
-            <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-              <p className="text-gray-600">Sign in to your secure estate planning account</p>
-            </div>
+          {/* Email Confirmation Status Message */}
+          {confirmationStatus === 'success' && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl"
+            >
+              <div className="flex items-center space-x-3">
+                <CheckCircleIcon className="w-6 h-6 text-green-600 flex-shrink-0" />
+                <p className="text-sm text-green-800">{confirmationMessage}</p>
+              </div>
+            </motion.div>
+          )}
 
-            {/* Email Confirmation Status Message */}
-            {confirmationStatus === 'success' && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl"
-              >
-                <div className="flex items-center space-x-3">
-                  <CheckCircleIcon className="w-6 h-6 text-green-600 flex-shrink-0" />
-                  <p className="text-sm text-green-800">{confirmationMessage}</p>
-                </div>
-              </motion.div>
-            )}
+          {confirmationStatus === 'error' && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl"
+            >
+              <div className="flex items-center space-x-3">
+                <ExclamationCircleIcon className="w-6 h-6 text-red-600 flex-shrink-0" />
+                <p className="text-sm text-red-800">{confirmationMessage}</p>
+              </div>
+            </motion.div>
+          )}
 
-            {confirmationStatus === 'error' && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl"
-              >
-                <div className="flex items-center space-x-3">
-                  <ExclamationCircleIcon className="w-6 h-6 text-red-600 flex-shrink-0" />
-                  <p className="text-sm text-red-800">{confirmationMessage}</p>
-                </div>
-              </motion.div>
-            )}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <GlassInput
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              icon={<EnvelopeIcon className="w-5 h-5" />}
+              required
+            />
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="relative">
               <GlassInput
-                label="Email Address"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                icon={<EnvelopeIcon className="w-5 h-5" />}
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                icon={<LockClosedIcon className="w-5 h-5" />}
                 required
               />
-
-              <div className="relative">
-                <GlassInput
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  icon={<LockClosedIcon className="w-5 h-5" />}
-                  required
-                />
-                <button
-                  type="button"
-                  className="absolute right-3 top-9 text-gray-400 hover:text-gray-600 transition-colors"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeSlashIcon className="w-5 h-5" />
-                  ) : (
-                    <EyeIcon className="w-5 h-5" />
-                  )}
-                </button>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-sm text-primary-600 hover:text-primary-500 transition-colors"
-                >
-                  Forgot password?
-                </Link>
-              </div>
-
-              <GlassButton
-                type="submit"
-                variant="primary"
-                size="lg"
-                className="w-full"
-                loading={loading}
+              <button
+                type="button"
+                className="absolute right-3 top-9 text-gray-400 hover:text-gray-600 transition-colors"
+                onClick={() => setShowPassword(!showPassword)}
               >
-                Sign In
-              </GlassButton>
-            </form>
-
-            <div className="mt-8 text-center">
-              <p className="text-gray-600">
-                Don't have an account?{' '}
-                <Link
-                  href="/auth/signup"
-                  className="text-primary-600 hover:text-primary-500 font-medium transition-colors"
-                >
-                  Sign up
-                </Link>
-              </p>
+                {showPassword ? (
+                  <EyeSlashIcon className="w-5 h-5" />
+                ) : (
+                  <EyeIcon className="w-5 h-5" />
+                )}
+              </button>
             </div>
 
-            {/* Security Notice */}
-            <div className="mt-6 p-4 bg-primary-50/50 rounded-xl border border-primary-200/50">
-              <p className="text-xs text-primary-700 text-center">
-                🔒 Your connection is secured with bank-level encryption and SOC2 compliance
+            <div className="flex items-center justify-between">
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
+                <span className="ml-2 text-sm text-gray-600">Remember me</span>
+              </label>
+              <Link
+                href="/auth/forgot-password"
+                className="text-sm text-primary-600 hover:text-primary-500 transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
+
+            <GlassButton
+              type="submit"
+              variant="primary"
+              size="lg"
+              className="w-full"
+              loading={loading}
+            >
+              Sign In
+            </GlassButton>
+          </form>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-600">
+              Don't have an account?{' '}
+              <Link
+                href="/auth/signup"
+                className="text-primary-600 hover:text-primary-500 font-medium transition-colors"
+              >
+                Sign up
+              </Link>
+            </p>
+          </div>
+
+          {/* Security Notice */}
+          <div className="mt-6 p-4 bg-primary-50/50 rounded-xl border border-primary-200/50">
+            <p className="text-xs text-primary-700 text-center">
+              🔒 Your connection is secured with bank-level encryption and SOC2 compliance
+            </p>
+          </div>
+        </GlassCard>
+
+        {/* Demo Account */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mt-6"
+        >
+          <GlassCard className="p-4" variant="subtle">
+            <div className="text-center">
+              <p className="text-sm text-gray-600 mb-2">Demo Account</p>
+              <p className="text-xs text-gray-500">
+                Email: demo@estateplan.pro • Password: Demo123!
               </p>
             </div>
           </GlassCard>
-
-          {/* Demo Account */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="mt-6"
-          >
-            <GlassCard className="p-4" variant="subtle">
-              <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">Demo Account</p>
-                <p className="text-xs text-gray-500">
-                  Email: demo@estateplan.pro • Password: Demo123!
-                </p>
-              </div>
-            </GlassCard>
-          </motion.div>
         </motion.div>
+      </motion.div>
+    </div>
+  )
+}
+
+// Loading fallback for Suspense
+function SignInLoading() {
+  return (
+    <div className="w-full max-w-md">
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+            <span className="text-white font-bold">EP</span>
+          </div>
+          <span className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent">
+            EstatePlan Pro
+          </span>
+        </div>
       </div>
+      <GlassCard className="p-8" variant="elevated">
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto mb-4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto mb-8"></div>
+          <div className="space-y-4">
+            <div className="h-12 bg-gray-200 rounded"></div>
+            <div className="h-12 bg-gray-200 rounded"></div>
+            <div className="h-12 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+      </GlassCard>
+    </div>
+  )
+}
+
+// Main page component with Suspense boundary
+export default function SignInPage() {
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <Header variant="minimal" />
+      <div className="min-h-screen flex items-center justify-center px-4 py-12 pt-24">
+        <Suspense fallback={<SignInLoading />}>
+          <SignInContent />
+        </Suspense>
       </div>
     </div>
   )
