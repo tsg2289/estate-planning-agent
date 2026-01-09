@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
@@ -9,18 +9,44 @@ import { Header } from '@/components/ui/header'
 import { useAuth } from '@/components/providers/auth-provider'
 import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { toast } from 'react-hot-toast'
-import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import { EnvelopeIcon, LockClosedIcon, EyeIcon, EyeSlashIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline'
 
 export default function SignInPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [confirmationStatus, setConfirmationStatus] = useState<'success' | 'error' | null>(null)
+  const [confirmationMessage, setConfirmationMessage] = useState('')
   const { signIn } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const supabase = createClient()
+
+  // Check for email confirmation status in URL params
+  useEffect(() => {
+    const confirmed = searchParams.get('confirmed')
+    const error = searchParams.get('error')
+    const errorDescription = searchParams.get('error_description')
+
+    if (confirmed === 'true') {
+      setConfirmationStatus('success')
+      setConfirmationMessage('Your email has been verified! You can now sign in.')
+      toast.success('Email verified successfully!')
+    } else if (error) {
+      setConfirmationStatus('error')
+      if (error === 'confirmation_failed') {
+        setConfirmationMessage(errorDescription || 'Email confirmation failed. Please try again or request a new confirmation link.')
+      } else if (error === 'missing_code') {
+        setConfirmationMessage('Invalid confirmation link. Please request a new one.')
+      } else {
+        setConfirmationMessage('An error occurred during confirmation.')
+      }
+      toast.error('Email confirmation failed')
+    }
+  }, [searchParams])
 
   // Save pending terms acceptance to database after login
   const savePendingTermsAcceptance = async (userId: string) => {
@@ -106,6 +132,33 @@ export default function SignInPage() {
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back</h1>
               <p className="text-gray-600">Sign in to your secure estate planning account</p>
             </div>
+
+            {/* Email Confirmation Status Message */}
+            {confirmationStatus === 'success' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl"
+              >
+                <div className="flex items-center space-x-3">
+                  <CheckCircleIcon className="w-6 h-6 text-green-600 flex-shrink-0" />
+                  <p className="text-sm text-green-800">{confirmationMessage}</p>
+                </div>
+              </motion.div>
+            )}
+
+            {confirmationStatus === 'error' && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl"
+              >
+                <div className="flex items-center space-x-3">
+                  <ExclamationCircleIcon className="w-6 h-6 text-red-600 flex-shrink-0" />
+                  <p className="text-sm text-red-800">{confirmationMessage}</p>
+                </div>
+              </motion.div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <GlassInput

@@ -98,3 +98,15 @@ temp/
 # Vercel
 .vercel
 data/
+
+# Security - prevent accidental secret commits
+**/secrets/
+*.pem
+*.key
+setup-supabase-quick*.js
+*-with-keys.js
+*-with-secrets.*
+
+# Test files that might contain credentials
+test-*-connection.js
+debug-*.js
