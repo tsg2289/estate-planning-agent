@@ -31,6 +31,7 @@ export interface Database {
           data_retention_until: string | null
           consent_given_at: string | null
           privacy_policy_accepted_at: string | null
+          terms_of_service_accepted_at: string | null
         }
         Insert: {
           id: string
@@ -48,6 +49,7 @@ export interface Database {
           data_retention_until?: string | null
           consent_given_at?: string | null
           privacy_policy_accepted_at?: string | null
+          terms_of_service_accepted_at?: string | null
         }
         Update: {
           id?: string
@@ -65,6 +67,7 @@ export interface Database {
           data_retention_until?: string | null
           consent_given_at?: string | null
           privacy_policy_accepted_at?: string | null
+          terms_of_service_accepted_at?: string | null
         }
       }
       organizations: {

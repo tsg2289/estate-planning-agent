@@ -5,20 +5,18 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
+import { Header } from '@/components/ui/header'
 import { DocumentForm } from '@/components/document-form'
 import { ProgressTracker, ProgressTrackerMini, DocumentProgress } from '@/components/progress-tracker'
 import { DocumentHistory, saveDocumentToHistory, DocumentRecord } from '@/components/document-history'
 import { AIChatAssistant } from '@/components/ai-chat'
 import { NotificationCenter, generateDefaultReminders, Notification } from '@/components/notifications'
-import { ThemeToggleSimple } from '@/components/ui/theme-toggle'
 import { OnboardingWizard, RecommendationsDisplay } from '@/components/onboarding-wizard'
 import { 
   DocumentTextIcon,
   ShieldCheckIcon,
   ScaleIcon,
   HeartIcon,
-  HomeIcon,
-  ArrowLeftIcon,
   Cog6ToothIcon,
   SparklesIcon,
   ChartBarIcon
@@ -208,33 +206,17 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 transition-colors">
-      {/* Top Navigation */}
-      <nav className="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
-              <ArrowLeftIcon className="w-5 h-5" />
-              <span className="text-sm font-medium">Back to Home</span>
-            </Link>
-            
-            <div className="flex items-center gap-4">
-              <ProgressTrackerMini documents={progressData} />
-              <NotificationCenter
-                notifications={notifications}
-                onDismiss={handleDismissNotification}
-                onMarkAllRead={handleMarkAllRead}
-              />
-              <ThemeToggleSimple />
-              <Link href="/">
-                <GlassButton variant="ghost" size="sm" className="flex items-center gap-2">
-                  <HomeIcon className="w-4 h-4" />
-                  Home
-                </GlassButton>
-              </Link>
-            </div>
-          </div>
+      {/* Top Navigation with Sign Out */}
+      <Header variant="dashboard" showBackButton backHref="/" backLabel="Back to Home">
+        <div className="flex items-center gap-4">
+          <ProgressTrackerMini documents={progressData} />
+          <NotificationCenter
+            notifications={notifications}
+            onDismiss={handleDismissNotification}
+            onMarkAllRead={handleMarkAllRead}
+          />
         </div>
-      </nav>
+      </Header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}

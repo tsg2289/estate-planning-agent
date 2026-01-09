@@ -5,7 +5,9 @@ import { motion } from 'framer-motion'
 import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
 import { GlassInput } from '@/components/ui/glass-input'
+import { Header } from '@/components/ui/header'
 import { useAuth } from '@/components/providers/auth-provider'
+import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
@@ -16,7 +18,9 @@ import {
   EyeIcon, 
   EyeSlashIcon,
   CheckCircleIcon,
-  XCircleIcon
+  XCircleIcon,
+  DocumentTextIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 
 export default function SignUpPage() {
@@ -29,9 +33,16 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [agreedToTerms, setAgreedToTerms] = useState(false)
+  
+  // Terms and Privacy acceptance state
+  const [termsRead, setTermsRead] = useState(false)
+  const [privacyRead, setPrivacyRead] = useState(false)
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [privacyAccepted, setPrivacyAccepted] = useState(false)
+  
   const { signUp } = useAuth()
   const router = useRouter()
+  const supabase = createClient()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -56,11 +67,14 @@ export default function SignUpPage() {
 
   const { strength, checks } = getPasswordStrength(formData.password)
 
+  // Check if user can submit
+  const canSubmit = termsRead && privacyRead && termsAccepted && privacyAccepted && strength >= 4
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    if (!agreedToTerms) {
-      toast.error('Please agree to the terms and conditions')
+    if (!termsAccepted || !privacyAccepted) {
+      toast.error('Please read and accept both the Terms of Service and Privacy Policy')
       return
     }
 
@@ -77,11 +91,21 @@ export default function SignUpPage() {
     setLoading(true)
 
     try {
-      const { error } = await signUp(formData.email, formData.password, formData.fullName)
+      const { data, error } = await signUp(formData.email, formData.password, formData.fullName)
       
       if (error) {
         toast.error(error.message)
       } else {
+        // Store terms acceptance in localStorage for immediate use
+        // (Database update happens after email verification when profile is created)
+        const now = new Date().toISOString()
+        localStorage.setItem('estate_planpro_terms_accepted', JSON.stringify({
+          pendingAcceptance: true,
+          termsAcceptedAt: now,
+          privacyAcceptedAt: now,
+          email: formData.email
+        }))
+        
         toast.success('Account created! Please check your email to verify your account.')
         router.push('/auth/signin')
       }
@@ -93,7 +117,9 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <Header variant="minimal" />
+      <div className="min-h-screen flex items-center justify-center px-4 py-12 pt-24">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -235,24 +261,95 @@ export default function SignUpPage() {
                 </button>
               </div>
 
-              <div className="flex items-start space-x-3">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={agreedToTerms}
-                  onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                />
-                <label htmlFor="terms" className="text-sm text-gray-600">
-                  I agree to the{' '}
-                  <Link href="/terms" className="text-primary-600 hover:text-primary-500">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link href="/privacy" className="text-primary-600 hover:text-primary-500">
-                    Privacy Policy
-                  </Link>
-                </label>
+              {/* Terms of Service and Privacy Policy Acceptance */}
+              <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                <p className="text-sm font-medium text-gray-700 text-center">
+                  Please read and accept our legal agreements
+                </p>
+                
+                {/* Terms of Service */}
+                <div className="p-3 bg-white rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <DocumentTextIcon className="w-5 h-5 text-primary-600" />
+                      <span className="text-sm font-medium text-gray-900">Terms of Service</span>
+                    </div>
+                    <Link
+                      href="/terms"
+                      target="_blank"
+                      onClick={() => setTermsRead(true)}
+                      className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
+                    >
+                      Read Terms →
+                    </Link>
+                  </div>
+                  <label className="flex items-start space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={termsAccepted}
+                      onChange={(e) => setTermsAccepted(e.target.checked)}
+                      disabled={!termsRead}
+                      className="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                    <span className={`text-xs ${!termsRead ? 'text-gray-400' : 'text-gray-600'}`}>
+                      I have read and agree to the Terms of Service
+                      {!termsRead && (
+                        <span className="text-amber-600 ml-1">(read first)</span>
+                      )}
+                    </span>
+                  </label>
+                  {termsRead && (
+                    <div className="flex items-center mt-1 text-xs text-green-600">
+                      <CheckCircleIcon className="w-3 h-3 mr-1" />
+                      Viewed
+                    </div>
+                  )}
+                </div>
+
+                {/* Privacy Policy */}
+                <div className="p-3 bg-white rounded-lg border border-gray-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <ShieldCheckIcon className="w-5 h-5 text-primary-600" />
+                      <span className="text-sm font-medium text-gray-900">Privacy Policy</span>
+                    </div>
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      onClick={() => setPrivacyRead(true)}
+                      className="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
+                    >
+                      Read Policy →
+                    </Link>
+                  </div>
+                  <label className="flex items-start space-x-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={privacyAccepted}
+                      onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                      disabled={!privacyRead}
+                      className="mt-0.5 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
+                    <span className={`text-xs ${!privacyRead ? 'text-gray-400' : 'text-gray-600'}`}>
+                      I have read and agree to the Privacy Policy
+                      {!privacyRead && (
+                        <span className="text-amber-600 ml-1">(read first)</span>
+                      )}
+                    </span>
+                  </label>
+                  {privacyRead && (
+                    <div className="flex items-center mt-1 text-xs text-green-600">
+                      <CheckCircleIcon className="w-3 h-3 mr-1" />
+                      Viewed
+                    </div>
+                  )}
+                </div>
+
+                {/* Important Notice */}
+                <p className="text-xs text-amber-700 text-center bg-amber-50 p-2 rounded-lg">
+                  <strong>Note:</strong> Estate PlanPro provides document templates, not legal advice. 
+                  Consult a licensed attorney for your specific situation.
+                </p>
               </div>
 
               <GlassButton
@@ -261,9 +358,9 @@ export default function SignUpPage() {
                 size="lg"
                 className="w-full"
                 loading={loading}
-                disabled={!agreedToTerms || strength < 4}
+                disabled={!canSubmit}
               >
-                Create Account
+                {canSubmit ? 'Create Account' : 'Please Complete All Steps Above'}
               </GlassButton>
             </form>
 
@@ -287,6 +384,7 @@ export default function SignUpPage() {
             </div>
           </GlassCard>
         </motion.div>
+      </div>
       </div>
     </div>
   )

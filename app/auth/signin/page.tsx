@@ -5,7 +5,9 @@ import { motion } from 'framer-motion'
 import { GlassCard } from '@/components/ui/glass-card'
 import { GlassButton } from '@/components/ui/glass-button'
 import { GlassInput } from '@/components/ui/glass-input'
+import { Header } from '@/components/ui/header'
 import { useAuth } from '@/components/providers/auth-provider'
+import { createClient } from '@/lib/supabase/client'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
@@ -18,17 +20,55 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false)
   const { signIn } = useAuth()
   const router = useRouter()
+  const supabase = createClient()
+
+  // Save pending terms acceptance to database after login
+  const savePendingTermsAcceptance = async (userId: string) => {
+    try {
+      const pendingAcceptance = localStorage.getItem('estate_planpro_terms_accepted')
+      if (pendingAcceptance) {
+        const { pendingAcceptance: isPending, termsAcceptedAt, privacyAcceptedAt } = JSON.parse(pendingAcceptance)
+        
+        if (isPending) {
+          // Update the profile with acceptance timestamps
+          await supabase
+            .from('profiles')
+            .update({
+              terms_of_service_accepted_at: termsAcceptedAt,
+              privacy_policy_accepted_at: privacyAcceptedAt,
+              consent_given_at: termsAcceptedAt,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', userId)
+          
+          // Mark as no longer pending
+          localStorage.setItem('estate_planpro_terms_accepted', JSON.stringify({
+            userId,
+            accepted: true,
+            acceptedAt: termsAcceptedAt
+          }))
+        }
+      }
+    } catch (error) {
+      console.warn('Could not save terms acceptance to database:', error)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      const { error } = await signIn(email, password)
+      const { data, error } = await signIn(email, password)
       
       if (error) {
         toast.error(error.message)
       } else {
+        // Save any pending terms acceptance
+        if (data?.user?.id) {
+          await savePendingTermsAcceptance(data.user.id)
+        }
+        
         toast.success('Welcome back!')
         router.push('/dashboard')
       }
@@ -40,7 +80,9 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+      <Header variant="minimal" />
+      <div className="min-h-screen flex items-center justify-center px-4 py-12 pt-24">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -163,6 +205,7 @@ export default function SignInPage() {
             </GlassCard>
           </motion.div>
         </motion.div>
+      </div>
       </div>
     </div>
   )

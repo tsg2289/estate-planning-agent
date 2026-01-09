@@ -49,6 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             organization_id: null,
             preferences: null,
             privacy_policy_accepted_at: null,
+            terms_of_service_accepted_at: null,
             two_factor_enabled: null,
           })
         }
@@ -89,6 +90,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 organization_id: null,
                 preferences: null,
                 privacy_policy_accepted_at: null,
+                terms_of_service_accepted_at: null,
                 two_factor_enabled: null,
               })
             } else {
